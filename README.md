@@ -8,7 +8,7 @@
 
 原作作者：clinton gormley，zachary tong
 
-译者：Gavin Foo
+译者：Gavin Foo <fuxiaopang@gmail.com>
 
 
 # 前言
@@ -16,7 +16,7 @@
 ****
 这本书还在不断地添加内容中，我们会陆陆续续地在这里添加新的章节。这本书中的内容针对的是Elasticsearch的最新版本。
 
-欢迎反馈 – 如果这里出现了错误，或者你有什么建议可以到我们GitHub项目中 https://github.com/elasticsearch/elasticsearch-definitive-guide/issues[新建一个issue]。
+欢迎反馈 – 如果这里出现了错误，或者你有什么建议可以到我们GitHub项目中 [新建一个issue](https://github.com/elasticsearch/elasticsearch-definitive-guide/issues)。
 ****
 
 这个世界已经被数据淹没。我们创造的系统所产生的数据可以轻而易举地将我们瞬间压垮，现有的科技一直致力于如何存储数据，并能将拥有大量信息的数据仓库结构化。而当你准备开始从大量的数据中得出结论做决策的时候，美好的一天就要被毁灭了……

@@ -24,5 +24,4 @@ Elasticsearch每一个独立的部分都不是新创的。比如全文搜索早�
 
 这便是Elasticsearch如此突出的理由：Elasticsearch可以帮助你浏览并利用已经快要烂在数据库里的极难查询的数据。
 
-Elasticsearch将会成为你一生的小伙伴。
---
+> ###Elasticsearch将会成为你一生的小伙伴。

@@ -15,7 +15,8 @@
 这两个客户端都使用Elasticsearch的_传输_协议，通过**9300端口**与java客户端进行通信。集群中的各个节点也是通过9300端口进行通信。如果这个端口被禁止了，那么你的节点们将不能组成一个集群。
 
 **************************************************
-#####TIP
+> ###TIP
+
 Java的客户端的版本号必须要与Elasticsearch节点所用的版本号一样，不然他们之间可能无法识别。
 **************************************************
 更多关于Java API的说明可以在这里找到 [Guide](http://www.elasticsearch.org/guide/).
@@ -33,7 +34,7 @@ Elasticsearch官方提供了很多种编程语言的客户端，也有和许多�
 
 向Elasticsearch发出的请求和其他所有的HTTP请求的组成部分是一致的。例如，计算集群中文件的数量，我们就可以使用：
 
-```javascript
+```js
       <1>     <2>                   <3>    <4>
 curl -XGET 'http://localhost:9200/_count?pretty' -d '
 {  <5>
@@ -51,7 +52,7 @@ curl -XGET 'http://localhost:9200/_count?pretty' -d '
 
 Elasticsearch将会返回一个HTTP状态码类似于'200 OK'，以及一个JSON格式的主体（除了单纯的'HEAD'请求），上面的请求会得到下方的JSON主体：
 
-```javascript
+```js
 {
     "count" : 0,
     "_shards" : {
@@ -64,13 +65,13 @@ Elasticsearch将会返回一个HTTP状态码类似于'200 OK'，以及一个JSON
 
 在反馈中，我们并没有看见HTTP的头部信息，因为我们没有告知`curl`显示这些内容。如果你想看到头部信息，可以在使用`curl`命令的时候再加上`-i`这个参数：
 
-```javascript
+```js
 curl -i -XGET 'localhost:9200/'
 ```
 
 从现在开始，本书里所有涉及`curl`命令的部分我们都会进行简写，因为主机、端口等信息都是相同的，缩减前的样子:
 
-```javascript
+```js
 curl -XGET 'localhost:9200/_count?pretty' -d '
 {
     "query": {
@@ -81,7 +82,7 @@ curl -XGET 'localhost:9200/_count?pretty' -d '
 
 我们将会简写成这样:
 
-```javascript
+```js
 GET /_count
 {
     "query": {

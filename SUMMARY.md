@@ -7,8 +7,8 @@
    * [文档](getting_started/document.md)
    * [索引](getting_started/tutorial_indexing.md)
    * [搜索](getting_started/tutorial_search.md)
-   * [Tutorial_Aggregations](getting_started/tutorial_aggregations.md)
-   * [Tutorial_Conclusion](getting_started/tutorial_conclusion.md)
-   * [Distributed](getting_started/distributed.md)
-   * [Conclusion](getting_started/conclusion.md)
+   * [汇总](getting_started/tutorial_aggregations.md)
+   * [小结](getting_started/tutorial_conclusion.md)
+   * [分布式](getting_started/distributed.md)
+   * [本章总结](getting_started/conclusion.md)
 

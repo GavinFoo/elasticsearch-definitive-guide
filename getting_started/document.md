@@ -14,7 +14,7 @@ Object Notation )作为文档序列化的格式。JSON已经被大多数语言�
 
 把这个JSON想象成一个用户对象:
 
-```
+```js
 {
     "email":      "john@smith.com",
     "first_name": "John",
@@ -31,7 +31,7 @@ Object Notation )作为文档序列化的格式。JSON已经被大多数语言�
 虽然`user`这个对象非常复杂，但是它的结构和含义都被保留到JSON中了。在Elasticsearch中，将对象转换为JSON并作为索引要比在表结构中做相同的事情简单多了。
 
 ***
-#####将你的数据转换为JSON
+>###将你的数据转换为JSON
 
 几乎所有的语言都有将任意数据转换、机构化成JSON，或者将对象转换为JSON的模块。查看`serialization`以及`marshalling`两个JSON模块。[The official Elasticsearch clients](http://www.elasticsearch.org/guide) 也可以帮你自动结构化JSON。
 

@@ -1,44 +1,28 @@
-=== Distributed nature
+# 分布式特性
 
-At the beginning of this chapter, we said that Elasticsearch can scale out to
-hundreds (or even thousands) of servers and handle petabytes of data. While
-our tutorial gave examples of how to use Elasticsearch, it didn't touch on the
-mechanics at all. Elasticsearch is distributed by nature, and it is designed
-to hide the complexity that comes with being distributed.
+在最开始的章节中，我们曾经提到Elasticsearch可以被扩展到上百台（甚至上千台）服务器上，来处理PB级别的数据。我们的教程只提及了如何使用它，但是并没有提及到服务器方面的内容。Elasticsearch是自动分布的，它在设计时就考虑到可以隐藏分布操作的复杂性。
 
-The distributed aspect of Elasticsearch is largely transparent.  Nothing in
-the tutorial required you to know about distributed systems, sharding, cluster
-discovery or dozens of other distributed concepts.  It happily ran the
-tutorial on a single node living inside your laptop, but if you were to run
-the tutorial on a cluster containing 100 nodes, everything would work in
-exactly the same way.
+Elasticsearch的分布式部分很简单。你甚至不需要关于分布式系统的任何内容，比如分片、集群、发现等成堆的分布式概念。你可能在你的笔记本中运行着刚才的教程，如果你想在一个拥有100个节点的集群中运行教程，你会发现操作是完全一样的。
 
-Elasticsearch tries hard to hide the complexity of distributed systems. Some of
-the operations happening automatically under the hood include:
+Elasticsearch很努力地在避免复杂的分布式系统，很多操作都是自动完成的：
 
- * Partitioning your documents into different containers or _shards_, which
-   can be stored on a single node or on  multiple nodes.
+* 可以将你的文档分区到不同容器或者_分片_中，这些文档可能被存在一个节点或者多个节点。
 
- * Balancing these shards across the nodes in your cluster to spread the
-   indexing and search load.
 
- * Duplicating each shard to provide redundant copies of your data, to
-   prevent data loss in case of hardware failure.
+* 跨界点平衡集群中节点间的索引与搜索负载。
 
- * Routing requests from any node in the cluster to the nodes that hold the
-   data you're interested in.
 
- * Seamlessly integrating new nodes as your cluster grows or redistributing
-   shards to recover from node loss.
+* 自动复制你的数据以提供冗余副本，防止硬件错误导致数据丢失。
 
-As you read through this book, you'll encounter supplemental chapters about the
-distributed nature of Elasticsearch.  These chapters will teach you about
-how the cluster scales and deals with failover (<<distributed-cluster>>),
-handles document storage (<<distributed-docs>>) and executes distributed search
-(<<distributed-search>>).
 
-These chapters are not required reading -- you can use Elasticsearch without
-understanding these internals -- but they will provide insight that will make
-your knowledge of Elasticsearch more complete. Feel free to skim them and
-revisit at a later point when you need a more complete understanding.
+* 自动在节点之间路由，以帮助你找到你想要的数据。
+
+
+* 无缝扩展或者恢复你的集群。
+
+
+当你在阅读这本书时，你会发现到有关Elasticsearch的分布式特性分布式特性的补充章节。在这些章节中你会了解到如何扩展集群以及故障转移（《分布式集群》），如何处理文档存储（《分布式文档》），如何执行分布式搜索(《分布式搜索》）
+
+
+这一部分不是必须要看的——你不懂它们也能正常使用Elasticsearch。但是帮助你更加全面完整地了解Elasticsearch。你也可以在之后需要的时候再回来翻阅它们。
 
