@@ -1,22 +1,18 @@
 # 检查文档是否存在
 
-If all you want to do is to check whether a document exists -- you're not
-interested in the content at all -- then use the `HEAD` method instead
-of the `GET` method. `HEAD` requests don't return a body, just HTTP headers:
+如果确实想检查一下文档是否存在，你可以试用`HEAD`来替代`GET`方法，这样就是会返回HTTP头文件：
 
 ```js
 curl -i -XHEAD /website/blog/123
 ```
-
-Elasticsearch will return a `200 OK` status code if the document exists:
+如果文档存在，Elasticsearch将会返回`200 OK`的状态码：
 
 ```js
 HTTP/1.1 200 OK
 Content-Type: text/plain; charset=UTF-8
 Content-Length: 0
 ```
-
-And a `404 Not Found` if it doesn't exist:
+如果不存在将会返回`404 Not Found`状态码：
 
 ```js
 curl -i -XHEAD /website/blog/124
@@ -28,6 +24,4 @@ Content-Type: text/plain; charset=UTF-8
 Content-Length: 0
 ```
 
-Of course, just because a document didn't exist when you checked it, doesn't
-mean that it won't exist a millisecond later: another process might create the
-document in the meantime.
+当然，这个反馈只代表了你查询的那一刻文档不存在，但是不代表几毫秒后它是否存在，很可能与此同时，另一个进程正在穿件文档。

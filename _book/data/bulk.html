@@ -5,7 +5,7 @@
         
         
         <meta charset="UTF-8">
-        <title>分布式集群 | Elasticsearch 权威指南</title>
+        <title>Bulk | Elasticsearch 权威指南</title>
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="robots" content="index, follow">
@@ -15,13 +15,13 @@
         <meta name="generator" content="www.gitbook.io">
 
         
-        <link rel="next" href="../distributed_cluster/empty_cluster.html" />
+        <link rel="next" href="../data/conclusion.html" />
         
         
-        <link rel="prev" href="../getting_started/conclusion.html" />
+        <link rel="prev" href="../data/mget.html" />
         
 
-        <meta property="og:title" content="分布式集群 | Elasticsearch 权威指南">
+        <meta property="og:title" content="Bulk | Elasticsearch 权威指南">
         <meta property="og:site_name" content="Elasticsearch 权威指南">
         <meta property="og:type" content="book">
         <meta property="og:locale" content="en_US">
@@ -46,7 +46,7 @@
 
 
         
-    <div class="book"  data-level="2" data-basepath=".." data-revision="1402135601274">
+    <div class="book"  data-level="3.11" data-basepath=".." data-revision="1402135601274">
     <div class="book-header">
     <!-- Actions Left -->
     <a href="#" class="btn pull-left toggle-summary" aria-label="Toggle summary"><i class="fa fa-align-justify"></i></a>
@@ -445,7 +445,7 @@
             <div class="page-wrapper" tabindex="-1">
                 <div class="book-progress">
     <div class="bar">
-        <div class="inner" style="width: 37.5%;min-width: 34.375%;"></div>
+        <div class="inner" style="width: 71.875%;min-width: 68.75%;"></div>
     </div>
     <div class="chapters">
     
@@ -475,27 +475,27 @@
     
         <a href="../distributed_cluster/README.html" title="分布式集群" class="chapter done new-chapter" data-progress="2" style="left: 37.5%;"></a>
     
-        <a href="../distributed_cluster/empty_cluster.html" title="空集群" class="chapter  " data-progress="2.1" style="left: 40.625%;"></a>
+        <a href="../distributed_cluster/empty_cluster.html" title="空集群" class="chapter done " data-progress="2.1" style="left: 40.625%;"></a>
     
-        <a href="../distributed_cluster/cluster_health.html" title="集群健康" class="chapter  " data-progress="2.2" style="left: 43.75%;"></a>
+        <a href="../distributed_cluster/cluster_health.html" title="集群健康" class="chapter done " data-progress="2.2" style="left: 43.75%;"></a>
     
-        <a href="../distributed_cluster/add_an_index.html" title="添加索引" class="chapter  " data-progress="2.3" style="left: 46.875%;"></a>
+        <a href="../distributed_cluster/add_an_index.html" title="添加索引" class="chapter done " data-progress="2.3" style="left: 46.875%;"></a>
     
-        <a href="../distributed_cluster/add_failover.html" title="容错移转" class="chapter  " data-progress="2.4" style="left: 50%;"></a>
+        <a href="../distributed_cluster/add_failover.html" title="容错移转" class="chapter done " data-progress="2.4" style="left: 50%;"></a>
     
-        <a href="../distributed_cluster/scale_horizontally.html" title="横向扩展" class="chapter  " data-progress="2.5" style="left: 53.125%;"></a>
+        <a href="../distributed_cluster/scale_horizontally.html" title="横向扩展" class="chapter done " data-progress="2.5" style="left: 53.125%;"></a>
     
-        <a href="../distributed_cluster/scale_more.html" title="扩展" class="chapter  " data-progress="2.6" style="left: 56.25%;"></a>
+        <a href="../distributed_cluster/scale_more.html" title="扩展" class="chapter done " data-progress="2.6" style="left: 56.25%;"></a>
     
-        <a href="../distributed_cluster/coping_with_failure.html" title="错误恢复" class="chapter  " data-progress="2.7" style="left: 59.375%;"></a>
+        <a href="../distributed_cluster/coping_with_failure.html" title="错误恢复" class="chapter done " data-progress="2.7" style="left: 59.375%;"></a>
     
-        <a href="../data/README.html" title="数据" class="chapter  new-chapter" data-progress="3" style="left: 62.5%;"></a>
+        <a href="../data/README.html" title="数据" class="chapter done new-chapter" data-progress="3" style="left: 62.5%;"></a>
     
-        <a href="../data/document.html" title="文档" class="chapter  " data-progress="3.1" style="left: 65.625%;"></a>
+        <a href="../data/document.html" title="文档" class="chapter done " data-progress="3.1" style="left: 65.625%;"></a>
     
-        <a href="../data/mget.html" title="Mget" class="chapter  " data-progress="3.10" style="left: 68.75%;"></a>
+        <a href="../data/mget.html" title="Mget" class="chapter done " data-progress="3.10" style="left: 68.75%;"></a>
     
-        <a href="../data/bulk.html" title="Bulk" class="chapter  " data-progress="3.11" style="left: 71.875%;"></a>
+        <a href="../data/bulk.html" title="Bulk" class="chapter done " data-progress="3.11" style="left: 71.875%;"></a>
     
         <a href="../data/conclusion.html" title="总结" class="chapter  " data-progress="3.12" style="left: 75%;"></a>
     
@@ -520,22 +520,186 @@
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_8200">
+                    <section class="normal" id="section-gitbook_8188">
                     
-                        <h1 id="-">集群</h1>
-<h4 id="-">本章将会在主要章节翻译结束后再继续翻译</h4>
-<hr>
-<blockquote>
-<h3 id="-">补充章节</h3>
-</blockquote>
-<p>正如前文提到的，这就是第个<strong>补充</strong>的章节，这里会介绍Elasticsearch如何在分布式环境中运行。
-本章解释了常用术语，比如<em>集群 (cluster)</em>, <em>节点 (node)</em> 以及<em>分片 (shard)</em>，以及如何横向扩展主机，如何处理硬件故障。</p>
-<p>尽管这一章不是必读章节 —— 你可以完全不用理会分片，复制以及故障恢复就能长时间使用Elasticsearch。你可以先跳过这一章节，然后在你需要的时候再回来。</p>
-<hr>
-<p>你可以随时根据你的需要扩展Elasticsearch。你可以购买配置更好的主机(<em>vertical scale</em> or <em>scaling up</em>) 或者购买过多的主机(<em>horizontal scale</em> or <em>scaling out</em>) 来达到扩展的目的。</p>
-<p>硬件越强大，Elasticsearch运行的也就越快，但是垂直扩展(vertical scale)方式也有它的局限性。真正的扩展来自于横向扩展(horizontal scale)方式，在集群中添加更多的节点，这样能在节点之间分配负载。</p>
-<p>对于大多数数据库来说，横向扩展意味着你的程序往往需要大改，以充分使用这些新添加的设备。相比而言，Elasticsearch自带<em>分布式功能</em>：他知道如何管理多个节点并提供高可用性。这也就意味着你的程序根本不需要为扩展做任何事情。</p>
-<p>在这一章节，我们将要探索如何根据你的需要创建你的<em>集群</em>，<em>节点</em>以及<em>分片</em>，并保障硬件故障后，你的数据依旧的安全。</p>
+                        <h1 id="bulk-">bulk更方便</h1>
+<p>In the same way that <code>mget</code> allows us to retrieve multiple documents at once,
+the <code>bulk</code> API allows us to make multiple <code>create</code>, <code>index</code>, <code>update</code> or
+<code>delete</code>  requests in a single step. This is particularly useful if you need
+to index a data stream such as log events, which can be queued up and indexed
+in batches of hundreds or thousands.</p>
+<p>The <code>bulk</code> request body has the following, slightly unusual, format:</p>
+<pre><code class="lang-js">{ action: { metadata }}\n
+{ request body        }\n
+{ action: { metadata }}\n
+{ request body        }\n
+...
+</code></pre>
+<p>This format is like a <em>stream</em> of valid one-line JSON documents joined
+together by newline <code>&quot;\n&quot;</code> characters. Two important points to note:</p>
+<ul>
+<li><p>Every line must end with a newline character <code>&quot;\n&quot;</code>, <em>including the last
+line</em>. These are used as markers to allow for efficient line separation.</p>
+</li>
+<li><p>The lines cannot contain unescaped newline characters, as they would
+interfere with parsing -- that means that the JSON must <em>not</em> be
+pretty-printed.</p>
+</li>
+</ul>
+<p>TIP: In &lt;<bulk-format>&gt; we explain why the <code>bulk</code> API uses this format.</p>
+<p>The <em>action/metadata</em> line specifies <em>what action</em> to do to <em>which document</em>.</p>
+<p>The <em>action</em> must be one of <code>index</code>, <code>create</code>, <code>update</code> or <code>delete</code>. The
+<em>metadata</em> should specify the <code>_index</code>, <code>_type</code> and <code>_id</code> of the document to
+be indexed, created, updated or deleted.</p>
+<p>For instance, a <code>delete</code> request could look like this:</p>
+<pre><code class="lang-js">{ <span class="hljs-string">"delete"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }}
+</code></pre>
+<p>The <em>request body</em> line consists of the document <code>_source</code> itself -- the fields
+and values that the document contains.  It is required for <code>index</code> and
+<code>create</code> operations, which makes sense: you must supply the document to index.</p>
+<p>It is also required for <code>update</code> operations and should consist of the same
+request body that you would pass to the <code>update</code> API: <code>doc</code>, <code>upsert</code>,
+<code>script</code> etc. No <em>request body</em> line is required for a delete.</p>
+<pre><code class="lang-js">{ <span class="hljs-string">"create"</span>:  { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }}
+{ <span class="hljs-string">"title"</span>:    <span class="hljs-string">"My first blog post"</span> }
+</code></pre>
+<p>If no <code>_id</code> is specified, then an ID will be auto-generated:</p>
+<pre><code class="lang-js">{ <span class="hljs-string">"index"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span> }}
+{ <span class="hljs-string">"title"</span>:    <span class="hljs-string">"My second blog post"</span> }
+</code></pre>
+<p>To put it all together, a complete <code>bulk</code> request has this form:</p>
+<pre><code class="lang-js">POST /_bulk
+{ <span class="hljs-string">"delete"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }} &lt;<span class="hljs-number">1</span>&gt;
+{ <span class="hljs-string">"create"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }}
+{ <span class="hljs-string">"title"</span>:    <span class="hljs-string">"My first blog post"</span> }
+{ <span class="hljs-string">"index"</span>:  { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span> }}
+{ <span class="hljs-string">"title"</span>:    <span class="hljs-string">"My second blog post"</span> }
+{ <span class="hljs-string">"update"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span>, <span class="hljs-string">"_retry_on_conflict"</span> : <span class="hljs-number">3</span>} }
+{ <span class="hljs-string">"doc"</span> : {<span class="hljs-string">"title"</span> : <span class="hljs-string">"My updated blog post"</span>} } &lt;<span class="hljs-number">2</span>&gt;
+</code></pre>
+<ol>
+<li>Notice how the <code>delete</code> <em>action</em> does not have a <em>request body</em>, it is
+ followed immediately by another <em>action</em>.</li>
+<li>Remember the final newline character.</li>
+</ol>
+<p>The Elasticsearch response contains the <code>items</code> array which lists the result of
+each request, in the same order as we requested them:</p>
+<pre><code class="lang-js">{
+   <span class="hljs-string">"took"</span>: <span class="hljs-number">4</span>,
+   <span class="hljs-string">"errors"</span>: <span class="hljs-literal">false</span>, <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">1</span>&gt;</span>
+   "items": [
+      {  "delete": {
+            "_index":   "website",
+            "_type":    "blog",
+            "_id":      "123",
+            "_version": 2,
+            "status":   200,
+            "found":    true
+      }},
+      {  "create": {
+            "_index":   "website",
+            "_type":    "blog",
+            "_id":      "123",
+            "_version": 3,
+            "status":   201
+      }},
+      {  "create": {
+            "_index":   "website",
+            "_type":    "blog",
+            "_id":      "EiwfApScQiiy7TIKFxRCTw",
+            "_version": 1,
+            "status":   201
+      }},
+      {  "update": {
+            "_index":   "website",
+            "_type":    "blog",
+            "_id":      "123",
+            "_version": 4,
+            "status":   200
+      }}
+   ]
+}}</span>
+</code></pre>
+<ol>
+<li>All sub-requests completed successfully.</li>
+</ol>
+<p>Each sub-request is executed independently, so the failure of one sub-request
+won&#39;t affect the success of the others. If any of the requests fail, then the
+top-level  <code>error</code> flag is set to <code>true</code> and the error details will be
+reported under the relevant request:</p>
+<pre><code class="lang-js">POST /_bulk
+{ <span class="hljs-string">"create"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }}
+{ <span class="hljs-string">"title"</span>:    <span class="hljs-string">"Cannot create - it already exists"</span> }
+{ <span class="hljs-string">"index"</span>:  { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }}
+{ <span class="hljs-string">"title"</span>:    <span class="hljs-string">"But we can update it"</span> }
+</code></pre>
+<p>In the response we can see that it failed to <code>create</code> document <code>123</code> because
+it already exists, but the subsequent <code>index</code> request, also on document <code>123</code>,
+succeeded:</p>
+<pre><code class="lang-js">{
+   <span class="hljs-string">"took"</span>: <span class="hljs-number">3</span>,
+   <span class="hljs-string">"errors"</span>: <span class="hljs-literal">true</span>, <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">1</span>&gt;</span>
+   "items": [
+      {  "create": {
+            "_index":   "website",
+            "_type":    "blog",
+            "_id":      "123",
+            "status":   409, <span class="hljs-tag">&lt;<span class="hljs-title">2</span>&gt;</span>
+            "error":    "DocumentAlreadyExistsException <span class="hljs-tag">&lt;<span class="hljs-title">3</span>&gt;</span>
+                        [[website][4] [blog][123]:
+                        document already exists]"
+      }},
+      {  "index": {
+            "_index":   "website",
+            "_type":    "blog",
+            "_id":      "123",
+            "_version": 5,
+            "status":   200 <span class="hljs-tag">&lt;<span class="hljs-title">4</span>&gt;</span>
+      }}
+   ]
+}</span>
+</code></pre>
+<ol>
+<li>One or more requests has failed.</li>
+<li>The HTTP status code for this request reports <code>409 CONFLICT</code>.</li>
+<li>The error message explaining why the request failed.</li>
+<li>The second request succeeded with an HTTP status code of <code>200 OK</code>.</li>
+</ol>
+<p>That also means that <code>bulk</code> requests are not atomic -- they cannot be used to
+implement transactions.  Each request is processed separately, so the success
+or failure of one request will not interfere with the others.</p>
+<h3 id="don-t-repeat-yourself">Don&#39;t repeat yourself</h3>
+<p>Perhaps you are batch indexing logging data into the same <code>index</code>, and with the
+same <code>type</code>. Having to specify the same metadata for every document is a waste.
+Instead, just as for the <code>mget</code> API, the <code>bulk</code> request accepts a default <code>/_index</code> or
+<code>/_index/_type</code> in the URL:</p>
+<pre><code class="lang-js">POST /website/_bulk
+{ <span class="hljs-string">"index"</span>: { <span class="hljs-string">"_type"</span>: <span class="hljs-string">"log"</span> }}
+{ <span class="hljs-string">"event"</span>: <span class="hljs-string">"User logged in"</span> }
+</code></pre>
+<p>You can still override the <code>_index</code> and <code>_type</code> in the metadata line, but it
+will use the values in the URL as defaults:</p>
+<pre><code class="lang-js">POST /website/log/_bulk
+{ <span class="hljs-string">"index"</span>: {}}
+{ <span class="hljs-string">"event"</span>: <span class="hljs-string">"User logged in"</span> }
+{ <span class="hljs-string">"index"</span>: { <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span> }}
+{ <span class="hljs-string">"title"</span>: <span class="hljs-string">"Overriding the default type"</span> }
+</code></pre>
+<h3 id="how-big-is-too-big-">How big is too big?</h3>
+<p>The entire bulk request needs to be loaded into memory by the node which
+receives our request, so the bigger the request, the less memory available for
+other requests. There is an optimal size of <code>bulk</code> request. Above that size,
+performance no longer improves and may even drop off.</p>
+<p>The optimal size, however, is not a fixed number. It depends entirely on your
+hardware, your document size and complexity, and your indexing and search
+load.  Fortunately, it is easy to find this <em>sweetspot</em>:</p>
+<p>Try indexing typical documents in batches of increasing size. When performance
+starts to drop off, your batch size is too big. A good place to start is with
+batches of between 1,000 and 5,000 documents or, if your documents are very
+large, with even smaller batches.</p>
+<p>It is often useful to keep an eye on the physical size of your bulk requests.
+One thousand 1kB documents is very different than one thousand 1MB documents.
+A good bulk size to start playing with is around 5-15MB in size.</p>
 
                     
                     </section>
@@ -545,10 +709,10 @@
         </div>
 
         
-        <a href="../getting_started/conclusion.html" class="navigation navigation-prev " aria-label="Previous page: 本章总结"><i class="fa fa-angle-left"></i></a>
+        <a href="../data/mget.html" class="navigation navigation-prev " aria-label="Previous page: Mget"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/empty_cluster.html" class="navigation navigation-next " aria-label="Next page: 空集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../data/conclusion.html" class="navigation navigation-next " aria-label="Next page: 总结"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

@@ -9,7 +9,7 @@ Elasticsearch是_面向文档型数据库_，这意味着它存储的是整个�
 
 # JSON
 
-Elasticsearch使用[_JSON_](http://en.wikipedia.org/wiki/Json) (或称作JavaScript
+Elasticsearch使用[_JSON_](http://baike.baidu.com/view/136475.htm?fr=aladdin) (或称作JavaScript
 Object Notation )作为文档序列化的格式。JSON已经被大多数语言支持，也成为NoSQL领域的一个标准格式。它简单、简洁、易于阅读。
 
 把这个JSON想象成一个用户对象:

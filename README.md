@@ -1,9 +1,17 @@
-# 译者前言
+# Elasticsearch 权威指南
 
-****
+## 项目信息
+
+#### [GITHUB 仓库](https://github.com/GavinFoo/elasticsearch-definitive-guide)
+
+#### [GITBOOK 在线阅读](http://fuxiaopang.gitbooks.io/LearnElasticSearch/) 国外用户
+
+#### [SAE 在线阅读](http://learnes.net) 国内用户
+
+
+## 译者前言
 译者现在的工作项目中需要用到elasticsearch，但是在网络中找了很多的相关的内容都很不完善，中文的文档更是寥寥无几，所以我决定边研究边翻译一下官方推出的权威手册。在这里要先感谢原作者们！如果各位在这里发现了错误之处，请大家在Issue中提出或者pr这个项目。
 ****
-
 原作名字：elasticsearch - the definitive guide
 
 原作作者：clinton gormley，zachary tong
@@ -11,9 +19,8 @@
 译者：Gavin Foo <fuxiaopang@gmail.com>
 
 
-# 前言
+## 前言
 
-****
 这本书还在不断地添加内容中，我们会陆陆续续地在这里添加新的章节。这本书中的内容针对的是Elasticsearch的最新版本。
 
 欢迎反馈 – 如果这里出现了错误，或者你有什么建议可以到我们GitHub项目中 [新建一个issue](https://github.com/elasticsearch/elasticsearch-definitive-guide/issues)。

@@ -28,7 +28,7 @@
    * [创建](data/create.md)
    * [删除](data/delete.md)
    * [版本控制](data/version_control.md)
-   * [部分更新](data/partial_update.md)
+   * [局部更新](data/partial_update.md)
    * [Mget](data/mget.md)
    * [Bulk](data/bulk.md)
    * [总结](data/conclusion.md)

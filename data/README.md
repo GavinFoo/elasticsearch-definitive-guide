@@ -1,54 +1,22 @@
 # 存入 取出
 
-Whatever program we write, the intention is the same: to organize data in a
-way that serves our purposes.  But data doesn't consist just of random bits
-and bytes.  We build relationships between data elements in order to represent
-entities or ``things'' that exist in the real world.  A name and an email
-address have more meaning if we know that they belong to the same person.
+不论是哪一个程序，目的都是一致的：根据我们的需要来组织数据。数据并不是只有随机的比特和字节。我们需要在多个代表现实中的事物或者实体的元素之间建立关系。如果我们知道一个名字和一个电子邮件同属于一个人的话，我们就能得到更有意义的东西。
 
-In the real world, though, not all entities of the same type look the same.
-One person might have a home telephone number, while another person only has a
-cellphone number, and another might have both.  One person might have three
-email addresses, while another has none. A Spanish person will probably have
-two last names while an English person will probably have only one.
+生活中，有很多同种类的实体也存在着不同。一个人可能有一个座机号码，而另一个人可能只有手机号码，当然有的人还会同时拥有两者。有的人有三个邮箱地址，有的则可能一个都没有。一个西班牙人可能有两个姓，但是我们可能就只有一个姓。
 
-One of the reasons that object-oriented programming languages are so popular
-is that objects help us to represent and manipulate real world entities with
-potentially complex data structures. So far so good.
+面向对象编程语言之所以受到大家欢迎，其中一个原因就是对象能帮助我们去代替现实生活中的复杂的实体。
 
-The problem comes when we need to store these entities. Traditionally, we have
-stored our data in columns and rows in a relational database, the equivalent
-of using a spreadsheet.  All the flexibility gained from using objects is lost
-due to the inflexibility of our storage medium.
+但是当我们存储这些实体时就会出现问题。通常，我们把我们的数据存储在关系数据库的列(columns)与行(rows)中，这相当于在电子表格中排列我们的数据。这样我们对象本来的灵活性就不复存在了。
 
-But what if we could store our objects as objects?  Instead of modeling our
-application around the limitations of spreadsheets, we can instead focus on
-actually *using* the data. The flexibility of objects is returned to us.
+但是，如果我们就单纯地把对象存储为对象呢？相比于在电子表中的各种限制，我们应该重新着眼于**使用**数据。把对象本来应有的灵活性找回来。
 
-An _object_ is a language-specific, in-memory data structure. To send it across
-the network, or store it, we need to be able to represent it in some standard
-format. http://en.wikipedia.org/wiki/Json[JSON (JavaScript Object Notation)]
-is a way of representing objects in human-readable text.  It has become the
-_de facto_ standard for exchanging data in the NoSQL world. When an object has
-been serialized into JSON it is known as a _JSON document_.
+**对象(object)**是特定语言(language-specific)，包含数据(in-memory)的数据结构。通过网络发送或者存储它，我们需要一个标准格式来代表它。[JSON (JavaScript Object Notation)](http://baike.baidu.com/view/136475.htm?fr=aladdin)这是一种可读文本的对象形式。它已经成为NoSQL世界中的标准。当一个对象被序列化到JSON时，它就被成为**JSON文档**了。
 
-Elasticsearch is a distributed _document_ store. It can store and retrieve
-complex data structures -- serialized as JSON documents -- in _real-time_. In
-other words, as soon as a document has been stored in Elasticsearch, it can be
-retrieved from any node in the cluster.
+Elasticsearch 是一个分布式**文档**存储器。它可以实时地存储并检索复杂的数据结构（被序列化后的JSON文档）。换句话说，当文档被存储到Elasticsearch 后，它就可以被集群中的任意节点搜索了。
 
-Of course, we don't only need to store data, we must also query it, _en masse_
-and at speed. While a number of NoSQL solutions exist which allow us to store
-objects as documents, they still require us to think about how we want to
-query our data, and which fields require an index in order to make data
-retrieval fast.
+当然，我们不但需要存储数据，还需要能够**大量快速**地进行查询。虽然已经有很多的NOSQl解决方案，可以让我们将对象存储为文档，但是他们还是需要我们去考虑如何查询我们的数据以及哪些字段需要我们来做索引，以便快速搜索。
 
-In Elasticsearch, *all data in every field* is *indexed by default*. That is,
-every field has a dedicated inverted index for fast retrieval. And, unlike
-most other databases, it can use all of those inverted indices *in the same
-query*, to return results at breathtaking speed.
+在Elasticsearch中，**每一个字段**都会默认被建立索引。也就是说，每一个字段都会有一个反向索引以便快速搜索。而且，与大多数其他数据库不同的是ES可以在**同一个查询中**使用所有的反向索引，以惊人的速度返回查询结果。
 
-In this chapter we will discuss the APIs that we use to create, retrieve,
-update and delete documents. For the moment, we don't care about the data
-inside our documents or how to query them. All we care about is how to store our
-documents safely in Elasticsearch, and how to get them back again.
+在本章中，我们将探讨如何使用API来创建、搜索、更新、删除文档。目前，我们并不用关心数据是如何存储在文档中的，我们只需要关心我们的文档是如何被安全地存储在Elasticsearch中以及我们如何能再次获取到他们就可以了。
+

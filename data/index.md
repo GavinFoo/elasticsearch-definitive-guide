@@ -1,17 +1,11 @@
 # 索引一个文档
 
-Documents are _indexed_ -- stored and made searchable -- using the `index`
-API. But first, we need to decide where the document  lives.  As we just
-discussed, a document's `_index`, `_type` and `_id` uniquely identify the
-document.  We can either provide our own `_id` value or let the `index` API
-generate one for us.
+文档通过`索引`API被_索引_——存储并使其可搜索。但是最开始我们需要决定我们将文档存储在那里。正如之前提到的，一篇文档通过`_index`, `_type`以及`_id`来确定它的唯一性。我们可以自己提供一个`_id`，或者也使用`index`API 帮我们生成一个。
 
 
-## Using our own ID
+## 使用自己的ID
 
-If your document has a natural identifier (e.g. a `user_account` field
-or some other value that identifies the document), then you should provide
-your own `_id`, using this form of the `index` API:
+如果你的文档拥有天然的标示符（例如`user_account`字段或者文档中其他的标识值），这时你就可以提供你自己的`_id`，这样使用`index`API：
 
 ```js
 PUT /{index}/{type}/{id}
@@ -20,10 +14,7 @@ PUT /{index}/{type}/{id}
   ...
 }
 ```
-
-For example, if our index is called `"website"`, our type is called `"blog"`
-and we choose the ID `"123"`, then the index request looks like this:
-
+几个例子。如果我们的索引叫做`"website"`，我们的类型叫做 `"blog"`，然后我们选择`"123"`作为ID的编号。这时，请求就是这样的：
 ```js
 PUT /website/blog/123
 {
@@ -33,7 +24,7 @@ PUT /website/blog/123
 }
 ```
 
-Elasticsearch responds with:
+Elasticsearch回馈内容：
 
 ```js
 {
@@ -44,26 +35,15 @@ Elasticsearch responds with:
    "created":   true
 }
 ```
+这个回馈意味着我们的索引请求已经被成功创建，其中还包含了`_index`, `_type`以及`_id`的元数据，以及一个新的元素`_version`。
 
+在Elasticsearch中，每一个文档都有一个版本号码。每当文档产生变化时（包括删除），`_version`就会增大。在《版本控制》中，我们将会详细讲解如何使用`_version`的数字来确认你的程序不会随意替换掉不想覆盖的数据。
 
-The response indicates that the indexing request has been successfully created
-and includes the `_index`, `_type` and `_id` metadata, and a new element:
-`_version`.
+### 自增ID
 
-Every document in Elasticsearch has a version number. Every time a change is
-made to a document (including deleting it), the `_version` number is
-incremented.  In <<version-control>> we will discuss how to use the `_version`
-number to ensure that one part of your application doesn't overwrite changes
-made by another part.
+如果我们的数据中没有天然的标示符，我们可以让Elasticsearch为我们自动生成一个。请求的结构发生了变化：我们把`PUT`——“把文档存储在这个地址中”变量变成了`POST`——“把文档存储在这个**地址下**”。
 
-### Auto-generating IDs
-
-If our data doesn't have a natural ID, we can let Elasticsearch autogenerate
-one for us.  The structure of the request changes: instead of using the `PUT`
-verb -- ``store this document at this URL'' -- we use the `POST` verb --
-``store this document *under* this URL''.
-
-The URL now contains just the `_index` and the `_type`:
+这样一来，请求中就只包含 `_index`和`_type`了：
 
 ```js
 POST /website/blog/
@@ -86,9 +66,8 @@ field has been generated for us:
    "created":   true
 }
 ```
-
-Auto-generated IDs are 22 character long, URL-safe, Base64-encoded string
-_universally unique identifiers_, or [UUIDs](http://en.wikipedia.org/wiki/Uuid).
+自生成ID是由22个字母组成的，安全
+_universally unique identifiers_ 或者被称为[UUIDs](http://baike.baidu.com/view/1052579.htm?fr=aladdin)。
 
 
 

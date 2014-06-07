@@ -1,15 +1,10 @@
 # 搜索文档
 
-To get the document out of Elasticsearch, we use the same `_index`,
-`_type` and `_id`, but the HTTP verb changes to `GET`:
-
+要从Elasticsearch中获取文档，我们需要使用同样的`_index`，`_type`以及 `_id`但是不同的HTTP变量`GET`：
 ```js
 GET /website/blog/123?pretty
 ```
-
-The response includes the by now familiar metadata elements, plus the `_source`
-field, which contains the original JSON document that we sent to Elasticsearch
-when we indexed it.
+返回结果包含了之前提到的内容，以及一个新的字段`_source`，它包含我们在最初创建索引时的原始JSON文档。
 
 ```js
 {
@@ -29,27 +24,19 @@ when we indexed it.
 ****
 >#### `pretty`
 
-Adding `pretty` to the query string parameters for any request, as in the
-example above, causes Elasticsearch to _pretty-print_ the JSON response to
-make it more readable. The `_source` field, however, isn't pretty-printed --
-instead we get back exactly the same JSON string that we passed in.
+在任意的查询字符串中添加`pretty`参数，类似上面的请求，Elasticsearch就可以得到_优美打印_的更加易于识别的JSON结果。`_source`字段不会执行优美打印，它的样子取决于我们录入的样子。
 
 ****
 
-The response to the GET request includes `{"found": true}`. This confirms that
-the document was found.  If we were to request a document that doesn't exist,
-we would still get a JSON response, but `found` would be set to `false`.
+GET请求的返回结果中包含`{"found": true}`。这意味着这篇文档确实被找到了。如果我们请求了一个不存在的文档，我们依然会得到JSON反馈，只是`found`的值会变为`false`。
 
-Also, the HTTP response code would be `'404 Not Found'` instead of `'200 OK'`.
-We can see this by passing the `-i` argument to `curl`, which causes it to
-display the response headers:
+同样，HTTP返回码也会由`'200 OK'`变为`'404 Not Found'`。我们可以在`curl`后添加`-i`，这样你就能得到反馈头文件：
 
 ```js
 curl -i -XGET /website/blog/124?pretty
 ```
 
-
-The response now looks like this:
+反馈结果就会是这个样子：
 
 ```js
 HTTP/1.1 404 Not Found
@@ -64,20 +51,14 @@ Content-Length: 83
 }
 ```
 
-### Retrieving part of a document
+### 检索文档中的一部分
 
-By default, a `GET` request will return the whole document, as stored in the
-`_source` field. But perhaps all you are interested in is the `title` field.
-Individual fields can be requested using the `_source` parameter. Multiple
-fields can be specified in a comma-separated list:
+通常，`GET`请求会将整个文档放入`_source`字段中一并返回。但是可能你只需要`title`字段。你可以使用`_source`得到指定字段。如果需要多个字段你可以使用逗号分隔：
 
 ```js
 GET /website/blog/123?_source=title,text
 ```
-
-
-The  `_source` field now contains just the fields that we requested and has
-filtered out the `date` field:
+现在`_source`字段中就只会显示你指定的字段：
 
 ```js
 {
@@ -92,15 +73,12 @@ filtered out the `date` field:
   }
 }
 ```
-
-Or if you want *just* the `_source` field without any metadata, you can use
-the `_source` endpoint:
+或者你只想得到`_source`字段而不要其他的元数据，你可以这样请求：
 
 ```js
 GET /website/blog/123/_source
 ```
-
-which returns just:
+这样结果就只返回:
 
 ```js
 {
