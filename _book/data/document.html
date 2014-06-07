@@ -1,0 +1,639 @@
+<!DOCTYPE HTML>
+<html lang="en-US" manifest="../manifest.appcache">
+    
+    <head prefix="og: http://ogp.me/ns# book: http://ogp.me/ns/book#">
+        
+        
+        <meta charset="UTF-8">
+        <title>文档 | Elasticsearch 权威指南</title>
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="robots" content="index, follow">
+        <meta name="author" content="">
+        <meta name="description" content="译者现在的工作项目中需要用到elasticsearch，但是在网络中找了很多的相关的内容都很不完善，中文的文档更是寥寥无几，所以我决定边研究边翻译一下官方推出的权威手册。在这里要先感谢原作者们！如果各位在这里发现了错误之处，请大家在Issue中提出或者pr这个项目。">
+        <meta name="keywords" content="gitbook,github" >
+        <meta name="generator" content="www.gitbook.io">
+
+        
+        <link rel="next" href="../data/index.html" />
+        
+        
+        <link rel="prev" href="../data/README.html" />
+        
+
+        <meta property="og:title" content="文档 | Elasticsearch 权威指南">
+        <meta property="og:site_name" content="Elasticsearch 权威指南">
+        <meta property="og:type" content="book">
+        <meta property="og:locale" content="en_US">
+
+        <meta property="book:author" content="https://github.com/">
+        <meta property="book:tag" content="GitBook">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <link rel="shortcut icon" href="..\gitbook/images/favicon.ico" type="image/x-icon">
+        
+        
+    </head>
+    <body>
+        
+        
+
+        <link rel="stylesheet" href="..\gitbook/style.css">
+        
+
+
+        
+    <div class="book"  data-level="3.1" data-basepath=".." data-revision="1402135601274">
+    <div class="book-header">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Toggle summary"><i class="fa fa-align-justify"></i></a>
+    
+    <a href="https://github.com/null" target="_blank" class="btn pull-left home-bookmark" aria-label="GitHub home"><i class="fa fa-bookmark-o"></i></a>
+    
+    <a href="#" class="btn pull-left toggle-search" aria-label="Toggle search"><i class="fa fa-search"></i></a>
+    <span id="font-settings-wrapper">
+        <a href="#" class="btn pull-left toggle-font-settings" aria-label="Toggle font settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="btn-group btn-block">
+        <button id="reduce-font-size" class="btn btn-default">A</button>
+        <button id="enlarge-font-size" class="btn btn-default">A</button>
+    </div>
+
+    <ul class="list-group font-family-list">
+        <li class="list-group-item" data-font="0">Serif</li>
+        <li class="list-group-item" data-font="1">Sans</li>
+    </ul>
+
+    <div class="btn-group btn-group-xs btn-block color-theme-list">
+        <button type="button" class="btn btn-default" id="color-theme-preview-0" data-theme="0">White</button>
+        <button type="button" class="btn btn-default" id="color-theme-preview-1" data-theme="1">Sepia</button>
+        <button type="button" class="btn btn-default" id="color-theme-preview-2" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </span>
+
+    <!-- Actions Right -->
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Share on Google Plus"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Share on Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Share on Twitter"><i class="fa fa-twitter"></i></a>
+    
+
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-spinner fa-spin"></i>
+        <a href="../" >Elasticsearch 权威指南</a>
+    </h1>
+</div>
+
+    
+
+<div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="Search" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        
+
+        
+
+        
+
+        
+
+        <li data-level="0" data-path="index.html">
+            <a href="../"><i class="fa fa-check"></i> Introduction</a>
+        </li>
+        
+    
+        <li class="chapter " data-level="1" data-path="getting_started/README.html">
+            
+            <a href="../getting_started/README.html">
+                <i class="fa fa-check"></i> <b>1.</b> 入门
+            </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="getting_started/what_is_it.html">
+            
+            <a href="../getting_started/what_is_it.html">
+                <i class="fa fa-check"></i> <b>1.1.</b> 初识
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="getting_started/installing_es.html">
+            
+            <a href="../getting_started/installing_es.html">
+                <i class="fa fa-check"></i> <b>1.2.</b> 安装
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="getting_started/api.html">
+            
+            <a href="../getting_started/api.html">
+                <i class="fa fa-check"></i> <b>1.3.</b> API
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="getting_started/document.html">
+            
+            <a href="../getting_started/document.html">
+                <i class="fa fa-check"></i> <b>1.4.</b> 文档
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="getting_started/tutorial_indexing.html">
+            
+            <a href="../getting_started/tutorial_indexing.html">
+                <i class="fa fa-check"></i> <b>1.5.</b> 索引
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="getting_started/tutorial_search.html">
+            
+            <a href="../getting_started/tutorial_search.html">
+                <i class="fa fa-check"></i> <b>1.6.</b> 搜索
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="getting_started/tutorial_aggregations.html">
+            
+            <a href="../getting_started/tutorial_aggregations.html">
+                <i class="fa fa-check"></i> <b>1.7.</b> 汇总
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="getting_started/tutorial_conclusion.html">
+            
+            <a href="../getting_started/tutorial_conclusion.html">
+                <i class="fa fa-check"></i> <b>1.8.</b> 小结
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="getting_started/distributed.html">
+            
+            <a href="../getting_started/distributed.html">
+                <i class="fa fa-check"></i> <b>1.9.</b> 分布式
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
+            
+            <a href="../getting_started/conclusion.html">
+                <i class="fa fa-check"></i> <b>1.10.</b> 本章总结
+            </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="distributed_cluster/README.html">
+            
+            <a href="../distributed_cluster/README.html">
+                <i class="fa fa-check"></i> <b>2.</b> 分布式集群
+            </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1" data-path="distributed_cluster/empty_cluster.html">
+            
+            <a href="../distributed_cluster/empty_cluster.html">
+                <i class="fa fa-check"></i> <b>2.1.</b> 空集群
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="distributed_cluster/cluster_health.html">
+            
+            <a href="../distributed_cluster/cluster_health.html">
+                <i class="fa fa-check"></i> <b>2.2.</b> 集群健康
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="distributed_cluster/add_an_index.html">
+            
+            <a href="../distributed_cluster/add_an_index.html">
+                <i class="fa fa-check"></i> <b>2.3.</b> 添加索引
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="distributed_cluster/add_failover.html">
+            
+            <a href="../distributed_cluster/add_failover.html">
+                <i class="fa fa-check"></i> <b>2.4.</b> 容错移转
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="distributed_cluster/scale_horizontally.html">
+            
+            <a href="../distributed_cluster/scale_horizontally.html">
+                <i class="fa fa-check"></i> <b>2.5.</b> 横向扩展
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="distributed_cluster/scale_more.html">
+            
+            <a href="../distributed_cluster/scale_more.html">
+                <i class="fa fa-check"></i> <b>2.6.</b> 扩展
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="distributed_cluster/coping_with_failure.html">
+            
+            <a href="../distributed_cluster/coping_with_failure.html">
+                <i class="fa fa-check"></i> <b>2.7.</b> 错误恢复
+            </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="data/README.html">
+            
+            <a href="../data/README.html">
+                <i class="fa fa-check"></i> <b>3.</b> 数据
+            </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="data/document.html">
+            
+            <a href="../data/document.html">
+                <i class="fa fa-check"></i> <b>3.1.</b> 文档
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="data/index.html">
+            
+            <a href="../data/index.html">
+                <i class="fa fa-check"></i> <b>3.2.</b> 索引
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="data/get.html">
+            
+            <a href="../data/get.html">
+                <i class="fa fa-check"></i> <b>3.3.</b> Get
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="data/exists.html">
+            
+            <a href="../data/exists.html">
+                <i class="fa fa-check"></i> <b>3.4.</b> 存在
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="data/update.html">
+            
+            <a href="../data/update.html">
+                <i class="fa fa-check"></i> <b>3.5.</b> 更新
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.6" data-path="data/create.html">
+            
+            <a href="../data/create.html">
+                <i class="fa fa-check"></i> <b>3.6.</b> 创建
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.7" data-path="data/delete.html">
+            
+            <a href="../data/delete.html">
+                <i class="fa fa-check"></i> <b>3.7.</b> 删除
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.8" data-path="data/version_control.html">
+            
+            <a href="../data/version_control.html">
+                <i class="fa fa-check"></i> <b>3.8.</b> 版本控制
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.9" data-path="data/partial_update.html">
+            
+            <a href="../data/partial_update.html">
+                <i class="fa fa-check"></i> <b>3.9.</b> 局部更新
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.10" data-path="data/mget.html">
+            
+            <a href="../data/mget.html">
+                <i class="fa fa-check"></i> <b>3.10.</b> Mget
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.11" data-path="data/bulk.html">
+            
+            <a href="../data/bulk.html">
+                <i class="fa fa-check"></i> <b>3.11.</b> Bulk
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.12" data-path="data/conclusion.html">
+            
+            <a href="../data/conclusion.html">
+                <i class="fa fa-check"></i> <b>3.12.</b> 总结
+            </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="http://www.gitbook.io/" target="blank" class="gitbook-link">Generated using GitBook</a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="page-wrapper" tabindex="-1">
+                <div class="book-progress">
+    <div class="bar">
+        <div class="inner" style="width: 65.625%;min-width: 62.5%;"></div>
+    </div>
+    <div class="chapters">
+    
+        <a href="../index.html" title="Introduction" class="chapter done new-chapter" data-progress="0" style="left: 0%;"></a>
+    
+        <a href="../getting_started/README.html" title="入门" class="chapter done new-chapter" data-progress="1" style="left: 3.125%;"></a>
+    
+        <a href="../getting_started/what_is_it.html" title="初识" class="chapter done " data-progress="1.1" style="left: 6.25%;"></a>
+    
+        <a href="../getting_started/conclusion.html" title="本章总结" class="chapter done " data-progress="1.10" style="left: 9.375%;"></a>
+    
+        <a href="../getting_started/installing_es.html" title="安装" class="chapter done " data-progress="1.2" style="left: 12.5%;"></a>
+    
+        <a href="../getting_started/api.html" title="API" class="chapter done " data-progress="1.3" style="left: 15.625%;"></a>
+    
+        <a href="../getting_started/document.html" title="文档" class="chapter done " data-progress="1.4" style="left: 18.75%;"></a>
+    
+        <a href="../getting_started/tutorial_indexing.html" title="索引" class="chapter done " data-progress="1.5" style="left: 21.875%;"></a>
+    
+        <a href="../getting_started/tutorial_search.html" title="搜索" class="chapter done " data-progress="1.6" style="left: 25%;"></a>
+    
+        <a href="../getting_started/tutorial_aggregations.html" title="汇总" class="chapter done " data-progress="1.7" style="left: 28.125%;"></a>
+    
+        <a href="../getting_started/tutorial_conclusion.html" title="小结" class="chapter done " data-progress="1.8" style="left: 31.25%;"></a>
+    
+        <a href="../getting_started/distributed.html" title="分布式" class="chapter done " data-progress="1.9" style="left: 34.375%;"></a>
+    
+        <a href="../distributed_cluster/README.html" title="分布式集群" class="chapter done new-chapter" data-progress="2" style="left: 37.5%;"></a>
+    
+        <a href="../distributed_cluster/empty_cluster.html" title="空集群" class="chapter done " data-progress="2.1" style="left: 40.625%;"></a>
+    
+        <a href="../distributed_cluster/cluster_health.html" title="集群健康" class="chapter done " data-progress="2.2" style="left: 43.75%;"></a>
+    
+        <a href="../distributed_cluster/add_an_index.html" title="添加索引" class="chapter done " data-progress="2.3" style="left: 46.875%;"></a>
+    
+        <a href="../distributed_cluster/add_failover.html" title="容错移转" class="chapter done " data-progress="2.4" style="left: 50%;"></a>
+    
+        <a href="../distributed_cluster/scale_horizontally.html" title="横向扩展" class="chapter done " data-progress="2.5" style="left: 53.125%;"></a>
+    
+        <a href="../distributed_cluster/scale_more.html" title="扩展" class="chapter done " data-progress="2.6" style="left: 56.25%;"></a>
+    
+        <a href="../distributed_cluster/coping_with_failure.html" title="错误恢复" class="chapter done " data-progress="2.7" style="left: 59.375%;"></a>
+    
+        <a href="../data/README.html" title="数据" class="chapter done new-chapter" data-progress="3" style="left: 62.5%;"></a>
+    
+        <a href="../data/document.html" title="文档" class="chapter done " data-progress="3.1" style="left: 65.625%;"></a>
+    
+        <a href="../data/mget.html" title="Mget" class="chapter  " data-progress="3.10" style="left: 68.75%;"></a>
+    
+        <a href="../data/bulk.html" title="Bulk" class="chapter  " data-progress="3.11" style="left: 71.875%;"></a>
+    
+        <a href="../data/conclusion.html" title="总结" class="chapter  " data-progress="3.12" style="left: 75%;"></a>
+    
+        <a href="../data/index.html" title="索引" class="chapter  " data-progress="3.2" style="left: 78.125%;"></a>
+    
+        <a href="../data/get.html" title="Get" class="chapter  " data-progress="3.3" style="left: 81.25%;"></a>
+    
+        <a href="../data/exists.html" title="存在" class="chapter  " data-progress="3.4" style="left: 84.375%;"></a>
+    
+        <a href="../data/update.html" title="更新" class="chapter  " data-progress="3.5" style="left: 87.5%;"></a>
+    
+        <a href="../data/create.html" title="创建" class="chapter  " data-progress="3.6" style="left: 90.625%;"></a>
+    
+        <a href="../data/delete.html" title="删除" class="chapter  " data-progress="3.7" style="left: 93.75%;"></a>
+    
+        <a href="../data/version_control.html" title="版本控制" class="chapter  " data-progress="3.8" style="left: 96.875%;"></a>
+    
+        <a href="../data/partial_update.html" title="局部更新" class="chapter  " data-progress="3.9" style="left: 100%;"></a>
+    
+    </div>
+</div>
+
+                <div class="page-inner">
+                
+                    <section class="normal" id="section-gitbook_8182">
+                    
+                        <h1 id="-">文档是什么？</h1>
+<p>在很多程序中，大部分实体或者对象都被序列化为包含键和值的JSON对象。<strong>键</strong>是一个<strong>字段</strong>或者<strong>属性</strong>的名字，<strong>值</strong>可以是一个字符串、数字、布尔值、对象、数组或者是其他的特殊类型，比如代表日期的字符串或者单表地理位置的对象：</p>
+<pre><code class="lang-js">{
+    <span class="hljs-string">"name"</span>:         <span class="hljs-string">"John Smith"</span>,
+    <span class="hljs-string">"age"</span>:          <span class="hljs-number">42</span>,
+    <span class="hljs-string">"confirmed"</span>:    <span class="hljs-literal">true</span>,
+    <span class="hljs-string">"join_date"</span>:    <span class="hljs-string">"2014-06-01"</span>,
+    <span class="hljs-string">"home"</span>: {
+        <span class="hljs-string">"lat"</span>:      <span class="hljs-number">51.5</span>,
+        <span class="hljs-string">"lon"</span>:      <span class="hljs-number">0.1</span>
+    },
+    <span class="hljs-string">"accounts"</span>: [
+        {
+            <span class="hljs-string">"type"</span>: <span class="hljs-string">"facebook"</span>,
+            <span class="hljs-string">"id"</span>:   <span class="hljs-string">"johnsmith"</span>
+        },
+        {
+            <span class="hljs-string">"type"</span>: <span class="hljs-string">"twitter"</span>,
+            <span class="hljs-string">"id"</span>:   <span class="hljs-string">"johnsmith"</span>
+        }
+    ]
+}
+</code></pre>
+<p>通常情况下，我们使用可以互换对象和文档。然而，还是有一个区别的。对象(object )仅仅是一个JSON对象,类似于哈希，哈希映射，字典或关联数组。对象(Objects)则可以包含其他对象(Objects)。</p>
+<p>在Elasticsearch中，<strong>文档</strong>这个单词有特殊的含义。它指的是在Elasticsearch中被存储到唯一ID下的由最高级或者<em>根对象 (root object )</em>序列化而来的JSON。</p>
+<h2 id="-">文档元数据</h2>
+<p>一个文档不只包含了数据。它还包含了<em>元数据(metadata)</em> —— <strong>关于</strong>文档的信息。有三个元数据元素是必须存在的，它们是：</p>
+<table>
+<thead>
+<tr>
+<th>名字</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_index</code></td>
+<td>文档存储的地方</td>
+</tr>
+<tr>
+<td><code>_type</code></td>
+<td>文档代表的对象种类</td>
+</tr>
+<tr>
+<td><code>_id</code></td>
+<td>文档的唯一编号</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-_index-"><code>_index</code></h2>
+<p><em>索引</em> 类似于传统数据库中的&quot;数据库&quot;——也就是我们存储并且索引相关数据的地方。</p>
+<hr>
+<blockquote>
+<h4 id="tip-">TIP：</h4>
+</blockquote>
+<p>在Elasticsearch中，我们的数据都在<em>分片</em>中被存储以及索引，索引只是一个逻辑命名空间，它可以将一个或多个分片组合在一起。然而，这只是一个内部的运作原理——我们的程序可以根本不用关心分片。对于我们的程序来说，我们的文档存储在索引中。剩下的交给Elasticsearch就可以了。</p>
+<hr>
+<p>我们将会在《索引管理》章节中探讨如何创建并管理索引。但是现在，我们只需要让Elasticsearch帮助我们创建索引。我们只需要选择一个索引的名字。这个名称必须要全部小写，也不能以下划线开头，不能包含逗号。我们可以用<code>website</code>作为我们索引的名字。</p>
+<h2 id="-_type-"><code>_type</code></h2>
+<p>在程序中，我们使用对象代表“物品”，比如一个用户、一篇博文、一条留言或者一个邮件。每一个对象都属于一种<em>类型</em>，类型定义了对象的属性或者与数据的关联。<strong>用户</strong>类的对象可能就会包含名字、性别、年龄以及邮箱地址等。</p>
+<p>在传统的数据库中，我们总是将同类的数据存储在同一个表中，因为它们的数据格式是相同的。同理，在Elasticsearch中，我们使用同样<em>类型</em>的文档来代表同类“事物”，也是因为它们的数据结构是相同的。</p>
+<p>每一个<em>类型</em>都拥有自己的映射(mapping)或者结构定义，它们定义了当前类型下的数据结构，类似于数据库表中的列。所有类型下的文档会被存储在同一个索引下，但是<em>映射</em>会告诉Elasticsearch不同的数据应该如何被索引。</p>
+<p>我们将会在《映射》中探讨如何制定或者管理影视，但是目前为止，我们只需要依靠Elasticsearch来自动处理数据结构。</p>
+<h2 id="-_id-"><code>_id</code></h2>
+<p><em>id</em>是一个字符串，当它与<code>_index</code>以及<code>_type</code>组合时，就可以来代表Elasticsearch中一个特定的文档。我们创建了一个新的文档时，你可以自己提供一个<code>_id</code>，或者也可以让Elasticsearch帮你生成一个。</p>
+<h3 id="-">其他元数据</h3>
+<p>在文档中还有一些其他的元数据，我们将会在《映射》章节中详细讲解。使用上面罗列的元素，我们已经可以在Elasticsearch中存储文档或者通过ID来搜索已经保存的文档了。</p>
+
+                    
+                    </section>
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../data/README.html" class="navigation navigation-prev " aria-label="Previous page: 数据"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../data/index.html" class="navigation navigation-next " aria-label="Next page: 索引"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+
+        <script src="http://cdn.bootcss.com/ace/1.1.3/ace.js"></script>
+        <script src="http://cdn.bootcss.com/ace/1.1.3/mode-javascript.js"></script>
+        <script src="..\gitbook/jsrepl/jsrepl.js" id="jsrepl-script"></script>
+        <script src="..\gitbook/app.js"></script>
+        
+
+    
+    <script src="..\gitbook/plugins/gitbook-plugin-mixpanel/plugin.js"></script>
+    
+
+    
+    <script src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+    
+    <script src="..\gitbook/plugins/gitbook-plugin-mathjax/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>
