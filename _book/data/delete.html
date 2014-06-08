@@ -32,7 +32,7 @@
 
 
         
-    <div class="book"  data-level="3.7" data-basepath=".." data-revision="1402245161352">
+    <div class="book"  data-level="3.7" data-basepath=".." data-revision="1402252254377">
     <div class="book-header">
     <!-- Actions Left -->
     <a href="#" class="btn pull-left toggle-summary" aria-label="Toggle summary"><i class="fa fa-align-justify"></i></a>
@@ -506,16 +506,13 @@
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_72">
+                    <section class="normal" id="section-gitbook_3633">
                     
                         <h1 id="-">删除一个文档</h1>
-<p>The syntax for deleting a document follows the same pattern that we have seen
-already, but uses the <code>DELETE</code> method :</p>
+<p>删除文档的基本模式和之前的基本一样，只不过是需要更换成<code>DELETE</code>方法：</p>
 <pre><code class="lang-js">DELETE /website/blog/<span class="hljs-number">123</span>
 </code></pre>
-<p>If the document is found, Elasticsearch will return an HTTP response code
-of <code>200 OK</code> and a response body like the following. Note that the <code>_version</code>
-number has been incremented.</p>
+<p>如果文档存在，那么Elasticsearch就会返回一个<code>200 OK</code>的HTTP相应码，返回的结果就会像下面展示的一样。请注意<code>_version</code>的数字已经增加了。</p>
 <pre><code class="lang-js">{
   <span class="hljs-string">"found"</span> :    <span class="hljs-literal">true</span>,
   <span class="hljs-string">"_index"</span> :   <span class="hljs-string">"website"</span>,
@@ -524,8 +521,7 @@ number has been incremented.</p>
   <span class="hljs-string">"_version"</span> : <span class="hljs-number">3</span>
 }
 </code></pre>
-<p>If the document isn&#39;t found, we get a <code>404 Not Found</code> response code, and
-a body like:</p>
+<p>如果文档不存在，那么我们就会得到一个<code>404 Not Found</code>的响应码，返回的内容就会是这样的：</p>
 <pre><code class="lang-js">{
   <span class="hljs-string">"found"</span> :    <span class="hljs-literal">false</span>,
   <span class="hljs-string">"_index"</span> :   <span class="hljs-string">"website"</span>,
@@ -534,15 +530,9 @@ a body like:</p>
   <span class="hljs-string">"_version"</span> : <span class="hljs-number">4</span>
 }
 </code></pre>
-<p>Even though the document doesn&#39;t exist -- <code>&quot;found&quot;</code> is <code>false</code> --  the
-<code>_version</code> number has still been incremented. This is part of the internal
-book-keeping which ensures that changes are applied in the correct order
-across multiple nodes.</p>
+<p>尽管文档并不存在（<code>&quot;found&quot;</code>值为<code>false</code>），但是<code>_version</code>的数值仍然增加了。这个。这个就是内部管理的一部分，它保证了我们在多个节点间的不同操作都被标记了正确的顺序。</p>
 <hr>
-<p>As already mentioned in &lt;<update-doc>&gt;, deleting a document doesn&#39;t
-immediately remove the document from disk -- it just marks it as deleted.
-Elasticsearch will clean up deleted documents in the background as you
-continue to index more data.</p>
+<p>正如我在《更新》一章中提到的，删除一个文档也不会立即生效，它只是被标记成已删除。Elasticsearch将会在你之后添加更多索引的时候才会在后台进行删除内容的清理。</p>
 
                     
                     </section>
