@@ -54,8 +54,7 @@ POST /website/blog/
 }
 ```
 
-The response is similar to what we saw before, except that the `_id`
-field has been generated for us:
+这次的反馈和之前基本一样，只有`_id`改成了系统生成的自增值:
 
 ```
 {
