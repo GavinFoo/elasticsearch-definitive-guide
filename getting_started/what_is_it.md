@@ -2,7 +2,7 @@
 
 Elasticsearch是一个建立在全文搜索引擎[Apache Lucene(TM)](https://lucene.apache.org/core/)基础上的搜索引擎，可以说Lucene是当今最先进，最高效的全功能开源搜索引擎框架。
 
-但是Lucene只是一个框架，要充分利用它的功能，你需要使用JAVA，并且在你的程序中集成Lucene。更糟的是，你很能需要做很多的学习了解，才能了解它是如何运行的，Lucene确实非常复杂。
+但是Lucene只是一个框架，要充分利用它的功能，你需要使用JAVA，并且在你的程序中集成Lucene。更糟的是，你需要做很多的学习了解，才能明白它是如何运行的，Lucene确实非常复杂。
 
 Elasticsearch使用Lucene作为内部引擎，但是在你使用它做全文搜索时，只需要使用统一开发好的API即可，请不需要了解其背后复杂的Lucene的运行原理。
 

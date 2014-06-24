@@ -1,15 +1,8 @@
 # 获取多个文档
 
-As fast as Elasticsearch is, it can be faster still. Combining multiple
-requests into one avoids the network overhead of processing each request
-individually. If you know that you need to retrieve multiple documents from
-Elasticsearch, it is faster to retrieve them all in a single request using the
-_multi-get_ or `mget` API, instead of document-by-document.
+索然Elasticsearch已经很高效了，但是它依旧可以更快。你可以将多个请求合并到一个请求中以节省网络开销。如果你需要从Elasticsearch中获取多个文档，你可以使用_multi-get_ 或者 `mget` API来取代一篇又一篇的获取。
 
-The `mget` API expects a `docs` array, each element of which specifies the
-`_index`, `_type` and `_id` metadata of the document you wish to retrieve. You
-can also specify a `_source` parameter if you just want to retrieve one or
-more specific fields:
+`mget`API需要一个`docs`数组，每一个元素包含你想要的文档的`_index`, `_type`以及`_id`。你也可以指定`_source`参数来设定你所需要的字段：
 
 ```js
 GET /_mget
@@ -29,11 +22,8 @@ GET /_mget
    ]
 }
 ```
+这个请求包含了一个`docs`数组，其中的每一个参数都和《GET》一节中的方法相同：
 
-The response body also contains a `docs` array which contains a response
-per document, in the same order as specified in the request. Each of these
-responses is the same response body that we would expect from an individual
-<<get-doc,`get` request>>:
 
 ```js
 {
@@ -62,12 +52,7 @@ responses is the same response body that we would expect from an individual
    ]
 }
 ```
-
-If the documents you wish to retrieve are all in the same `_index` (and maybe
-even of the same `_type`) then you can specify a default `/_index` or a
-default `/_index/_type` in the URL.
-
-You can still override these values in the individual requests:
+如果你所需要的文档都在同一个`_index`或者同一个`_type`中，你就可以在URL中声明一个`/_index`或者`/_index`。你也可以在单独的请求中重写这个参数：
 
 ```js
 GET /website/blog/_mget
@@ -78,9 +63,7 @@ GET /website/blog/_mget
    ]
 }
 ```
-
-In fact, if all the documents have the same `_index` and `_type`, then you
-can just pass an array of `ids` instead of the full `docs` array:
+事实上，如果所有的文档拥有相同的`_index` 以及 `_type`，直接在请求中添加`ids`的数组即可：
 
 ```js
 GET /website/blog/_mget
@@ -88,10 +71,7 @@ GET /website/blog/_mget
    "ids" : [ "2", "1" ]
 }
 ```
-
-Note that the second document that we requested doesn't exist. We specified
-type `blog`, but the document with ID `1` is of type `pageviews`. This
-non-existence is reported in the response body:
+请注意，我们所请求的第二篇文档不存在，这是就会返回如下内容：
 
 ```js
 {
@@ -116,13 +96,8 @@ non-existence is reported in the response body:
   ]
 }
 ```
-1. This document was not found.
+1. 文档没有被找到。
 
-The fact that the second document wasn't found didn't affect the retrieval of
-the first document. Each doc is retrieved and reported on individually.
+当第二篇文档没有被找到的时候也不会影响到其它文档的获取结果。每一个文档都会被独立展示。
 
-NOTE: The HTTP status code for the above request is `200`, even though one
-document wasn't found. In fact, it would still be `200` if *none* of the
-requested documents were found.  The reason for that is that the `mget`
-request itself completed successfully. To determine the success or failure of
-the individual documents, you need to check the `found` flag.
+注意：上方请求的HTTP代码依旧是`200`尽管有的文档没有被找到。事实上，及时**所有的**文档都没有被找到，响应码也依旧是`200`。这是因为`mget`这个请求本身已经成功完成。要求定文档是否被成功找到，你需要检查一下`found`标识。
