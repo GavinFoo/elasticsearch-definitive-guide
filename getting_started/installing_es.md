@@ -79,7 +79,7 @@ curl 'http://localhost:9200/?pretty'
 }
 ```
 
-这就说明你的Elasticsearch _群集_ 已经上线运行了，这时我们就可以进行各种实验了。
+这就说明你的Elasticsearch _集群_ 已经上线运行了，这时我们就可以进行各种实验了。
 
 ****
 > ###集群和节点
