@@ -24,7 +24,7 @@ PUT /website/blog/123
 }
 ```
 
-Elasticsearch回馈内容：
+Elasticsearch返回内容：
 
 ```js
 {
@@ -35,7 +35,7 @@ Elasticsearch回馈内容：
    "created":   true
 }
 ```
-这个回馈意味着我们的索引请求已经被成功创建，其中还包含了`_index`, `_type`以及`_id`的元数据，以及一个新的元素`_version`。
+这个返回值意味着我们的索引请求已经被成功创建，其中还包含了`_index`, `_type`以及`_id`的元数据，以及一个新的元素`_version`。
 
 在Elasticsearch中，每一个文档都有一个版本号码。每当文档产生变化时（包括删除），`_version`就会增大。在《版本控制》中，我们将会详细讲解如何使用`_version`的数字来确认你的程序不会随意替换掉不想覆盖的数据。
 

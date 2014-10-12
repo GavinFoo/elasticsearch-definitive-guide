@@ -1,9 +1,3 @@
 # 总结
 
-By now you know how to treat Elasticsearch as a distributed document store.
-You can store documents, update them, retrieve them and delete them, and you
-know how to do it safely. This is already very, very useful, even though we
-have not yet looked at the more exciting aspect of how to search *within* your
-documents. But first let's talk about the internal processes that
-Elasticsearch uses to manage your documents safely in a distributed
-environment.
+现在你应该知道如何作为分布式文档存储来使用Elasticsearch。你可以对文档进行存储，更新，获取，删除操作，而且你还知道该如何安全的执行这些操作。这已经非常有用处了，即使我们现在仍然没有尝试更激动人心的方面 -- 在文档中进行查询操作。不过我们先探讨下分布式环境中Elasticsearch安全管理你的文档所使用的内部过程。
