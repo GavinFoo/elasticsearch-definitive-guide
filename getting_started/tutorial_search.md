@@ -266,7 +266,7 @@ GET /megacorp/employee/_search
 
 通常情况下，Elasticsearch会通过相关性来排列顺序，第一个结果中，John Smith的`about`字段中明确地写到**rock climbing**。而在Jane Smith的`about`字段中，提及到了**rock**，但是并没有提及到**climbing**，所以后者的`_score`就要比前者的低。
 
-这个例子很好地解释了Elasticsearch是如何执行全文搜索的。对于Elasticsearch来说，相关性的感念是很重要的，而这也是它与传统数据库在返回匹配数据时最大的不同之处。
+这个例子很好地解释了Elasticsearch是如何执行全文搜索的。对于Elasticsearch来说，相关性的概念是很重要的，而这也是它与传统数据库在返回匹配数据时最大的不同之处。
 
 
 # 段落搜索
