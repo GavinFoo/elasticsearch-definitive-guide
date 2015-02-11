@@ -4,7 +4,7 @@ Elasticsearch是一个实时的分布式搜索和分析引擎。它可以帮助�
 
 它可以用于全文搜索，结构化搜索以及分析，当然你也可以将这三者进行组合
 
-*   维基百科使用Elasticsearch来进行全文搜做并高亮显示关键词，以及提供search-as-you-type、did-you-mean等搜索建议功能。
+*   维基百科使用Elasticsearch来进行全文搜索并高亮显示关键词，以及提供search-as-you-type、did-you-mean等搜索建议功能。
 
 *   英国卫报使用Elasticsearch来处理访客日志，以便能将公众对不同文章的反应实时地反馈给各位编辑。
 
