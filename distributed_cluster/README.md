@@ -10,7 +10,7 @@
 
 ****
 
-你可以随时根据你的需要扩展Elasticsearch。你可以购买配置更好的主机(_vertical scale_ or _scaling up_) 或者购买过多的主机(_horizontal scale_ or _scaling out_) 来达到扩展的目的。
+你可以随时根据你的需要扩展Elasticsearch。你可以购买配置更好的主机(_vertical scale_ or _scaling up_) 或者购买更多的主机(_horizontal scale_ or _scaling out_) 来达到扩展的目的。
 
 硬件越强大，Elasticsearch运行的也就越快，但是垂直扩展(vertical scale)方式也有它的局限性。真正的扩展来自于横向扩展(horizontal scale)方式，在集群中添加更多的节点，这样能在节点之间分配负载。
 

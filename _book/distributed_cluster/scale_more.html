@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="2.6" data-basepath=".." data-revision="1423692382527">
+    <div class="book"  data-level="2.6" data-basepath=".." data-revision="1423704022530">
     
 
 <div class="book-summary">
@@ -368,7 +368,7 @@
                         
                             <b>2.7.</b>
                         
-                         错误恢复
+                         故障恢复
                     </a>
                 
             
@@ -683,26 +683,26 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_6303">
+                    <section class="normal" id="section-gitbook_557">
                     
                         <h1 id="">扩展更多</h1>
 <p>但是如果我们想要扩展到六个节点以上应该怎么办？</p>
-<p>主分片的数量在索引创建的时候就已经指定了，实际上，这个数字定义了能<strong>存储</strong>到索引中的数据最大量（具体的数量取决于你的数据，硬件的使用情况）。然而，杜</p>
-<p>主分片的数量在创建索引时已经给定。实际上，这个数字定义了能<strong>存储</strong>到索引里数据的最大数量（实际的数量取决于你的数据、硬件和使用情况）。当然，读请求——搜索和文档检索——能够通过主分片<strong>或者</strong>复制分片处理，所以数据的冗余越多，我们能处理的搜索吞吐量就越大。</p>
-<p>复制分片的数量可以在运行中的集群中动态地变更，这允许我们可以根据需求扩大或者缩小规模。让我们增加复制分片的数量，从原来的<code>1</code>变成<code>2</code>：</p>
+<p>主分片的数量在索引创建的时候就已经指定了，实际上，这个数字定义了能<strong>存储</strong>到索引中的数据最大量（具体的数量取决于你的数据，硬件的使用情况）。例如，读请求——搜索或者文档恢复就可以由主分片或者从分片来执行，所以当你拥有更多份数据的时候，你就拥有了更大的吞吐量。</p>
+<p>从分片的数量可以在运行的集群中动态的调整，这样我们就可以根据实际需求扩展或者缩小规模。接下来，我们来增加一下从分片组的数量：</p>
 <pre><code class="lang-Js">PUT /blogs/_settings
 {
    <span class="hljs-string">"number_of_replicas"</span> : <span class="hljs-number">2</span>
 }
 </code></pre>
 <p>增加<code>number_of_replicas</code>到2：
-<img src="../images/02-05_replicas.png" alt="三节点两复制集群"></p>
-<p>从图中可以看出，<code>blogs</code>索引现在有9个分片：三个主分片和6个复制分片。这意味着我们能够扩展到9个节点，再次的变成每个节点一个分片。这样使我们的搜索性能相比标准的三节点集群扩展<strong>三倍</strong>。</p>
+<img src="../images/02-05_replicas.png" alt="三节点两从集群"></p>
+<p>从图中可以看出，现在<code>blogs</code>的索引总共有9个分片：3个主分片和6个从分片。也就是说，现在我们就可以将总节点数扩展到9个，就又会变成一个节点一个分片的状态了。最终我们得到了三倍搜索性能的三节点集群。</p>
+<hr>
 <blockquote>
-<h3 id="">注意：</h3>
-<p>当然，只是有更多的复制分片在同样数量的节点上并不能提高我们的性能，因为每个分片都要访问更小比重的节点资源（译者注：大部分请求都聚集到了分片少的节点，导致一个节点吞吐量太大，反而降低性能）。你需要增加硬件来提高吞吐量。</p>
-<p>不过这些额外的复制节点意味着我们有更多的冗余：通过以上对接点的设置，我们更够承受两个节点故障而不丢失数据。</p>
+<h3 id="">提示</h3>
 </blockquote>
+<p>当然，仅仅是在同样数量的节点上增加从分片的数量是根本不能提高性能的，因为每个分片都有访问系统资源的权限。你需要升级硬件配置以提高吞吐量。</p>
+<p>不过更多的从分片意味着我们有更多的冗余：通过上文的配置，我们可以承受两个节点的故障而不会丢失数据。</p>
 
                     
                     </section>
@@ -716,7 +716,7 @@
         <a href="../distributed_cluster/scale_horizontally.html" class="navigation navigation-prev " aria-label="Previous page: 横向扩展"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/coping_with_failure.html" class="navigation navigation-next " aria-label="Next page: 错误恢复"><i class="fa fa-angle-right"></i></a>
+        <a href="../distributed_cluster/coping_with_failure.html" class="navigation navigation-next " aria-label="Next page: 故障恢复"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

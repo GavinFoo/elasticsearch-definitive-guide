@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="3.11" data-basepath=".." data-revision="1423692382527">
+    <div class="book"  data-level="3.11" data-basepath=".." data-revision="1423704022530">
     
 
 <div class="book-summary">
@@ -368,7 +368,7 @@
                         
                             <b>2.7.</b>
                         
-                         错误恢复
+                         故障恢复
                     </a>
                 
             
@@ -683,54 +683,44 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_6282">
+                    <section class="normal" id="section-gitbook_534">
                     
-                        <h1 id="bulk">bulk更方便</h1>
-<p>In the same way that <code>mget</code> allows us to retrieve multiple documents at once,
-the <code>bulk</code> API allows us to make multiple <code>create</code>, <code>index</code>, <code>update</code> or
-<code>delete</code>  requests in a single step. This is particularly useful if you need
-to index a data stream such as log events, which can be queued up and indexed
-in batches of hundreds or thousands.</p>
-<p>The <code>bulk</code> request body has the following, slightly unusual, format:</p>
+                        <h1 id="">批量更高效</h1>
+<p>与<code>mget</code>能同时允许帮助我们获取多个文档相同，<code>bulk</code> API可以帮助我们同时完成执行多个请求，比如：<code>create</code>，<code>index</code>, <code>update</code>以及<code>delete</code>。当你在处理类似于log等海量数据的时候，你就可以一下处理成百上千的请求，这个操作将会极大提高效率。</p>
+<p><code>bulk</code>的请求主体的格式稍微有些不同：</p>
 <pre><code class="lang-js">{ action: { metadata }}\n
 { request body        }\n
 { action: { metadata }}\n
 { request body        }\n
 ...
 </code></pre>
-<p>This format is like a <em>stream</em> of valid one-line JSON documents joined
-together by newline <code>&quot;\n&quot;</code> characters. Two important points to note:</p>
+<p>这种格式就类似于一个用<code>&quot;\n&quot;</code>字符来连接的单行json一样。下面是两点注意事项：</p>
 <ul>
-<li><p>Every line must end with a newline character <code>&quot;\n&quot;</code>, <em>including the last
-line</em>. These are used as markers to allow for efficient line separation.</p>
-</li>
-<li><p>The lines cannot contain unescaped newline characters, as they would
-interfere with parsing -- that means that the JSON must <em>not</em> be
-pretty-printed.</p>
-</li>
+<li>每一行都结尾处都必须有换行字符<code>&quot;\n&quot;</code>，<strong>最后一行也要有</strong>。这些标记可以有效地分隔每行。</li>
 </ul>
-<p>TIP: In &lt;<bulk-format>&gt; we explain why the <code>bulk</code> API uses this format.</p>
-<p>The <em>action/metadata</em> line specifies <em>what action</em> to do to <em>which document</em>.</p>
-<p>The <em>action</em> must be one of <code>index</code>, <code>create</code>, <code>update</code> or <code>delete</code>. The
-<em>metadata</em> should specify the <code>_index</code>, <code>_type</code> and <code>_id</code> of the document to
-be indexed, created, updated or deleted.</p>
-<p>For instance, a <code>delete</code> request could look like this:</p>
+<ul>
+<li>这些行里不能包含非转义字符，以免干扰数据的分析 — — 这也意味着JSON<strong>不能</strong>是pretty-printed样式。</li>
+</ul>
+<hr>
+<blockquote>
+<h3 id="tip">TIP</h3>
+</blockquote>
+<p>在《bulk格式》一章中，我们将解释为何<code>bulk</code> API要使用这种格式。</p>
+<hr>
+<p><em>action/metadata</em> 行指定了将要在<strong>哪个文档</strong>中执行<strong>什么操作</strong>。</p>
+<p>其中<em>action</em>必须是<code>index</code>, <code>create</code>, <code>update</code>或者<code>delete</code>。<em>metadata</em> 需要指明需要被操作文档的<code>_index</code>, <code>_type</code>以及<code>_id</code>，例如删除命令就可以这样填写：</p>
 <pre><code class="lang-js">{ <span class="hljs-string">"delete"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }}
 </code></pre>
-<p>The <em>request body</em> line consists of the document <code>_source</code> itself -- the fields
-and values that the document contains.  It is required for <code>index</code> and
-<code>create</code> operations, which makes sense: you must supply the document to index.</p>
-<p>It is also required for <code>update</code> operations and should consist of the same
-request body that you would pass to the <code>update</code> API: <code>doc</code>, <code>upsert</code>,
-<code>script</code> etc. No <em>request body</em> line is required for a delete.</p>
+<p>在你进行<code>index</code>以及<code>create</code>操作时，<em>request body</em> 行必须要包含文档的<code>_source</code>数据——也就是文档的所有内容。</p>
+<p>同样，在执行<code>update</code> API: <code>doc</code>, <code>upsert</code>,<code>script</code>的时候，也需要包含相关数据。而在删除的时候就不需要<em>request body</em>行。</p>
 <pre><code class="lang-js">{ <span class="hljs-string">"create"</span>:  { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }}
 { <span class="hljs-string">"title"</span>:    <span class="hljs-string">"My first blog post"</span> }
 </code></pre>
-<p>If no <code>_id</code> is specified, then an ID will be auto-generated:</p>
+<p>如果没有指定<code>_id</code>，那么系统就会自动生成一个ID：</p>
 <pre><code class="lang-js">{ <span class="hljs-string">"index"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span> }}
 { <span class="hljs-string">"title"</span>:    <span class="hljs-string">"My second blog post"</span> }
 </code></pre>
-<p>To put it all together, a complete <code>bulk</code> request has this form:</p>
+<p>完成以上所有请求的<code>bulk</code>如下：</p>
 <pre><code class="lang-js">POST /_bulk
 { <span class="hljs-string">"delete"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }} &lt;<span class="hljs-number">1</span>&gt;
 { <span class="hljs-string">"create"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }}
@@ -741,12 +731,12 @@ request body that you would pass to the <code>update</code> API: <code>doc</code
 { <span class="hljs-string">"doc"</span> : {<span class="hljs-string">"title"</span> : <span class="hljs-string">"My updated blog post"</span>} } &lt;<span class="hljs-number">2</span>&gt;
 </code></pre>
 <ol>
-<li>Notice how the <code>delete</code> <em>action</em> does not have a <em>request body</em>, it is
- followed immediately by another <em>action</em>.</li>
-<li>Remember the final newline character.</li>
+<li><p>注意<code>delete</code>操作是如何处理<em>request body</em>的,你可以在它之后直接执行新的操作。</p>
+</li>
+<li><p>请记住最后有换行符</p>
+</li>
 </ol>
-<p>The Elasticsearch response contains the <code>items</code> array which lists the result of
-each request, in the same order as we requested them:</p>
+<p>Elasticsearch会返回含有<code>items</code>的列表、它的顺序和我们请求的顺序是相同的：</p>
 <pre><code class="lang-js">{
    <span class="hljs-string">"took"</span>: <span class="hljs-number">4</span>,
    <span class="hljs-string">"errors"</span>: <span class="hljs-literal">false</span>, <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">1</span>&gt;</span>
@@ -784,21 +774,16 @@ each request, in the same order as we requested them:</p>
 }}</span>
 </code></pre>
 <ol>
-<li>All sub-requests completed successfully.</li>
+<li>所有的请求都被成功执行。</li>
 </ol>
-<p>Each sub-request is executed independently, so the failure of one sub-request
-won&#39;t affect the success of the others. If any of the requests fail, then the
-top-level  <code>error</code> flag is set to <code>true</code> and the error details will be
-reported under the relevant request:</p>
+<p>每一个子请求都会被单独执行，所以一旦有一个子请求失败了，并不会影响到其他请求的成功执行。如果一旦出现失败的请求，<code>error</code>就会变为<code>true</code>，详细的错误信息也会出现在返回内容的下方：</p>
 <pre><code class="lang-js">POST /_bulk
 { <span class="hljs-string">"create"</span>: { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }}
 { <span class="hljs-string">"title"</span>:    <span class="hljs-string">"Cannot create - it already exists"</span> }
 { <span class="hljs-string">"index"</span>:  { <span class="hljs-string">"_index"</span>: <span class="hljs-string">"website"</span>, <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span>, <span class="hljs-string">"_id"</span>: <span class="hljs-string">"123"</span> }}
 { <span class="hljs-string">"title"</span>:    <span class="hljs-string">"But we can update it"</span> }
 </code></pre>
-<p>In the response we can see that it failed to <code>create</code> document <code>123</code> because
-it already exists, but the subsequent <code>index</code> request, also on document <code>123</code>,
-succeeded:</p>
+<p>请求中的<code>create</code>操作失败，因为<code>123</code>已经存在，但是之后针对文档<code>123</code>的<code>index</code>操作依旧被成功执行：</p>
 <pre><code class="lang-js">{
    <span class="hljs-string">"took"</span>: <span class="hljs-number">3</span>,
    <span class="hljs-string">"errors"</span>: <span class="hljs-literal">true</span>, <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">1</span>&gt;</span>
@@ -823,46 +808,30 @@ succeeded:</p>
 }</span>
 </code></pre>
 <ol>
-<li>One or more requests has failed.</li>
-<li>The HTTP status code for this request reports <code>409 CONFLICT</code>.</li>
-<li>The error message explaining why the request failed.</li>
-<li>The second request succeeded with an HTTP status code of <code>200 OK</code>.</li>
+<li>至少有一个请求错误发生。</li>
+<li>这条请求的状态码为<code>409 CONFLICT</code>。</li>
+<li>错误信息解释了导致错误的原因。</li>
+<li>第二条请求的状态码为<code>200 OK</code>。</li>
 </ol>
-<p>That also means that <code>bulk</code> requests are not atomic -- they cannot be used to
-implement transactions.  Each request is processed separately, so the success
-or failure of one request will not interfere with the others.</p>
-<h3 id="dont-repeat-yourself">Don&#39;t repeat yourself</h3>
-<p>Perhaps you are batch indexing logging data into the same <code>index</code>, and with the
-same <code>type</code>. Having to specify the same metadata for every document is a waste.
-Instead, just as for the <code>mget</code> API, the <code>bulk</code> request accepts a default <code>/_index</code> or
-<code>/_index/_type</code> in the URL:</p>
+<p>这也更好地解释了<code>bulk</code>请求是独立的，每一条的失败与否 都不会影响到其他的请求。</p>
+<h3 id="">能省就省</h3>
+<p>或许你在批量导入大量的数据到相同的<code>index</code>以及<code>type</code>中。每次都去指定每个文档的metadata是完全没有必要的。在<code>mget</code> API中，<code>bulk</code>请求可以在URL中声明<code>/_index</code> 或者<code>/_index/_type</code>：</p>
 <pre><code class="lang-js">POST /website/_bulk
 { <span class="hljs-string">"index"</span>: { <span class="hljs-string">"_type"</span>: <span class="hljs-string">"log"</span> }}
 { <span class="hljs-string">"event"</span>: <span class="hljs-string">"User logged in"</span> }
 </code></pre>
-<p>You can still override the <code>_index</code> and <code>_type</code> in the metadata line, but it
-will use the values in the URL as defaults:</p>
+<p>你依旧可以在metadata行中使用<code>_index</code>以及<code>_type</code>来重写数据，未声明的将会使用URL中的配置作为默认值：</p>
 <pre><code class="lang-js">POST /website/log/_bulk
 { <span class="hljs-string">"index"</span>: {}}
 { <span class="hljs-string">"event"</span>: <span class="hljs-string">"User logged in"</span> }
 { <span class="hljs-string">"index"</span>: { <span class="hljs-string">"_type"</span>: <span class="hljs-string">"blog"</span> }}
 { <span class="hljs-string">"title"</span>: <span class="hljs-string">"Overriding the default type"</span> }
 </code></pre>
-<h3 id="how-big-is-too-big">How big is too big?</h3>
-<p>The entire bulk request needs to be loaded into memory by the node which
-receives our request, so the bigger the request, the less memory available for
-other requests. There is an optimal size of <code>bulk</code> request. Above that size,
-performance no longer improves and may even drop off.</p>
-<p>The optimal size, however, is not a fixed number. It depends entirely on your
-hardware, your document size and complexity, and your indexing and search
-load.  Fortunately, it is easy to find this <em>sweetspot</em>:</p>
-<p>Try indexing typical documents in batches of increasing size. When performance
-starts to drop off, your batch size is too big. A good place to start is with
-batches of between 1,000 and 5,000 documents or, if your documents are very
-large, with even smaller batches.</p>
-<p>It is often useful to keep an eye on the physical size of your bulk requests.
-One thousand 1kB documents is very different than one thousand 1MB documents.
-A good bulk size to start playing with is around 5-15MB in size.</p>
+<h3 id="">最大有多大？</h3>
+<p>整个数据将会被处理它的节点载入内存中，所以如果请求量很大的话，留给其他请求的内存空间将会很少。<code>bulk</code>应该有一个最佳的限度。超过这个限制后，性能不但不会提升反而可能会造成宕机。</p>
+<p>最佳的容量并不是一个确定的数值，它取决于你的硬件，你的文档大小以及复杂性，你的索引以及搜索的负载。幸运的是，这个<em>平衡点</em> 很容易确定：</p>
+<p>试着去批量索引越来越多的文档。当性能开始下降的时候，就说明你的数据量太大了。一般比较好初始数量级是1000到5000个文档，或者你的文档很大，你就可以试着减小队列。
+有的时候看看批量请求的物理大小是很有帮助的。1000个1KB的文档和1000个1MB的文档的差距将会是天差地别的。比较好的初始批量容量是5-15MB。</p>
 
                     
                     </section>

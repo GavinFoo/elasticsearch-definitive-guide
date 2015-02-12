@@ -1,12 +1,8 @@
-# bulk更方便
+# 批量更高效
 
-In the same way that `mget` allows us to retrieve multiple documents at once,
-the `bulk` API allows us to make multiple `create`, `index`, `update` or
-`delete`  requests in a single step. This is particularly useful if you need
-to index a data stream such as log events, which can be queued up and indexed
-in batches of hundreds or thousands.
+与`mget`能同时允许帮助我们获取多个文档相同，`bulk` API可以帮助我们同时完成执行多个请求，比如：`create`，`index`, `update`以及`delete`。当你在处理类似于log等海量数据的时候，你就可以一下处理成百上千的请求，这个操作将会极大提高效率。
 
-The `bulk` request body has the following, slightly unusual, format:
+`bulk`的请求主体的格式稍微有些不同：
 
 ```js
 { action: { metadata }}\n
@@ -15,52 +11,44 @@ The `bulk` request body has the following, slightly unusual, format:
 { request body        }\n
 ...
 ```
+这种格式就类似于一个用`"\n"`字符来连接的单行json一样。下面是两点注意事项：
 
-This format is like a _stream_ of valid one-line JSON documents joined
-together by newline `"\n"` characters. Two important points to note:
+* 每一行都结尾处都必须有换行字符`"\n"`，**最后一行也要有**。这些标记可以有效地分隔每行。
 
-* Every line must end with a newline character `"\n"`, *including the last
-  line*. These are used as markers to allow for efficient line separation.
 
-* The lines cannot contain unescaped newline characters, as they would
-  interfere with parsing -- that means that the JSON must *not* be
-  pretty-printed.
+* 这些行里不能包含非转义字符，以免干扰数据的分析 — — 这也意味着JSON**不能**是pretty-printed样式。
 
-TIP: In <<bulk-format>> we explain why the `bulk` API uses this format.
+**************************************************
+> ###TIP
 
-The _action/metadata_ line specifies *what action* to do to *which document*.
+在《bulk格式》一章中，我们将解释为何`bulk` API要使用这种格式。
 
-The _action_ must be one of `index`, `create`, `update` or `delete`. The
-_metadata_ should specify the `_index`, `_type` and `_id` of the document to
-be indexed, created, updated or deleted.
+**************************************************
 
-For instance, a `delete` request could look like this:
+_action/metadata_ 行指定了将要在**哪个文档**中执行**什么操作**。
+
+其中_action_必须是`index`, `create`, `update`或者`delete`。_metadata_ 需要指明需要被操作文档的`_index`, `_type`以及`_id`，例如删除命令就可以这样填写：
 
 ```js
 { "delete": { "_index": "website", "_type": "blog", "_id": "123" }}
 ```
+在你进行`index`以及`create`操作时，_request body_ 行必须要包含文档的`_source`数据——也就是文档的所有内容。
 
-The _request body_ line consists of the document `_source` itself -- the fields
-and values that the document contains.  It is required for `index` and
-`create` operations, which makes sense: you must supply the document to index.
-
-It is also required for `update` operations and should consist of the same
-request body that you would pass to the `update` API: `doc`, `upsert`,
-`script` etc. No _request body_ line is required for a delete.
+同样，在执行`update` API: `doc`, `upsert`,`script`的时候，也需要包含相关数据。而在删除的时候就不需要_request body_行。
 
 ```js
 { "create":  { "_index": "website", "_type": "blog", "_id": "123" }}
 { "title":    "My first blog post" }
 ```
 
-If no `_id` is specified, then an ID will be auto-generated:
+如果没有指定`_id`，那么系统就会自动生成一个ID：
 
 ```js
 { "index": { "_index": "website", "_type": "blog" }}
 { "title":    "My second blog post" }
 ```
 
-To put it all together, a complete `bulk` request has this form:
+完成以上所有请求的`bulk`如下：
 
 ```js
 POST /_bulk
@@ -73,12 +61,12 @@ POST /_bulk
 { "doc" : {"title" : "My updated blog post"} } <2>
 ```
 
-1. Notice how the `delete` _action_ does not have a _request body_, it is
-    followed immediately by another _action_.
-2. Remember the final newline character.
+1. 注意`delete`操作是如何处理_request body_的,你可以在它之后直接执行新的操作。
 
-The Elasticsearch response contains the `items` array which lists the result of
-each request, in the same order as we requested them:
+2. 请记住最后有换行符
+
+Elasticsearch会返回含有`items`的列表、它的顺序和我们请求的顺序是相同的：
+
 
 ```js
 {
@@ -117,12 +105,9 @@ each request, in the same order as we requested them:
    ]
 }}
 ```
-1. All sub-requests completed successfully.
+1. 所有的请求都被成功执行。
 
-Each sub-request is executed independently, so the failure of one sub-request
-won't affect the success of the others. If any of the requests fail, then the
-top-level  `error` flag is set to `true` and the error details will be
-reported under the relevant request:
+每一个子请求都会被单独执行，所以一旦有一个子请求失败了，并不会影响到其他请求的成功执行。如果一旦出现失败的请求，`error`就会变为`true`，详细的错误信息也会出现在返回内容的下方：
 
 
 ```js
@@ -132,10 +117,7 @@ POST /_bulk
 { "index":  { "_index": "website", "_type": "blog", "_id": "123" }}
 { "title":    "But we can update it" }
 ```
-
-In the response we can see that it failed to `create` document `123` because
-it already exists, but the subsequent `index` request, also on document `123`,
-succeeded:
+请求中的`create`操作失败，因为`123`已经存在，但是之后针对文档`123`的`index`操作依旧被成功执行：
 
 ```js
 {
@@ -161,30 +143,23 @@ succeeded:
    ]
 }
 ```
-1. One or more requests has failed.
-2. The HTTP status code for this request reports `409 CONFLICT`.
-3. The error message explaining why the request failed.
-4. The second request succeeded with an HTTP status code of `200 OK`.
+1. 至少有一个请求错误发生。
+2. 这条请求的状态码为`409 CONFLICT`。
+3. 错误信息解释了导致错误的原因。
+4. 第二条请求的状态码为`200 OK`。
 
-That also means that `bulk` requests are not atomic -- they cannot be used to
-implement transactions.  Each request is processed separately, so the success
-or failure of one request will not interfere with the others.
+这也更好地解释了`bulk`请求是独立的，每一条的失败与否 都不会影响到其他的请求。
 
-### Don't repeat yourself
+### 能省就省
 
-Perhaps you are batch indexing logging data into the same `index`, and with the
-same `type`. Having to specify the same metadata for every document is a waste.
-Instead, just as for the `mget` API, the `bulk` request accepts a default `/_index` or
-`/_index/_type` in the URL:
+或许你在批量导入大量的数据到相同的`index`以及`type`中。每次都去指定每个文档的metadata是完全没有必要的。在`mget` API中，`bulk`请求可以在URL中声明`/_index` 或者`/_index/_type`：
 
 ```js
 POST /website/_bulk
 { "index": { "_type": "log" }}
 { "event": "User logged in" }
 ```
-
-You can still override the `_index` and `_type` in the metadata line, but it
-will use the values in the URL as defaults:
+你依旧可以在metadata行中使用`_index`以及`_type`来重写数据，未声明的将会使用URL中的配置作为默认值：
 
 ```js
 POST /website/log/_bulk
@@ -194,22 +169,11 @@ POST /website/log/_bulk
 { "title": "Overriding the default type" }
 ```
 
-### How big is too big?
+### 最大有多大？
 
-The entire bulk request needs to be loaded into memory by the node which
-receives our request, so the bigger the request, the less memory available for
-other requests. There is an optimal size of `bulk` request. Above that size,
-performance no longer improves and may even drop off.
+整个数据将会被处理它的节点载入内存中，所以如果请求量很大的话，留给其他请求的内存空间将会很少。`bulk`应该有一个最佳的限度。超过这个限制后，性能不但不会提升反而可能会造成宕机。
 
-The optimal size, however, is not a fixed number. It depends entirely on your
-hardware, your document size and complexity, and your indexing and search
-load.  Fortunately, it is easy to find this _sweetspot_:
+最佳的容量并不是一个确定的数值，它取决于你的硬件，你的文档大小以及复杂性，你的索引以及搜索的负载。幸运的是，这个_平衡点_ 很容易确定：
 
-Try indexing typical documents in batches of increasing size. When performance
-starts to drop off, your batch size is too big. A good place to start is with
-batches of between 1,000 and 5,000 documents or, if your documents are very
-large, with even smaller batches.
-
-It is often useful to keep an eye on the physical size of your bulk requests.
-One thousand 1kB documents is very different than one thousand 1MB documents.
-A good bulk size to start playing with is around 5-15MB in size.
+试着去批量索引越来越多的文档。当性能开始下降的时候，就说明你的数据量太大了。一般比较好初始数量级是1000到5000个文档，或者你的文档很大，你就可以试着减小队列。
+有的时候看看批量请求的物理大小是很有帮助的。1000个1KB的文档和1000个1MB的文档的差距将会是天差地别的。比较好的初始批量容量是5-15MB。
