@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>创建索引删除 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../distributed_crud/retrieving.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../distributed_crud/shard_interaction.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="4.3" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -644,7 +644,7 @@
         </li>
     
         
-        <li class="chapter " data-level="4.3" data-path="distributed_crud/create_index_delete.html">
+        <li class="chapter active" data-level="4.3" data-path="distributed_crud/create_index_delete.html">
             
                 
                     <a href="../distributed_crud/create_index_delete.html">
@@ -1005,12 +1005,79 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_60">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h3 id="">创建、索引、删除文档</h3>
+<p>Create, index and delete requests are <em>write</em> operations, which must be
+successfully completed on the primary shard before they can be copied to any
+associated replica shards.</p>
+<p>[[img-distrib-write]]
+.Creating, indexing or deleting a single document
+image::images/04-02_write.png[&quot;Creating, indexing or deleting a single document&quot;]</p>
+<p>Below we list the sequence of steps necessary to successfully create, index or
+delete a document on both the primary and any replica shards, as depicted in
+&lt;<img-distrib-write>&gt;:</p>
+<ol>
+<li><p>The client sends a create, index or delete request to <code>Node_1</code>.</p>
+</li>
+<li><p>The node uses the document&#39;s <code>_id</code> to determine that the document
+belongs to shard <code>0</code>. It forwards the request to <code>Node 3</code>,
+where the primary copy of shard <code>0</code> is currently allocated.</p>
+</li>
+<li><p><code>Node 3</code> executes the request on the primary shard. If it is successful,
+it forwards the request in parallel to the replica shards on <code>Node 1</code> and
+<code>Node 2</code>. Once all of the replica shards report success, <code>Node 3</code> reports
+success to the requesting node, which reports success to the client.</p>
+</li>
+</ol>
+<p>By the time the client receives a successful response, the document change has
+been executed on the primary shard and on all replica shards. Your change is
+safe.</p>
+<p>There are a number of optional request parameters which allow you to influence
+this process, possibly increasing performance at the cost of data security.
+These options are seldom used because Elasticsearch is already fast, but they
+are explained here for the sake of completeness.</p>
+<p><code>replication</code>::</p>
+<h2 id="">+</h2>
+<p>The default value for replication is <code>sync</code>. This causes the primary shard to
+wait for successful responses from the replica shards before returning.</p>
+<p>If you set <code>replication</code> to <code>async</code>, then it will return success to the client
+as soon as the request has been executed on the primary shard. It will still
+forward the request to the replicas, but you will not know if the replicas
+succeeded or not.</p>
+<p>It is advisable to use the default <code>sync</code> replication as it is possible to
+overload Elasticsearch by sending too many requests without waiting for their</p>
+<h2 id="completion">completion.</h2>
+<p><code>consistency</code>::</p>
+<h2 id="">+</h2>
+<p>By default, the primary shard requires a <em>quorum</em> or majority of shard copies
+(where a shard copy can be a primary or a replica shard) to be available
+before even attempting a write operation.  This is to prevent writing data to the
+``wrong side&#39;&#39; of a network partition.  A quorum is defined as:</p>
+<pre><code>int( (primary + number_of_replicas) / 2 ) + 1
+</code></pre><p>The allowed values for <code>consistency</code> are <code>one</code> (just the primary shard), <code>all</code>
+(the primary and all replicas) or the default <code>quorum</code> or majority of shard
+copies.</p>
+<p>Note that the <code>number_of_replicas</code> is the number of replicas <em>specified</em> in
+the index settings, not the number of replicas that are currently active.  If
+you have specified that an index should have 3 replicas then a quorum would
+be:</p>
+<pre><code>int( (primary + 3 replicas) / 2 ) + 1 = 3
+</code></pre><p>But if you only start 2 nodes, then there will be insufficient active shard
+copies to satisfy the quorum and you will be unable to index or delete any
+documents.</p>
+<p>--</p>
+<p><code>timeout</code>::</p>
+<p>What happens if insufficient shard copies are available? Elasticsearch waits,
+in the hope that more shards will appear.  By default it will wait up to one
+minute. If you need to, you can use the <code>timeout</code> parameter to make it abort
+sooner: <code>100</code> is 100 milliseconds, <code>30s</code> is 30 seconds.</p>
+<h1 id="note">[NOTE]</h1>
+<p>A new index has <code>1</code> replica by default, which means that two active shard
+copies <em>should</em> be required in order to satisfy the need for a <code>quorum</code>.
+However, these default settings would prevent us from doing anything useful
+with a single-node cluster.  To avoid this problem, the requirement for</p>
+<h1 id="a-quorum-is-only-enforced-when-number_of_replicas-is-greater-than-1">a quorum is only enforced when <code>number_of_replicas</code> is greater than <code>1</code>.</h1>
 
                     
                     </section>
@@ -1021,10 +1088,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../distributed_crud/shard_interaction.html" class="navigation navigation-prev " aria-label="Previous page: 主从互通"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../distributed_crud/retrieving.html" class="navigation navigation-next " aria-label="Next page: 获取"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>Mapping | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../mapping_analysis/complex_datatypes.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../mapping_analysis/analysis.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="6.4" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -880,7 +880,7 @@
         </li>
     
         
-        <li class="chapter " data-level="6.4" data-path="mapping_analysis/mapping.html">
+        <li class="chapter active" data-level="6.4" data-path="mapping_analysis/mapping.html">
             
                 
                     <a href="../mapping_analysis/mapping.html">
@@ -1005,12 +1005,205 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_99">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h1 id="">映射</h1>
+<p>As explained in &lt;<data-in-data-out>&gt;, each document in an index has a <em>type</em>.
+Every type has its own <em>mapping</em> or <em>schema definition</em>. A mapping
+defines the fields within a type, the datatype for each field,
+and how the field should be handled by Elasticsearch. A mapping is also used
+to configure metadata associated with the type.</p>
+<p>We discuss mappings in detail in &lt;<mapping>&gt;. In this section we&#39;re going
+to look at just enough to get you started.</p>
+<p>[[core-fields]]
+==== Core simple field types</p>
+<p>Elasticsearch supports the following simple field types:</p>
+<p>[horizontal]
+String:         ::  <code>string</code>
+Whole number:   ::  <code>byte</code>, <code>short</code>, <code>integer</code>, <code>long</code>
+Floating point: ::  <code>float</code>, <code>double</code>
+Boolean:        ::  <code>boolean</code>
+Date:           ::  <code>date</code></p>
+<p>When you index a document which contains a new field -- one previously not
+seen -- Elasticsearch will use &lt;<dynamic-mapping,_dynamic mapping_>&gt; to try
+to guess the field type from the basic datatypes available in JSON,
+using the following rules:</p>
+<p>[horizontal]
+<em>JSON type:</em>                       ::          <em>Field type:</em></p>
+<p>Boolean: <code>true</code> or <code>false</code>         ::          <code>&quot;boolean&quot;</code></p>
+<p>Whole number: <code>123</code>                ::          <code>&quot;long&quot;</code></p>
+<p>Floating point: <code>123.45</code>           ::          <code>&quot;double&quot;</code></p>
+<p>String, valid date: <code>&quot;2014-09-15&quot;</code> ::          <code>&quot;date&quot;</code></p>
+<p>String: <code>&quot;foo bar&quot;</code>                ::          <code>&quot;string&quot;</code></p>
+<p>NOTE: This means that, if you index a number in quotes -- <code>&quot;123&quot;</code> it will be
+mapped as type <code>&quot;string&quot;</code>, not type <code>&quot;long&quot;</code>. However, if the field is
+already mapped as type <code>&quot;long&quot;</code>, then Elasticsearch will try to convert
+the string into a long, and throw an exception if it can&#39;t.</p>
+<p>==== Viewing the mapping</p>
+<p>We can view the mapping that Elasticsearch has for one or more types in one or
+more indices using the <code>/_mapping</code> endpoint. At the &lt;<mapping-analysis,start
+of this chapter>&gt; we already retrieved the mapping for type <code>tweet</code> in index
+<code>gb</code>:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<h2 id="get-gb_mappingtweet">GET /gb/_mapping/tweet</h2>
+<p>This shows us the mapping for the fields (called <em>properties</em>) that
+Elasticsearch generated dynamically from the documents that we indexed:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>{
+   &quot;gb&quot;: {
+      &quot;mappings&quot;: {
+         &quot;tweet&quot;: {
+            &quot;properties&quot;: {
+               &quot;date&quot;: {
+                  &quot;type&quot;: &quot;date&quot;,
+                  &quot;format&quot;: &quot;dateOptionalTime&quot;
+               },
+               &quot;name&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+               },
+               &quot;tweet&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+               },
+               &quot;user_id&quot;: {
+                  &quot;type&quot;: &quot;long&quot;
+               }
+            }
+         }
+      }
+   }</p>
+<h2 id="">}</h2>
+<h1 id="tip">[TIP]</h1>
+<p>Incorrect mappings, such as having an <code>age</code> field mapped as type <code>string</code>
+instead of <code>integer</code>, can produce confusing results to your queries.</p>
+<h1 id="instead-of-assuming-that-your-mapping-is-correct-check-it">Instead of assuming that your mapping is correct, check it!</h1>
+<p>[[custom-field-mappings]]
+==== Customizing field mappings</p>
+<p>The most important attribute of a field is the <code>type</code>. For fields
+other than <code>string</code> fields, you will seldom need to map anything other
+than <code>type</code>:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>{
+    &quot;number_of_clicks&quot;: {
+        &quot;type&quot;: &quot;integer&quot;
+    }</p>
+<h2 id="">}</h2>
+<p>Fields of type <code>&quot;string&quot;</code> are, by default, considered to contain full text.
+That is, their value will be passed through an analyzer before being indexed
+and a full text query on the field will pass the query string through an
+analyzer before searching.</p>
+<p>The two most important mapping attributes for <code>string</code> fields are
+<code>index</code> and <code>analyzer</code>.</p>
+<p>===== <code>index</code></p>
+<p>The <code>index</code> attribute controls how the string will be indexed. It
+can contain one of three values:</p>
+<p>[horizontal]
+<code>analyzed</code>::        First analyze the string, then index it.  In other words,
+                    index this field as full text.</p>
+<p><code>not_analyzed</code>::    Index this field, so it is searchable, but index the
+                    value exactly as specified. Do not analyze it.</p>
+<p><code>no</code>::              Don&#39;t index this field at all. This field
+                    will not be searchable.</p>
+<p>The default value of <code>index</code> for a <code>string</code> field is <code>analyzed</code>.  If we
+want to map the field as an exact value, then we need to set it to
+<code>not_analyzed</code>:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>{
+    &quot;tag&quot;: {
+        &quot;type&quot;:     &quot;string&quot;,
+        &quot;index&quot;:    &quot;not_analyzed&quot;
+    }</p>
+<h2 id="">}</h2>
+<hr>
+<p>The other simple types -- <code>long</code>, <code>double</code>, <code>date</code> etc -- also accept the
+<code>index</code> parameter, but the only relevant values are <code>no</code> and <code>not_analyzed</code>,
+as their values are never analyzed.</p>
+<hr>
+<p>===== <code>analyzer</code></p>
+<p>For <code>analyzed</code> string fields, use the <code>analyzer</code> attribute to
+specify which analyzer to apply both at search time and at index time. By
+default, Elasticsearch uses the <code>standard</code> analyzer, but you can change this
+by specifying one of the built-in analyzers, such as
+<code>whitespace</code>, <code>simple</code>, or <code>english</code>:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>{
+    &quot;tweet&quot;: {
+        &quot;type&quot;:     &quot;string&quot;,
+        &quot;analyzer&quot;: &quot;english&quot;
+    }</p>
+<h2 id="">}</h2>
+<p>In &lt;<custom-analyzers>&gt; we will show you how to define and use custom analyzers
+as well.</p>
+<p>==== Updating a mapping</p>
+<p>You can specify the mapping for a type when you first create an index.
+Alternatively, you can add the mapping for a new type (or update the mapping
+for an existing type) later, using the <code>/_mapping</code> endpoint.</p>
+<h1 id="important">[IMPORTANT]</h1>
+<p>While you can <em>add</em> to an existing mapping, you can&#39;t <em>change</em> it.  If a field
+already exists in the mapping, then it probably means that data from that
+field has already been indexed.  If you were to change the field mapping, then</p>
+<h1 id="the-already-indexed-data-would-be-wrong-and-would-not-be-properly-searchable">the already indexed data would be wrong and would not be properly searchable.</h1>
+<p>We can update a mapping to add a new field, but we can&#39;t change an existing
+field from <code>analyzed</code> to <code>not_analyzed</code>.</p>
+<p>To demonstrate both ways of specifying mappings, let&#39;s first delete the <code>gb</code>
+index:</p>
+<h2 id="sourcesh">[source,sh]</h2>
+<h2 id="delete-gb">DELETE /gb</h2>
+<p>// SENSE: 052_Mapping_Analysis/45_Mapping.json</p>
+<p>Then create a new index, specifying that the <code>tweet</code> field should use
+the <code>english</code> analyzer:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>PUT /gb <1>
+{
+  &quot;mappings&quot;: {
+    &quot;tweet&quot; : {
+      &quot;properties&quot; : {
+        &quot;tweet&quot; : {
+          &quot;type&quot; :    &quot;string&quot;,
+          &quot;analyzer&quot;: &quot;english&quot;
+        },
+        &quot;date&quot; : {
+          &quot;type&quot; :   &quot;date&quot;
+        },
+        &quot;name&quot; : {
+          &quot;type&quot; :   &quot;string&quot;
+        },
+        &quot;user_id&quot; : {
+          &quot;type&quot; :   &quot;long&quot;
+        }
+      }
+    }
+  }</p>
+<h2 id="">}</h2>
+<p>// SENSE: 052_Mapping_Analysis/45_Mapping.json</p>
+<p><1> This creates the index with the <code>mappings</code> specified in the body.</p>
+<p>Later on, we decide to add a new <code>not_analyzed</code> text field called <code>tag</code> to the
+<code>tweet</code> mapping, using the <code>_mapping</code> endpoint:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>PUT /gb/_mapping/tweet
+{
+  &quot;properties&quot; : {
+    &quot;tag&quot; : {
+      &quot;type&quot; :    &quot;string&quot;,
+      &quot;index&quot;:    &quot;not_analyzed&quot;
+    }
+  }</p>
+<h2 id="">}</h2>
+<p>// SENSE: 052_Mapping_Analysis/45_Mapping.json</p>
+<p>Note that we didn&#39;t need to list all of the existing fields again, as we can&#39;t
+change them anyway.  Our new field has been merged into the existing mapping.</p>
+<p>==== Testing the mapping</p>
+<p>You can use the <code>analyze</code> API to test the mapping for string fields by
+name. Compare the output of these two requests:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>GET /gb/_analyze?field=tweet
+Black-cats <1></p>
+<p>GET /gb/_analyze?field=tag</p>
+<h2 id="black-cats-1">Black-cats <1></h2>
+<p>// SENSE: 052_Mapping_Analysis/45_Mapping.json</p>
+<p><1> The text we want to analyze is passed in the body.</p>
+<p>The <code>tweet</code> field produces the two terms <code>&quot;black&quot;</code> and <code>&quot;cat&quot;</code>, while the
+<code>tag</code> field produces the single term <code>&quot;Black-cats&quot;</code>. In other words, our
+mapping is working correctly.</p>
 
                     
                     </section>
@@ -1021,10 +1214,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../mapping_analysis/analysis.html" class="navigation navigation-prev " aria-label="Previous page: Analysis"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../mapping_analysis/complex_datatypes.html" class="navigation navigation-next " aria-label="Next page: Complex_datatypes"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

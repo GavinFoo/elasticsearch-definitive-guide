@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>空白搜索 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../search/multi_index_multi_type.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../search/README.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="5.1" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -746,7 +746,7 @@
                 
     
         
-        <li class="chapter " data-level="5.1" data-path="search/empty_search.html">
+        <li class="chapter active" data-level="5.1" data-path="search/empty_search.html">
             
                 
                     <a href="../search/empty_search.html">
@@ -1005,12 +1005,60 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_105">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h1 id="">空白搜索</h1>
+<p>搜索API最常用的一种形式就是<em>空白搜索</em>，也就是不加任何查询条件的，只是返回集群中所有文档的搜索。</p>
+<pre><code>GET /_search
+</code></pre><p>返回内容如下（有删减）：</p>
+<pre><code class="lang-js">{
+   <span class="hljs-string">"hits"</span> : {
+      <span class="hljs-string">"total"</span> :       <span class="hljs-number">14</span>,
+      <span class="hljs-string">"hits"</span> : [
+        {
+          <span class="hljs-string">"_index"</span>:   <span class="hljs-string">"us"</span>,
+          <span class="hljs-string">"_type"</span>:    <span class="hljs-string">"tweet"</span>,
+          <span class="hljs-string">"_id"</span>:      <span class="hljs-string">"7"</span>,
+          <span class="hljs-string">"_score"</span>:   <span class="hljs-number">1</span>,
+          <span class="hljs-string">"_source"</span>: {
+             <span class="hljs-string">"date"</span>:    <span class="hljs-string">"2014-09-17"</span>,
+             <span class="hljs-string">"name"</span>:    <span class="hljs-string">"John Smith"</span>,
+             <span class="hljs-string">"tweet"</span>:   <span class="hljs-string">"The Query DSL is really powerful and flexible"</span>,
+             <span class="hljs-string">"user_id"</span>: <span class="hljs-number">2</span>
+          }
+       },
+        ... <span class="hljs-number">9</span> 个结果被隐藏 ...
+      ],
+      <span class="hljs-string">"max_score"</span> :   <span class="hljs-number">1</span>
+   },
+   <span class="hljs-string">"took"</span> :           <span class="hljs-number">4</span>,
+   <span class="hljs-string">"_shards"</span> : {
+      <span class="hljs-string">"failed"</span> :      <span class="hljs-number">0</span>,
+      <span class="hljs-string">"successful"</span> :  <span class="hljs-number">10</span>,
+      <span class="hljs-string">"total"</span> :       <span class="hljs-number">10</span>
+   },
+   <span class="hljs-string">"timed_out"</span> :      <span class="hljs-literal">false</span>
+}
+</code></pre>
+<h3 id="hits"><code>hits</code></h3>
+<p>返回内容中最重要的内容就是<code>hits</code>，它指明了匹配查询的文档的<code>总数</code>，<code>hits</code>数组里则会包含前十个匹配文档——也就是搜索结果。</p>
+<p><code>hits</code>数组中的每一条结果都包含了文档的<code>_index</code>, <code>_type</code>以及<code>_id</code>信息，以及<code>_source</code>字段。这也就意味着你可以直接从搜索结果中获取到整个文档的内容。这与其他搜索引擎只返回给你文档编号，还需要自己去获取文档是截然不同的。</p>
+<p>每一个元素还拥有一个<code>_score</code>字段。这个是<em>相关性评分</em>，这个数值表示当前文档与查询的匹配程度。通常来说，搜索结果会先返回最匹配的文档，也就是说它们会按照<code>_score</code>由高至低进行排列。在这个例子中，我们并没有声明任何查询，因此<code>_score</code>就都会返回<code>1</code></p>
+<p><code>max_score</code>数值会显示所有匹配文档中的<code>_score</code>的最大值。</p>
+<h3 id="took"><code>took</code></h3>
+<p><code>took</code>数值告诉我们执行这次搜索请求所耗费的时间有多少毫秒。</p>
+<h3 id="shards"><code>shards</code></h3>
+<p><code>_shards</code>告诉了我们参与查询分片的总数，以及有多少<code>successful</code>和<code>failed</code>。通常情况下我们是不会得到失败的反馈，但是有的时候它会发生。如果我们的服务器突然出现了重大事故，然后我们丢失了同一个分片中主从两个版本的数据。在查询请求中，无法提供可用的备份。这种情况下，Elasticsearch就会返回`failed提示，但是它还会继续返回剩下的内容。</p>
+<h3 id="timeout"><code>timeout</code></h3>
+<p><code>timed_out</code>数值告诉了我们查询是否超时。通常，搜索请求不会超时。如果相比完整的结果你更需要的是快速的响应时间，这是你可以指定<code>timeout</code>值，例如<code>10</code>、<code>&quot;10ms&quot;</code>（10毫秒）或者<code>&quot;1s&quot;</code>（1分钟）：</p>
+<pre><code>GET /_search?timeout=10ms
+</code></pre><p>Elasticsearch会尽可能地返回你指定时间内它所查到的内容。</p>
+<hr>
+<blockquote>
+<h3 id="timeout">Timeout并不是终止者</h3>
+</blockquote>
+<p>这里应该强调一下<code>timeout</code>并不会终止查询，它只是会在你指定的时间内返回<em>当时</em>已经查询到的数据，然后关闭连接。在后台，其他的查询可能会依旧继续，尽管查询结果已经被返回了。</p>
+<p>使用超时是因为你要保障你的品质，并不是因为你需要终止你的查询。</p>
 
                     
                     </section>
@@ -1021,10 +1069,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../search/README.html" class="navigation navigation-prev " aria-label="Previous page: 搜索"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../search/multi_index_multi_type.html" class="navigation navigation-next " aria-label="Next page: 多索引多类型"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

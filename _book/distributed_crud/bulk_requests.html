@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>批量请求 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../distributed_crud/bulk_format.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../distributed_crud/partial_updates.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="4.6" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -692,7 +692,7 @@
         </li>
     
         
-        <li class="chapter " data-level="4.6" data-path="distributed_crud/bulk_requests.html">
+        <li class="chapter active" data-level="4.6" data-path="distributed_crud/bulk_requests.html">
             
                 
                     <a href="../distributed_crud/bulk_requests.html">
@@ -1005,12 +1005,56 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_59">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h3 id="">多文档模式</h3>
+<p>The patterns for the <code>mget</code> and <code>bulk</code> APIs are similar to those for
+individual documents. The difference is that the requesting node knows in
+which shard each document lives. It breaks up the multi-document request into
+a multi-document request <em>per shard</em>, and forwards these in parallel to each
+participating node.</p>
+<p>Once it receives answers from each node, it collates their responses
+into a single response, which it returns to the client.</p>
+<p>[[img-distrib-mget]]
+.Retrieving multiple documents with <code>mget</code>
+image::images/04-05_mget.png[&quot;Retrieving multiple documents with mget&quot;]</p>
+<p>Below we list the sequence of steps necessary to retrieve multiple documents
+with a single <code>mget</code> request, as depicted in &lt;<img-distrib-mget>&gt;:</p>
+<ol>
+<li><p>The client sends an <code>mget</code> request to <code>Node_1</code>.</p>
+</li>
+<li><p><code>Node 1</code> builds a multi-get request per shard, and forwards these
+requests in parallel to the nodes hosting each required primary or replica
+shard. Once all replies have been received, <code>Node 1</code> builds the response
+and returns it to the client.</p>
+</li>
+</ol>
+<p>A <code>routing</code> parameter can be set for each document in the <code>docs</code> array,
+and the <code>preference</code> parameter can be set for the top-level <code>mget</code>
+request.</p>
+<p>[[img-distrib-bulk]]
+.Multiple document changes with <code>bulk</code>
+image::images/04-06_bulk.png[&quot;Multiple document changes with bulk&quot;]</p>
+<p>Below we list the sequence of steps necessary to execute multiple
+<code>create</code>, <code>index</code>, <code>delete</code> and <code>update</code> requests within a single
+<code>bulk</code> request, as depicted in &lt;<img-distrib-bulk>&gt;:</p>
+<ol>
+<li><p>The client sends a <code>bulk</code> request to <code>Node_1</code>.</p>
+</li>
+<li><p><code>Node 1</code> builds a bulk request per shard, and forwards these requests in
+ parallel to the nodes hosting each involved primary shard.</p>
+</li>
+<li><p>The primary shard executes each action serially, one after another. As each
+action succeeds, the primary forwards the new document (or deletion) to its
+replica shards in parallel, then moves on to the next action. Once all
+replica shards report success for all actions, the node reports success to
+the requesting node, which collates the responses and returns them to the
+client.</p>
+</li>
+</ol>
+<p>The <code>bulk</code> API also accepts the <code>replication</code> and <code>consistency</code> parameters
+at the top-level for the whole <code>bulk</code> request, and the <code>routing</code> parameter
+in the metadata for each request.</p>
 
                     
                     </section>
@@ -1021,10 +1065,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../distributed_crud/partial_updates.html" class="navigation navigation-prev " aria-label="Previous page: 局部更新"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../distributed_crud/bulk_format.html" class="navigation navigation-next " aria-label="Next page: 批量格式"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

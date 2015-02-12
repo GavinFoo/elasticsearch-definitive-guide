@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>Analysis | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../mapping_analysis/mapping.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../mapping_analysis/inverted_index.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="6.3" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -864,7 +864,7 @@
         </li>
     
         
-        <li class="chapter " data-level="6.3" data-path="mapping_analysis/analysis.html">
+        <li class="chapter active" data-level="6.3" data-path="mapping_analysis/analysis.html">
             
                 
                     <a href="../mapping_analysis/analysis.html">
@@ -1005,12 +1005,175 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_91">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <p>[[analysis-intro]]
+=== Analysis and analyzers</p>
+<p><em>Analysis</em> is the process of:</p>
+<ul>
+<li>first, tokenizing a block of text into
+individual <em>terms</em> suitable for use in an inverted index,</li>
+<li>then normalizing these terms into a standard form to improve their
+``searchability&#39;&#39; or <em>recall</em>.</li>
+</ul>
+<p>This job is performed by <em>analyzers</em>. An <em>analyzer</em> is really just a wrapper
+which combines three functions into a single package:</p>
+<p>Character filters::</p>
+<pre><code>First, the string is passed through any _character filters_ in turn. Their
+job is to tidy up the string before tokenization. A character filter could
+be used to strip out HTML, or to convert `&quot;&amp;&quot;` characters to the word
+`&quot;and&quot;`.
+</code></pre><p>Tokenizer::</p>
+<p>   Next, the string is tokenized into individual terms by a <em>tokenizer</em>. A
+   simple tokenizer might split the text up into terms whenever it encounters
+   whitespace or punctuation.</p>
+<p>Token filters::</p>
+<p>   Last, each term is passed through any <em>token filters</em> in turn, which can
+   change terms (eg lowercasing <code>&quot;Quick&quot;</code>), remove terms (eg stopwords like
+   <code>&quot;a&quot;</code>, <code>&quot;and&quot;</code>, <code>&quot;the&quot;</code> etc) or add terms (eg synonyms like <code>&quot;jump&quot;</code> and
+   <code>&quot;leap&quot;</code>)</p>
+<p>Elasticsearch provides many character filters, tokenizers and token filters
+out of the box. These can be combined to create custom analyzers suitable
+for different purposes. We will discuss these in detail in &lt;<custom-analyzers>&gt;.</p>
+<p>==== Built-in analyzers</p>
+<p>However, Elasticsearch also ships with a number of pre-packaged analyzers that
+you can use directly. We list the most important ones below and, to demonstrate
+the difference in behaviour, we show what terms each would produce
+from this string:</p>
+<pre><code>&quot;Set the shape to semi-transparent by calling set_trans(5)&quot;
+</code></pre><p>Standard analyzer::</p>
+<p>The standard analyzer is the default analyzer that Elasticsearch uses. It is
+the best general choice for analyzing text which may be in any language. It
+splits the text on <em>word boundaries</em>, as defined by the
+<a href="http://www.unicode.org/reports/tr29/[Unicode" target="_blank">http://www.unicode.org/reports/tr29/[Unicode</a> Consortium], and removes most
+punctuation. Finally, it lowercases all terms. It would produce:
++
+    set, the, shape, to, semi, transparent, by, calling, set_trans, 5</p>
+<p>Simple analyzer::</p>
+<p>The simple analyzer splits the text on anything that isn&#39;t a letter,
+and lowercases the terms. It would produce:
++
+    set, the, shape, to, semi, transparent, by, calling, set, trans</p>
+<p>Whitespace analyzer::</p>
+<p>The whitespace analyzer splits the text on whitespace. It doesn&#39;t
+lowercase. It would produce:
++
+    Set, the, shape, to, semi-transparent, by, calling, set_trans(5)</p>
+<p>Language analyzers::</p>
+<p>Language-specific analyzers are available for many languages. They are able to
+take the peculiarities of the specified language into account. For instance,
+the <code>english</code> analyzer comes with a set of English stopwords -- common words
+like <code>and</code> or <code>the</code> which don&#39;t have much impact on relevance -- which it
+removes, and it is able to <em>stem</em> English words because it understands the
+rules of English grammar.
++
+The <code>english</code> analyzer would produce the following:
++
+    set, shape, semi, transpar, call, set_tran, 5
++
+Note how <code>&quot;transparent&quot;</code>, <code>&quot;calling&quot;</code>, and <code>&quot;set_trans&quot;</code> have been stemmed to
+their root form.</p>
+<p>==== When analyzers are used</p>
+<p>When we <em>index</em> a document, its full text fields are analyzed into terms which
+are used to create the inverted index.  However, when we <em>search</em> on a full
+text field,  we need to pass the query string through the <em>same analysis
+process</em>, to ensure that we are searching for terms in the same form as those
+that exist in the index.</p>
+<p>Full text queries, which we will discuss later, understand how each field is
+defined, and so they can do the right thing:</p>
+<ul>
+<li><p>When you query a <em>full text</em> field, the query will apply the same analyzer
+to the query string to produce the correct list of terms to search for.</p>
+</li>
+<li><p>When you query an <em>exact value</em> field, the query will not analyze the
+query string, but instead search for the exact value that you have
+specified.</p>
+</li>
+</ul>
+<p>Now you can understand why the queries that we demonstrated at the
+&lt;<mapping-analysis,start of this chapter>&gt; return what they do:</p>
+<ul>
+<li>The <code>date</code> field contains an exact value: the single term <code>&quot;2014-09-15&quot;</code>.</li>
+<li>The <code>_all</code> field is a full text field, so the analysis process has
+converted the date into the three terms: <code>&quot;2014&quot;</code>, <code>&quot;09&quot;</code> and <code>&quot;15&quot;</code>.</li>
+</ul>
+<p>When we query the <code>_all</code> field for <code>2014</code>, it matches all 12 tweets, because
+all of them contain the term <code>2014</code>:</p>
+<h2 id="sourcesh">[source,sh]</h2>
+<h2 id="get-_searchq2014---------------12-results">GET /_search?q=2014              # 12 results</h2>
+<p>// SENSE: 052_Mapping_Analysis/25_Data_type_differences.json</p>
+<p>When we query the <code>_all</code> field for <code>2014-09-15</code>, it first analyzes the query
+string to produce a query which matches <em>any</em> of the terms <code>2014</code>, <code>09</code> or
+<code>15</code>. This also matches all 12 tweets, because all of them contain the term
+<code>2014</code>:</p>
+<h2 id="sourcesh">[source,sh]</h2>
+<h2 id="get-_searchq2014-09-15---------12-results-">GET /_search?q=2014-09-15        # 12 results !</h2>
+<p>// SENSE: 052_Mapping_Analysis/25_Data_type_differences.json</p>
+<p>When we query the <code>date</code> field for <code>2014-09-15</code>, it looks for that <em>exact</em>
+date, and finds one tweet only:</p>
+<h2 id="sourcesh">[source,sh]</h2>
+<h2 id="get-_searchqdate2014-09-15----1--result">GET /_search?q=date:2014-09-15   # 1  result</h2>
+<p>// SENSE: 052_Mapping_Analysis/25_Data_type_differences.json</p>
+<p>When we query the <code>date</code> field for <code>2014</code>, it finds no documents
+because none contain that exact date:</p>
+<h2 id="sourcesh">[source,sh]</h2>
+<h2 id="get-_searchqdate2014----------0--results-">GET /_search?q=date:2014         # 0  results !</h2>
+<p>// SENSE: 052_Mapping_Analysis/25_Data_type_differences.json</p>
+<p>[[analyze-api]]
+==== Testing analyzers</p>
+<p>Especially when you are new to Elasticsearch, it is sometimes difficult to
+understand what is actually being tokenized and stored into your index.  To
+better understand what is going on, you can use the <code>analyze</code> API to see how
+text is analyzed. Specify which analyzer to use in the query string
+parameters,  and the text to analyze in the body:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>GET /_analyze?analyzer=standard</p>
+<h2 id="text-to-analyze">Text to analyze</h2>
+<p>// SENSE: 052_Mapping_Analysis/40_Analyze.json</p>
+<p>Each element in the result represents a single term:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>{
+   &quot;tokens&quot;: [
+      {
+         &quot;token&quot;:        &quot;text&quot;,
+         &quot;start_offset&quot;: 0,
+         &quot;end_offset&quot;:   4,
+         &quot;type&quot;:         &quot;<ALPHANUM>&quot;,
+         &quot;position&quot;:     1
+      },
+      {
+         &quot;token&quot;:        &quot;to&quot;,
+         &quot;start_offset&quot;: 5,
+         &quot;end_offset&quot;:   7,
+         &quot;type&quot;:         &quot;<ALPHANUM>&quot;,
+         &quot;position&quot;:     2
+      },
+      {
+         &quot;token&quot;:        &quot;analyze&quot;,
+         &quot;start_offset&quot;: 8,
+         &quot;end_offset&quot;:   15,
+         &quot;type&quot;:         &quot;<ALPHANUM>&quot;,
+         &quot;position&quot;:     3
+      }
+   ]</p>
+<h2 id="">}</h2>
+<p>The <code>token</code> is the actual term that will be stored in the index. The
+<code>position</code> indicates the order in which the terms appeared in the original
+text. The <code>start_offset</code> and <code>end_offset</code> indicate the character positions
+that the original word occupied in the original string.</p>
+<p>The <code>analyze</code> API is really useful tool for understanding what is happening
+inside Elasticsearch indices, and we will talk more about it as we progress.</p>
+<p>==== Specifying analyzers</p>
+<p>When Elasticsearch detects a new string field in your documents, it
+automatically configures it as a full text <code>string</code> field and analyzes it with
+the <code>standard</code> analyzer.</p>
+<p>You don&#39;t always want this. Perhaps you want to apply a different analyzer
+which suits the language your data is in. And sometimes you want a
+string field to be just a string field -- to index the exact value that
+you pass in, without any analysis, such as a string user ID or an
+internal status field or tag.</p>
+<p>In order to achieve this, we have to configure these fields manually
+by specifying the <em>mapping</em>.</p>
 
                     
                     </section>
@@ -1021,10 +1184,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../mapping_analysis/inverted_index.html" class="navigation navigation-prev " aria-label="Previous page: Inverted_index"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../mapping_analysis/mapping.html" class="navigation navigation-next " aria-label="Next page: Mapping"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

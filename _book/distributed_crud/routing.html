@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>路由 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../distributed_crud/shard_interaction.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../distributed_crud/README.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="4.1" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -612,7 +612,7 @@
                 
     
         
-        <li class="chapter " data-level="4.1" data-path="distributed_crud/routing.html">
+        <li class="chapter active" data-level="4.1" data-path="distributed_crud/routing.html">
             
                 
                     <a href="../distributed_crud/routing.html">
@@ -1005,12 +1005,32 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_65">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h3 id="">将文档路由到从库中</h3>
+<p>When you index a document, it is stored on a single primary shard. How does
+Elasticsearch know which shard a document belongs to?  When we create a new
+document, how does it know whether it should store that document on shard 1 or
+shard 2?</p>
+<p>The process can&#39;t be random, since we may need to retrieve the document in the
+future. In fact, it is determined by a very simple formula:</p>
+<pre><code>shard = hash(routing) % number_of_primary_shards
+</code></pre><p>The <code>routing</code> value is an arbitrary string, which defaults to the document&#39;s
+<code>_id</code> but can also be set to a custom value. This <code>routing</code> string is passed
+through a hashing function to generate a number, which is divided by the
+number of primary shards in the index to return the <em>remainder</em>. The remainder
+will always be in the range <code>0</code> to <code>number_of_primary_shards - 1</code>, and gives
+us the number of the shard where a particular document lives.</p>
+<p>This explains why the number of primary shards can only be set when an index
+is created and never changed:  if the number of primary shards ever changed in
+the future, all previous routing values would be invalid and documents would
+never be found.</p>
+<p>All document APIs (<code>get</code>, <code>index</code>, <code>delete</code>, <code>bulk</code>, <code>update</code> and <code>mget</code>)
+accept a <code>routing</code> parameter that can be used to customize the document-to-
+shard mapping. A custom routing value could be used to ensure that all related
+documents -- for instance all the documents belonging to the same user -- are
+stored on the same shard. We discuss in detail why you may want to do this in
+&lt;<scale>&gt;.</p>
 
                     
                     </section>
@@ -1021,10 +1041,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../distributed_crud/README.html" class="navigation navigation-prev " aria-label="Previous page: 分布式文档存储"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../distributed_crud/shard_interaction.html" class="navigation navigation-next " aria-label="Next page: 主从互通"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>局部更新 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../distributed_crud/bulk_requests.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../distributed_crud/retrieving.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="4.5" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -676,7 +676,7 @@
         </li>
     
         
-        <li class="chapter " data-level="4.5" data-path="distributed_crud/partial_updates.html">
+        <li class="chapter active" data-level="4.5" data-path="distributed_crud/partial_updates.html">
             
                 
                     <a href="../distributed_crud/partial_updates.html">
@@ -1005,12 +1005,45 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_61">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h3 id="">更新文档中的一部分</h3>
+<p>The <code>update</code> API  combines the read and write patterns explained above.</p>
+<p>[[img-distrib-update]]
+.Partial updates to a document
+image::images/04-04_update.png[&quot;Partial updates to a document&quot;]</p>
+<p>Below we list the sequence of steps used to perform a partial update on  a
+document, as depicted in &lt;<img-distrib-update>&gt;:</p>
+<ol>
+<li><p>The client sends an update request to <code>Node_1</code>.</p>
+</li>
+<li><p>It forwards the request to <code>Node 3</code>, where the primary shard is allocated.</p>
+</li>
+<li><p><code>Node 3</code> retrieves the document from the primary shard, changes the JSON
+in the <code>_source</code> field, and tries to reindex the document on the primary
+shard. If the document has already been changed by another process, it
+retries step 3 up to <code>retry_on_conflict</code> times, before giving up.</p>
+</li>
+<li><p>If <code>Node 3</code> has managed to update the document successfully, it forwards
+the new version of the document in parallel to the replica shards on  <code>Node
+1</code> and <code>Node 2</code> to be reindexed. Once all replica shards report success,
+<code>Node 3</code> reports success to the requesting node,  which reports success to
+the client.</p>
+</li>
+</ol>
+<p>The <code>update</code> API also accepts the <code>routing</code>, <code>replication</code>, <code>consistency</code> and
+<code>timeout</code> parameters that are explained in &lt;<distrib-write>&gt;.</p>
+<hr>
+<blockquote>
+<h3 id="">基于文档的复制</h3>
+</blockquote>
+<p>When a primary shard forwards changes to its replica shards, it doesn&#39;t
+forward the update request. Instead it forwards the new version of the full
+document. Remember that these changes are forwarded to the replica shards
+asynchronously and there is no guarantee that they will arrive in the same
+order that they were sent. If Elasticsearch forwarded just the change, it is
+possible that changes would be applied in the wrong order, resulting in a
+corrupt document.</p>
 
                     
                     </section>
@@ -1021,10 +1054,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../distributed_crud/retrieving.html" class="navigation navigation-prev " aria-label="Previous page: 获取"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../distributed_crud/bulk_requests.html" class="navigation navigation-next " aria-label="Next page: 批量请求"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

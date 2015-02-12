@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>多索引多类型 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../search/pagination.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../search/empty_search.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="5.2" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -762,7 +762,7 @@
         </li>
     
         
-        <li class="chapter " data-level="5.2" data-path="search/multi_index_multi_type.html">
+        <li class="chapter active" data-level="5.2" data-path="search/multi_index_multi_type.html">
             
                 
                     <a href="../search/multi_index_multi_type.html">
@@ -1005,12 +1005,58 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_108">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h1 id="">多索引，多类型</h1>
+<p>你是否注意到了《空白搜索》一章节的文档中包含了很多不同的类型 —— <code>user</code>与<code>tweet</code>，它们也分别来自<code>us</code>、<code>gb</code>这两个不同的索引？</p>
+<p>当我们没有特别指定一个所以或者类型的时候，我们将会搜索整个集群中的<strong>所有</strong>文档。Elasticsearch会把搜索请求转发给集群中的每一个主从分片，然后按照结果的相关性得到前十名，并将它们返回给我们。</p>
+<p>然而，往往我们只需要在某一个特定的索引的几个类型中进行搜索。我们可以通过在URL中定义它来实现这个功能：</p>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/_search</code></td>
+<td>搜索所有的索引和类型</td>
+</tr>
+<tr>
+<td><code>/gb/_search</code></td>
+<td>搜索索引<code>gb</code>中的所有类型</td>
+</tr>
+<tr>
+<td><code>/gb,us/_search</code></td>
+<td>搜索索引<code>gb</code>以及<code>us</code>中的所有类型</td>
+</tr>
+<tr>
+<td><code>/g*,u*/_search</code></td>
+<td>搜索所有以<code>g</code>或<code>u</code>开头的索引中的所有类型</td>
+</tr>
+<tr>
+<td><code>/gb/user/_search</code></td>
+<td>搜索索引<code>gb</code>中类型<code>user</code>内的所有文档</td>
+</tr>
+<tr>
+<td><code>/gb,us/user,tweet/_search</code></td>
+<td>搜索索引<code>user</code>以及<code>tweet</code>中类型<code>gb</code> and <code>us</code>内的所有文档</td>
+</tr>
+<tr>
+<td><code>/_all/user,tweet/_search</code></td>
+<td>搜索所有索引中类型为<code>user</code>以及<code>tweet</code>内的所有文档</td>
+</tr>
+</tbody>
+</table>
+<p>当你在一个索引中搜索的时候，Elasticsearch或将你的搜索请求转发给相应索引中的所有主从分片，然后收集每一个分片的结果。在多个索引中搜索也是想通的流程，只不过是增加了一些参与分片。</p>
+<hr>
+<blockquote>
+<h3 id="">重要提示</h3>
+</blockquote>
+<p>搜索一个拥有五个主分片的索引与搜索五个都只拥有一个主分片是<strong>完全一样</strong>的。</p>
+<hr>
+<p>在后面，你将会了解到如何利用这一点，来根据你的需要灵活打造系统。</p>
 
                     
                     </section>
@@ -1021,10 +1067,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../search/empty_search.html" class="navigation navigation-prev " aria-label="Previous page: 空白搜索"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../search/pagination.html" class="navigation navigation-next " aria-label="Next page: 分页"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

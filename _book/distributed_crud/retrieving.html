@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>获取 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../distributed_crud/partial_updates.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../distributed_crud/create_index_delete.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="4.4" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -660,7 +660,7 @@
         </li>
     
         
-        <li class="chapter " data-level="4.4" data-path="distributed_crud/retrieving.html">
+        <li class="chapter active" data-level="4.4" data-path="distributed_crud/retrieving.html">
             
                 
                     <a href="../distributed_crud/retrieving.html">
@@ -1005,12 +1005,33 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_64">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h3 id="">获取一个文档</h3>
+<p>A document can be retrieved from a primary shard or from any of its replicas.</p>
+<p>[[img-distrib-read]]
+.Retrieving a single document
+image::images/04-03_get.png[&quot;Retrieving a single document&quot;]</p>
+<p>Below we list the sequence of steps to retrieve a document from either a
+primary or replica shard, as depicted in &lt;<img-distrib-read>&gt;:</p>
+<ol>
+<li><p>The client sends a get request to <code>Node 1</code>.</p>
+</li>
+<li><p>The node uses the document&#39;s <code>_id</code> to determine that the document
+belongs to shard <code>0</code>. Copies of shard <code>0</code> exist on all three nodes.
+On this occasion, it forwards the request to <code>Node 2</code>.</p>
+</li>
+<li><p><code>Node 2</code> returns the document to <code>Node 1</code> which returns the document
+to the client.</p>
+</li>
+</ol>
+<p>For read requests, the requesting node will choose a different shard copy on
+every request in order to balance the load -- it round-robins through all
+shard copies.</p>
+<p>It is possible that a document has been indexed on the primary shard but
+has not yet been copied to the replica shards. In this case a replica
+might report that the document doesn&#39;t exist, while the primary would have
+returned the document successfully.</p>
 
                     
                     </section>
@@ -1021,10 +1042,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../distributed_crud/create_index_delete.html" class="navigation navigation-prev " aria-label="Previous page: 创建索引删除"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../distributed_crud/partial_updates.html" class="navigation navigation-next " aria-label="Next page: 局部更新"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

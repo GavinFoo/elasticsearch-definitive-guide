@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>批量格式 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../search/README.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../distributed_crud/bulk_requests.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="4.7" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -708,7 +708,7 @@
         </li>
     
         
-        <li class="chapter " data-level="4.7" data-path="distributed_crud/bulk_format.html">
+        <li class="chapter active" data-level="4.7" data-path="distributed_crud/bulk_format.html">
             
                 
                     <a href="../distributed_crud/bulk_format.html">
@@ -1005,12 +1005,38 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_58">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h3 id="why-the-funny-format">Why the funny format?</h3>
+<p>When we learned about Bulk requests earlier in &lt;<bulk>&gt;, you may have asked
+yourself: <code>`Why does the</code>bulk<code>API require the funny format with the newline
+characters, instead of just sending the requests wrapped in a JSON array, like
+the</code>mget` API?&#39;&#39;</p>
+<p>To answer this, we need to explain a little background:</p>
+<p>Each document referenced in a bulk request may belong to a different primary
+shard, each of which may be allocated to any of the nodes in the cluster. This
+means that every <em>action</em> inside a <code>bulk</code> request needs to be forwarded to the
+correct shard on the correct node.</p>
+<p>If the individual requests were wrapped up in a JSON array, that would mean
+that we would need to:</p>
+<ul>
+<li>parse the JSON into an array (including the document data, which
+can be very large)</li>
+<li>look at each request to determine which shard it should go to</li>
+<li>create an array of requests for each shard</li>
+<li>serialize these arrays into the internal transport format</li>
+<li>send the requests to each shard</li>
+</ul>
+<p>It would work, but would need a lot of RAM to hold copies of essentially
+the same data, and would create many more data structures that the JVM
+would have to spend time garbage collecting.</p>
+<p>Instead, Elasticsearch reaches up into the networking buffer, where the raw
+request has been received and reads the data directly. It uses the newline
+characters to identify and parse just the small <em>action/metadata</em> lines in
+order to decide which shard should handle each request.</p>
+<p>These raw requests are forwarded directly to the correct shard. There
+is no redundant copying of data, no wasted data structures. The entire
+request process is handled in the smallest amount of memory possible.</p>
 
                     
                     </section>
@@ -1021,10 +1047,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../distributed_crud/bulk_requests.html" class="navigation navigation-prev " aria-label="Previous page: 批量请求"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../search/README.html" class="navigation navigation-next " aria-label="Next page: 搜索"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

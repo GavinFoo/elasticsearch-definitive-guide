@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>Inverted_index | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../mapping_analysis/analysis.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../mapping_analysis/exact_vs_full_text.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="6.2" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -848,7 +848,7 @@
         </li>
     
         
-        <li class="chapter " data-level="6.2" data-path="mapping_analysis/inverted_index.html">
+        <li class="chapter active" data-level="6.2" data-path="mapping_analysis/inverted_index.html">
             
                 
                     <a href="../mapping_analysis/inverted_index.html">
@@ -1005,12 +1005,109 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_98">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h1 id="">反向索引</h1>
+<p>Elasticsearch uses a structure called an <em>inverted index</em> which is designed
+to allow very fast full text searches. An inverted index consists of a list
+of all the unique words that appear in any document, and for each word, a list
+of the documents in which it appears.</p>
+<p>For example, let&#39;s say we have two documents, each with a <code>content</code> field
+containing:</p>
+<ol>
+<li>``The quick brown fox jumped over the lazy dog&#39;&#39;</li>
+<li>``Quick brown foxes leap over lazy dogs in summer&#39;&#39;</li>
+</ol>
+<p>To create an inverted index, we first split the <code>content</code> field of each
+document into separate words (which we call <em>terms</em> or <em>tokens</em>), create a
+sorted list of all the unique terms, then list in which document each term
+appears. The result looks something like this:</p>
+<pre><code>Term      Doc_1  Doc_2
+-------------------------
+Quick   |       |  X
+The     |   X   |
+brown   |   X   |  X
+dog     |   X   |
+dogs    |       |  X
+fox     |   X   |
+foxes   |       |  X
+in      |       |  X
+jumped  |   X   |
+lazy    |   X   |  X
+leap    |       |  X
+over    |   X   |  X
+quick   |   X   |
+summer  |       |  X
+the     |   X   |
+------------------------
+</code></pre><p>Now, if we want to search for <code>&quot;quick brown&quot;</code> we just need to find the
+documents in which each term appears:</p>
+<pre><code>Term      Doc_1  Doc_2
+-------------------------
+brown   |   X   |  X
+quick   |   X   |
+------------------------
+Total   |   2   |  1
+</code></pre><p>Both documents match, but the first document has more matches than the second.
+If we apply a naive <em>similarity algorithm</em> which just counts the number of
+matching terms, then we can say that the first document is a better match --
+is <em>more relevant</em> to our query -- than the second document.</p>
+<p>But there are a few problems with our current inverted index:</p>
+<ol>
+<li><p><code>&quot;Quick&quot;</code> and <code>&quot;quick&quot;</code> appear as separate terms, while the user probably
+thinks of them as the same word.</p>
+</li>
+<li><p><code>&quot;fox&quot;</code> and <code>&quot;foxes&quot;</code> are pretty similar, as are <code>&quot;dog&quot;</code> and <code>&quot;dogs&quot;</code>
+-- they share the same root word.</p>
+</li>
+<li><p><code>&quot;jumped&quot;</code> and <code>&quot;leap&quot;</code>, while not from the same root word, are similar
+in meaning -- they are synonyms.</p>
+</li>
+</ol>
+<p>With the above index, a search for <code>&quot;+Quick +fox&quot;</code> wouldn&#39;t match any
+documents. (Remember, a preceding <code>+</code> means that the word must be present).
+Both the term <code>&quot;Quick&quot;</code> and the term <code>&quot;fox&quot;</code> have to be in the same document
+in order to satisfy the query, but the first doc contains <code>&quot;quick fox&quot;</code> and
+the second doc contains <code>&quot;Quick foxes&quot;</code>.</p>
+<p>Our user could reasonably expect both documents to match the query. We can do
+better.</p>
+<p>If we normalize the terms into a standard format, then we can find documents
+that contain terms that are not exactly the same as the user requested, but
+are similar enough to still be relevant. For instance:</p>
+<ol>
+<li><p><code>&quot;Quick&quot;</code> can be lowercased to become <code>&quot;quick&quot;</code>.</p>
+</li>
+<li><p><code>&quot;foxes&quot;</code> can be <em>stemmed</em> -- reduced to its root form -- to
+become <code>&quot;fox&quot;</code>. Similarly <code>&quot;dogs&quot;</code> could be stemmed to <code>&quot;dog&quot;</code>.</p>
+</li>
+<li><p><code>&quot;jumped&quot;</code> and <code>&quot;leap&quot;</code> are synonyms and can be indexed as just the
+single term <code>&quot;jump&quot;</code>.</p>
+</li>
+</ol>
+<p>Now the index looks like this:</p>
+<pre><code>Term      Doc_1  Doc_2
+-------------------------
+brown   |   X   |  X
+dog     |   X   |  X
+fox     |   X   |  X
+in      |       |  X
+jump    |   X   |  X
+lazy    |   X   |  X
+over    |   X   |  X
+quick   |   X   |  X
+summer  |       |  X
+the     |   X   |  X
+------------------------
+</code></pre><p>But we&#39;re not there yet. Our search for <code>&quot;+Quick +fox&quot;</code> would <em>still</em> fail,
+because we no longer have the exact term <code>&quot;Quick&quot;</code> in our index. However, if
+we apply the same normalization rules that we used on the <code>content</code> field to
+our query string, it would become a query for <code>&quot;+quick +fox&quot;</code>, which would
+match both documents!</p>
+<p>IMPORTANT: This is very important. You can only find terms that actually exist in your
+index, so: <em>both the indexed text and and query string must be normalized
+into the same form</em>.</p>
+<p>This process of tokenization and normalization is called <em>analysis</em>, which we
+discuss in the next section.</p>
 
                     
                     </section>
@@ -1021,10 +1118,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../mapping_analysis/exact_vs_full_text.html" class="navigation navigation-prev " aria-label="Previous page: Exact_vs_full_text"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../mapping_analysis/analysis.html" class="navigation navigation-next " aria-label="Next page: Analysis"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

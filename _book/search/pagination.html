@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>分页 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../search/query_string.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../search/multi_index_multi_type.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="5.3" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -778,7 +778,7 @@
         </li>
     
         
-        <li class="chapter " data-level="5.3" data-path="search/pagination.html">
+        <li class="chapter active" data-level="5.3" data-path="search/pagination.html">
             
                 
                     <a href="../search/pagination.html">
@@ -1005,12 +1005,47 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_111">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h1 id="">分页</h1>
+<p>在《空白搜索》一节中，搜索结果告诉我们在集群中共有14个文档匹配我们的（空白）查询。但是在<code>hits</code>数组中只有10个文档。我们怎样才能看到其他的呢？</p>
+<p>与SQL使用<code>LIMIT</code>来控制单“页”数量类似，Elasticsearch使用的是<code>from</code>以及<code>size</code>两个参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>size</code></td>
+<td>每次返回多少个结果，默认值为<code>10</code></td>
+</tr>
+<tr>
+<td><code>from</code></td>
+<td>忽略最初的几条结果，默认值为<code>0</code></td>
+</tr>
+</tbody>
+</table>
+<p>假设每页显示5条结果，那么1至3页的请求就是：</p>
+<pre><code class="lang-js">GET /_search?size=<span class="hljs-number">5</span>
+GET /_search?size=<span class="hljs-number">5</span>&amp;from=<span class="hljs-number">5</span>
+GET /_search?size=<span class="hljs-number">5</span>&amp;from=<span class="hljs-number">10</span>
+</code></pre>
+<p>当心不要一次请求过多或者页码过大的结果。它们会在返回前排序。一个请求会经过多个分片。每个分片都会生成自己的排序结果。然后再进行集中整理，以确保最终结果的正确性。</p>
+<hr>
+<blockquote>
+<h3 id="">分布式系统中的大页码页面</h3>
+</blockquote>
+<p>为了说明白为什么页码过大的请求会产生问题，我们就先预想一下我们在搜索一个拥有5个主分片的索引。当我们请求第一页搜索的时候，每个分片产生自己前十名，然后将它们返回给<em>请求节点</em>，然后这个节点会将50条结果重新排序以产生最终的前十名。</p>
+<p>现在想想一下我们想获得第1,000页，也就是第10,001到第10,010条结果，与之前同理，每一个分片都会先产生自己的前10,010名，然后请求节点统一处理这50,050条结果，然后再丢弃掉其中的50,040条！</p>
+<p>现在你应该明白了，在分布式系统中，大页码请求所消耗的系统资源是呈指数式增长的。这也是为什么网络搜索引擎不会提供超过1,000条搜索结果的原因。</p>
+<hr>
+<blockquote>
+<h3 id="tip">TIP</h3>
+</blockquote>
+<p>在《重索引》一章中，我们将详细探讨如何才能高效地获取大量数据。</p>
 
                     
                     </section>
@@ -1021,10 +1056,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../search/multi_index_multi_type.html" class="navigation navigation-prev " aria-label="Previous page: 多索引多类型"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../search/query_string.html" class="navigation navigation-next " aria-label="Next page: 查询语句"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

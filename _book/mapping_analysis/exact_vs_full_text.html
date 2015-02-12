@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>Exact_vs_full_text | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../mapping_analysis/inverted_index.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../mapping_analysis/README.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="6.1" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -832,7 +832,7 @@
                 
     
         
-        <li class="chapter " data-level="6.1" data-path="mapping_analysis/exact_vs_full_text.html">
+        <li class="chapter active" data-level="6.1" data-path="mapping_analysis/exact_vs_full_text.html">
             
                 
                     <a href="../mapping_analysis/exact_vs_full_text.html">
@@ -1005,12 +1005,56 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_95">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h1 id="">精确值与全文</h1>
+<p>Data in Elasticsearch can be broadly divided into two types:
+<em>exact values</em> and <em>full text</em>.</p>
+<p>Exact values are exactly what they sound like.  Examples would be a date or a
+user ID, but can also include exact strings like a username or an email
+address. The exact value <code>&quot;Foo&quot;</code> is not the same as the exact value <code>&quot;foo&quot;</code>.
+The exact value <code>2014</code> is not the same as the exact value <code>2014-09-15</code>.</p>
+<p>Full text, on the other hand, refers to textual data -- usually written in
+some human language -- like the text of a tweet or the body of an email.</p>
+<hr>
+<p>Full text is often referred to as ``unstructured data&#39;&#39;, which is a misnomer
+-- natural language is highly structured. The problem is that the rules of
+natural languages are complex which makes them difficult for computers to
+parse correctly. For instance, consider this sentence:</p>
+<pre><code>May is fun but June bores me.
+</code></pre><p>Does it refer to months or to people?</p>
+<hr>
+<p>Exact values are easy to query. The decision is binary -- a value either
+matches the query, or it doesn&#39;t. This kind of query is easy to express with
+SQL:</p>
+<pre><code class="lang-js">WHERE name    = <span class="hljs-string">"John Smith"</span>
+  AND user_id = <span class="hljs-number">2</span>
+  AND date    &gt; <span class="hljs-string">"2014-09-15"</span>
+</code></pre>
+<p>Querying full text data is much more subtle. We are not just asking <code>Does
+this document match the query&#39;&#39;, but</code>How <em>well</em> does this document match the
+query?&#39;&#39; In other words, how <em>relevant</em> is this document to the given query?</p>
+<p>We seldom want to match the whole full text field exactly.  Instead, we want
+to search <em>within</em> text fields. Not only that, but we expect search to
+understand our <em>intent</em>:</p>
+<ul>
+<li><p>a search for <code>&quot;UK&quot;</code> should also return documents mentioning the <code>&quot;United
+Kingdom&quot;</code></p>
+</li>
+<li><p>a search for <code>&quot;jump&quot;</code> should also match <code>&quot;jumped&quot;</code>, <code>&quot;jumps&quot;</code>, <code>&quot;jumping&quot;</code>
+and perhaps even <code>&quot;leap&quot;</code></p>
+</li>
+<li><p><code>&quot;johnny walker&quot;</code> should match <code>&quot;Johnnie Walker&quot;</code> and <code>&quot;johnnie depp&quot;</code>
+should match <code>&quot;Johnny Depp&quot;</code></p>
+</li>
+<li><p><code>&quot;fox news hunting&quot;</code> should return stories about hunting on Fox News,
+while <code>&quot;fox hunting news&quot;</code> should return news stories about fox hunting.</p>
+</li>
+</ul>
+<p>In order to facilitate these types of queries on full text fields,
+Elasticsearch first <em>analyzes</em> the text, then uses the results to build
+an <em>inverted index</em>. We will discuss the inverted index and the
+analysis process in the next two sections.</p>
 
                     
                     </section>
@@ -1021,10 +1065,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../mapping_analysis/README.html" class="navigation navigation-prev " aria-label="Previous page: 映射与统计"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../mapping_analysis/inverted_index.html" class="navigation navigation-next " aria-label="Next page: Inverted_index"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

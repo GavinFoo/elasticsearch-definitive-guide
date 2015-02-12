@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>映射与统计 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../mapping_analysis/exact_vs_full_text.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../search/query_string.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="6" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -815,7 +815,7 @@
         </li>
     
         
-        <li class="chapter " data-level="6" data-path="mapping_analysis/README.html">
+        <li class="chapter active" data-level="6" data-path="mapping_analysis/README.html">
             
                 
                     <a href="../mapping_analysis/README.html">
@@ -1005,12 +1005,55 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_90">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h1 id="">映射与统计</h1>
+<p>当我们在进行搜索的事情，我们会发现有一些奇怪的事情。比如有一些内容似乎是被打破了：在我们的索引中有12条推文，中有一个包含了<code>2014-09-15</code>这个日期，但是看看下面的查询结果中的总数量：</p>
+<pre><code class="lang-js">GET /_search?q=<span class="hljs-number">2014</span>              # <span class="hljs-number">12</span> results
+GET /_search?q=<span class="hljs-number">2014</span>-<span class="hljs-number">09</span>-<span class="hljs-number">15</span>        # <span class="hljs-number">12</span> results !
+GET /_search?q=date:<span class="hljs-number">2014</span>-<span class="hljs-number">09</span>-<span class="hljs-number">15</span>   # <span class="hljs-number">1</span>  result
+GET /_search?q=date:<span class="hljs-number">2014</span>         # <span class="hljs-number">0</span>  results !
+</code></pre>
+<p>为什么我们使用字段<code>_all</code>搜索全年就会返回所有推文，而使用字段<code>date</code>搜索年份却没有结果呢？为什么使用两者所得到的结果是不同的？</p>
+<p>推测大概是因为我们的数据在<code>_all</code>和<code>date</code>在索引时没有被相同处理。我们来看看Elasticsearch是如何处理我们的文档结构的。我们可以对<code>gb</code>的<code>tweet</code>使用<em>mapping</em>请求：</p>
+<pre><code class="lang-js">GET /gb/_mapping/tweet
+</code></pre>
+<p>我们得到：</p>
+<pre><code class="lang-js">{
+   <span class="hljs-string">"gb"</span>: {
+      <span class="hljs-string">"mappings"</span>: {
+         <span class="hljs-string">"tweet"</span>: {
+            <span class="hljs-string">"properties"</span>: {
+               <span class="hljs-string">"date"</span>: {
+                  <span class="hljs-string">"type"</span>: <span class="hljs-string">"date"</span>,
+                  <span class="hljs-string">"format"</span>: <span class="hljs-string">"dateOptionalTime"</span>
+               },
+               <span class="hljs-string">"name"</span>: {
+                  <span class="hljs-string">"type"</span>: <span class="hljs-string">"string"</span>
+               },
+               <span class="hljs-string">"tweet"</span>: {
+                  <span class="hljs-string">"type"</span>: <span class="hljs-string">"string"</span>
+               },
+               <span class="hljs-string">"user_id"</span>: {
+                  <span class="hljs-string">"type"</span>: <span class="hljs-string">"long"</span>
+               }
+            }
+         }
+      }
+   }
+}
+</code></pre>
+<p>Elasticsearch会根据系统自动判断字段类型并生成一个映射。返回结果告诉我们<code>date</code>字段被识别成了<code>date</code>类型。<code>_all</code>没有出现是因为他是默认字段，但是我们知道字段<code>_all</code>实际上是<code>string</code>类型的。</p>
+<p>所以类型为<code>date</code>的字段和类型为<code>string</code>的字段的索引方式是不同的。</p>
+<p>So fields of type <code>date</code> and fields of type <code>string</code> are indexed differently,
+and can thus be searched differently.  That&#39;s not entirely surprising.
+You might expect that each of the core data types -- strings, numbers, booleans
+and dates -- might be indexed slightly differently. And this is true:
+there are slight differences.</p>
+<p>But by far the biggest difference is actually between fields that represent
+<em>exact values</em> (which can include <code>string</code> fields) and fields that
+represent <em>full text</em>. This distinction is really important -- it&#39;s the thing
+that separates a search engine from all other databases.</p>
 
                     
                     </section>
@@ -1021,10 +1064,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../search/query_string.html" class="navigation navigation-prev " aria-label="Previous page: 查询语句"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../mapping_analysis/exact_vs_full_text.html" class="navigation navigation-next " aria-label="Next page: Exact_vs_full_text"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

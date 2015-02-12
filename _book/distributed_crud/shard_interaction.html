@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>主从互通 | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,10 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
+    <link rel="next" href="../distributed_crud/create_index_delete.html" />
     
     
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../distributed_crud/routing.html" />
     
 
         
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="4.2" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +226,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -628,7 +628,7 @@
         </li>
     
         
-        <li class="chapter " data-level="4.2" data-path="distributed_crud/shard_interaction.html">
+        <li class="chapter active" data-level="4.2" data-path="distributed_crud/shard_interaction.html">
             
                 
                     <a href="../distributed_crud/shard_interaction.html">
@@ -1005,12 +1005,24 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_66">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <h3 id="">主从库之间是如何通信的</h3>
+<p>For explanation purposes, let&#39;s imagine that we have a cluster
+consisting of 3 nodes. It contains one index called <code>blogs</code> which has
+two primary shards. Each primary shard has two replicas. Copies of
+the same shard are never allocated to the same node, so our cluster
+looks something like &lt;<img-distrib>&gt;.</p>
+<p>[[img-distrib]]
+.A cluster with three nodes and one index
+image::images/04-01_index.png[&quot;A cluster with three nodes and one index&quot;]</p>
+<p>We can send our requests to any node in the cluster. Every node is fully
+capable of serving any request.  Every node knows the location of every
+document in the cluster and so can forward requests directly to the required
+node. In the examples below, we will send all of our requests to <code>Node 1</code>,
+which we will refer to as  the <em>requesting node</em>.</p>
+<p>TIP: When sending requests, it is good practice to round-robin through all the
+nodes in the cluster, in order to spread the load.</p>
 
                     
                     </section>
@@ -1021,10 +1033,10 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../distributed_crud/routing.html" class="navigation navigation-prev " aria-label="Previous page: 路由"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
+        <a href="../distributed_crud/create_index_delete.html" class="navigation navigation-next " aria-label="Next page: 创建索引删除"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

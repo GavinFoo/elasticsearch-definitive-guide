@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>本章总结 | Elasticsearch 权威指南</title>
+        <title>Complex_datatypes | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -18,10 +18,8 @@
     
     
     
-    <link rel="next" href="../distributed_cluster/README.html" />
     
-    
-    <link rel="prev" href="../getting_started/distributed.html" />
+    <link rel="prev" href="../mapping_analysis/mapping.html" />
     
 
         
@@ -33,7 +31,7 @@
 
 
         
-    <div class="book"  data-level="1.10" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="6.5" data-basepath=".." data-revision="1423704233753">
     
 
 <div class="book-summary">
@@ -226,7 +224,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.10" data-path="getting_started/conclusion.html">
+        <li class="chapter " data-level="1.10" data-path="getting_started/conclusion.html">
             
                 
                     <a href="../getting_started/conclusion.html">
@@ -896,7 +894,7 @@
         </li>
     
         
-        <li class="chapter " data-level="6.5" data-path="mapping_analysis/complex_datatypes.html">
+        <li class="chapter active" data-level="6.5" data-path="mapping_analysis/complex_datatypes.html">
             
                 
                     <a href="../mapping_analysis/complex_datatypes.html">
@@ -1005,12 +1003,153 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_92">
                     
-                        <h1 id="">总结</h1>
-<p>到目前为止，你应该已经知道Elasticsearch可以实现哪些功能，入门上手是非常简单的。只需要最少的知识和配置就可以开始使用Elasticsearch也是它的追求。学习Elasticsearch最好的方法就是开始使用它：进行的检索与搜索吧！</p>
-<p>当然，学得越多，你的生产力就越高。你也就能对特定的内容进行微调，得到更适合你的结果。</p>
-<p>之后的章节，我们将会引领你从新手晋级到专家。每一个章节都会解释一个要点，同时我们也会提供专家级别的小提示。如果你只是刚刚起步，这些提示可能并不是很适合你。Elasticsearch 会在一开始设置很多合理的默认值。你可以在需要提升性能的时候再重新回顾它们。</p>
+                        <p>[[complex-core-fields]]
+=== Complex core field types</p>
+<p>Besides the simple scalar datatypes that we mentioned above, JSON also
+has <code>null</code> values, arrays and objects, all of which are supported by
+Elasticsearch:</p>
+<p>==== Multi-value fields</p>
+<p>It is quite possible that we want our <code>tag</code> field to contain more
+than one tag. Instead of a single string, we could index an array of tags:</p>
+<pre><code class="lang-js">{ <span class="hljs-string">"tag"</span>: [ <span class="hljs-string">"search"</span>, <span class="hljs-string">"nosql"</span> ]}
+</code></pre>
+<p>There is no special mapping required for arrays. Any field can contain zero,
+one or more values, in the same way as a full text field is analyzed to
+produce multiple terms.</p>
+<p>By implication, this means that <em>all of the values of an array must be
+of the same datatype</em>.  You can&#39;t mix dates with strings. If you create
+a new field by indexing an array, Elasticsearch will use the
+datatype of the first value in the array to determine the <code>type</code> of the
+new field.</p>
+<hr>
+<p>The elements inside an array are not ordered. You cannot refer to <code>the first
+element&#39;&#39; or</code>the last element&#39;&#39;.  Rather think of an array as a <em>bag of
+values</em>.</p>
+<hr>
+<p>==== Empty fields</p>
+<p>Arrays can, of course, be empty. This is the equivalent of having zero
+values. In fact, there is no way of storing a <code>null</code> value in Lucene, so
+a field with a <code>null</code> value is also considered to be an empty
+field.</p>
+<p>These four fields would all be considered to be empty, and would not be
+indexed:</p>
+<pre><code class="lang-js"><span class="hljs-string">"empty_string"</span>:             <span class="hljs-string">""</span>,
+<span class="hljs-string">"null_value"</span>:               <span class="hljs-literal">null</span>,
+<span class="hljs-string">"empty_array"</span>:              [],
+<span class="hljs-string">"array_with_null_value"</span>:    [ <span class="hljs-literal">null</span> ]
+</code></pre>
+<p>==== Multi-level objects</p>
+<p>The last native JSON datatype that we need to discuss is the <em>object</em>
+-- known in other languages as hashes, hashmaps, dictionaries or
+associative arrays.</p>
+<p><em>Inner objects</em> are often used to embed one entity or object inside
+another. For instance, instead of having fields called <code>user_name</code>
+and <code>user_id</code> inside our <code>tweet</code> document, we could write it as:</p>
+<p>```js
+{
+    &quot;tweet&quot;:            &quot;Elasticsearch is very flexible&quot;,
+    &quot;user&quot;: {
+        &quot;id&quot;:           &quot;@johnsmith&quot;,
+        &quot;gender&quot;:       &quot;male&quot;,
+        &quot;age&quot;:          26,
+        &quot;name&quot;: {
+            &quot;full&quot;:     &quot;John Smith&quot;,
+            &quot;first&quot;:    &quot;John&quot;,
+            &quot;last&quot;:     &quot;Smith&quot;
+        }
+    }</p>
+<h2 id="">}</h2>
+<p>==== Mapping for inner objects</p>
+<p>Elasticsearch will detect new object fields dynamically and map them as
+type <code>object</code>, with each inner field listed under <code>properties</code>:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>{
+  &quot;gb&quot;: {
+    &quot;tweet&quot;: { <1>
+      &quot;properties&quot;: {
+        &quot;tweet&quot;:            { &quot;type&quot;: &quot;string&quot; },
+        &quot;user&quot;: { <2>
+          &quot;type&quot;:             &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;id&quot;:           { &quot;type&quot;: &quot;string&quot; },
+            &quot;gender&quot;:       { &quot;type&quot;: &quot;string&quot; },
+            &quot;age&quot;:          { &quot;type&quot;: &quot;long&quot;   },
+            &quot;name&quot;:   { <2>
+              &quot;type&quot;:         &quot;object&quot;,
+              &quot;properties&quot;: {
+                &quot;full&quot;:     { &quot;type&quot;: &quot;string&quot; },
+                &quot;first&quot;:    { &quot;type&quot;: &quot;string&quot; },
+                &quot;last&quot;:     { &quot;type&quot;: &quot;string&quot; }
+              }
+            }
+          }
+        }
+      }
+    }
+  }</p>
+<h2 id="">}</h2>
+<p><1> Root object.</p>
+<p><2> Inner objects.</p>
+<p>The mapping for the <code>user</code> and <code>name</code> fields have a similar structure
+to the mapping for the <code>tweet</code> type itself.  In fact, the <code>type</code> mapping
+is just a special type of <code>object</code> mapping, which we refer to as the
+<em>root object</em>.  It is just the same as any other object, except that it has
+some special top-level fields for document metadata, like <code>_source</code>,
+the <code>_all</code> field etc.</p>
+<p>==== How inner objects are indexed</p>
+<p>Lucene doesn&#39;t understand inner objects. A Lucene document consists of a flat
+list of key-value pairs.  In order for Elasticsearch to index inner objects
+usefully, it converts our document into something like this:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>{
+    &quot;tweet&quot;:            [elasticsearch, flexible, very],
+    &quot;user.id&quot;:          [@johnsmith],
+    &quot;user.gender&quot;:      [male],
+    &quot;user.age&quot;:         [26],
+    &quot;user.name.full&quot;:   [john, smith],
+    &quot;user.name.first&quot;:  [john],
+    &quot;user.name.last&quot;:   [smith]</p>
+<h2 id="">}</h2>
+<p><em>Inner fields</em> can be referred to by name, eg <code>&quot;first&quot;</code>. To distinguish
+between two fields that have the same name we can use the full <em>path</em>,
+eg <code>&quot;user.name.first&quot;</code> or even the <code>type</code> name plus
+the path: <code>&quot;tweet.user.name.first&quot;</code>.</p>
+<p>NOTE: In the simple flattened document above, there is no field called <code>user</code>
+and no field called <code>user.name</code>.  Lucene only indexes scalar or simple values,
+not complex datastructures.</p>
+<p>==== Arrays of inner objects</p>
+<p>Finally, consider how an array containing inner objects would be indexed.
+Let&#39;s say we have a <code>followers</code> array which looks like this:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>{
+    &quot;followers&quot;: [
+        { &quot;age&quot;: 35, &quot;name&quot;: &quot;Mary White&quot;},
+        { &quot;age&quot;: 26, &quot;name&quot;: &quot;Alex Jones&quot;},
+        { &quot;age&quot;: 19, &quot;name&quot;: &quot;Lisa Smith&quot;}
+    ]</p>
+<h2 id="">}</h2>
+<p>This document will be flattened as we described above, but the
+result will look like this:</p>
+<h2 id="sourcejs">[source,js]</h2>
+<p>{
+    &quot;followers.age&quot;:    [19, 26, 35],
+    &quot;followers.name&quot;:   [alex, jones, lisa, smith, mary, white]</p>
+<h2 id="">}</h2>
+<p>The correlation between <code>{age: 35}</code> and <code>{name: Mary White}</code> has been lost as
+each multi-value field is just a bag of values, not an ordered array.  This is
+sufficient for us to ask:</p>
+<ul>
+<li><em>Is there a follower who is 26 years old?</em></li>
+</ul>
+<p>but we can&#39;t get an accurate answer to:</p>
+<ul>
+<li><em>Is there a follower who is 26 years old <strong>and who is called Alex Jones?</strong></em></li>
+</ul>
+<p>Correlated inner objects, which are able to answer queries like these,
+are called <em>nested</em> objects, and we will discuss them later on in
+&lt;<relations>&gt;.</p>
 
                     
                     </section>
@@ -1021,10 +1160,8 @@
         </div>
 
         
-        <a href="../getting_started/distributed.html" class="navigation navigation-prev " aria-label="Previous page: 分布式"><i class="fa fa-angle-left"></i></a>
+        <a href="../mapping_analysis/mapping.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Mapping"><i class="fa fa-angle-left"></i></a>
         
-        
-        <a href="../distributed_cluster/README.html" class="navigation navigation-next " aria-label="Next page: 分布式集群"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
