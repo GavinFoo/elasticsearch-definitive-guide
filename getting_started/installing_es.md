@@ -72,8 +72,8 @@ curl 'http://localhost:9200/?pretty'
    "status": 200,
    "name": "Shrunken Bones",
    "version": {
-      "number": "1.1.0",
-      "lucene_version": "4.7"
+      "number": "1.4.0",
+      "lucene_version": "4.10"
    },
    "tagline": "You Know, for Search"
 }

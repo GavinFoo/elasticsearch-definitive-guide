@@ -1,48 +1,22 @@
-=== Add an index
+# 添加索引
 
-To add data to Elasticsearch, we need an _index_ -- a place to store related
-data.  In reality, an index is just a ``logical namespace'' which points to
-one or more physical _shards_.
+为了将数据添加到Elasticsearch，我们需要 **索引(index)** —— 存储关联数据的地方。实际上，索引只是一个 **逻辑命名空间(logical namespace)**，它指向一个或多个 **分片(shards)**。
 
-A _shard_ is a low-level ``worker unit''. Each shard is a single instance of
-Lucene, and is a complete search engine in its own right. Our documents are
-stored and indexed in shards, but our applications don't talk to them directly.
-Instead, they talk to an index.
+**分片(shard)** 是 **工作单元(worker unit)** 底层的一员，它只负责保存索引中所有数据的一小片。在接下来的《深入分片》一章中，我们还将深入学习分片是如何运作的，但是现在你只要知道分片是一个独立的Lucene实例既可，并且它自身也是一个完整的搜索引擎。我们的文档存储并且被索引在分片中，但是我们的程序并不会直接与它们通信。取而代之，它们直接与索引进行通信的。
 
-Shards are how Elasticsearch distributes data around your cluster. Think of
-shards as containers for data. Documents are stored in shards, and shards are
-allocated to nodes in your cluster. As your cluster grows or shrinks,
-Elasticsearch will automatically migrate shards between nodes so that the
-cluster remains balanced.
+在elasticsearch中，分片用来分配集群中的数据。把分片想象成一个数据的容器。数据被存储在分片中，然后分片又被分配在集群的节点上。当你的集群扩展或者缩小时，elasticsearch会自动的在节点之间迁移分配分片，以便集群保持均衡。
 
-A shard can be either a _primary_ shard or a _replica_ shard. Each document in
-your index belongs to a single primary shard, so the number of primary shards
-that you have determines the maximum amount of data that your index can hold.
+分片分为 **主分片(primary shard)** 以及 **从分片(replica shard)** 两种。在你的索引中，每一个文档都属于一个主分片，所以具体有多少主分片取决于你的索引能存储多少数据。
 
-****
+> 虽然理论上主分片对存储多少数据是没有限制的。分片的最大数量完全取决于你的实际状况：硬件的配置、文档的大小和复杂度、如何索引和查询你的文档，以及你期望的响应时间。
 
-While there is no theoretical limit to the amount of data that a primary shard
-can hold, there is a practical limit.  What constitutes the maximum shard size
-depends entirely on your use case: the hardware you have, the size and
-complexity of your documents, how you index and query your documents, and your
-expected response times.
+从分片只是主分片的一个副本，它用于提供数据的冗余副本，在硬件故障时提供数据保护，同时服务于搜索和检索这种只读请求。
 
-****
+索引中的主分片的数量在索引创建后就固定下来了，但是从分片的数量可以随时改变。
 
-A replica shard is just a copy of a primary shard. Replicas are used to provide
-redundant copies of your data to protect against hardware failure, and to
-serve read requests like searching or retrieving a document.
+接下来，我们在空的单节点集群中上创建一个叫做`blogs`的索引。一个索引默认设置了5个主分片，但是为了演示，我们这里只设置3个主分片和一组从分片（每个主分片有一个从分片对应）：
 
-The number of primary shards in an index is fixed at the time that an index is
-created, but the number of replica shards can be changed at any time.
-
-Let's create an index called `blogs` in our empty one-node cluster. By
-default, indices are assigned 5 primary shards, but for the purpose of this
-demonstration, we'll assign just 3 primary shards and 1 replica (one replica
-of every primary shard):
-
-[source,js]
---------------------------------------------------
+```Js
 PUT /blogs
 {
    "settings" : {
@@ -50,19 +24,14 @@ PUT /blogs
       "number_of_replicas" : 1
    }
 }
---------------------------------------------------
-// SENSE: 020_Distributed_Cluster/15_Add_index.json
+```
+现在，我们的集群看起来就像下图所示了**有索引的单节点集群**，这三个主分片都被分配在`Node 1`。
 
-[[cluster-one-node]]
-.A single-node cluster with an index
-image::images/02-02_one_node.png["A single-node cluster with an index"]
+![有索引的单节点集群](../images/02-02_one_node.png)
 
-Our cluster now looks like <<cluster-one-node>> -- all 3 primary shards have
-been allocated to `Node 1`. If we were to check the
-<<cluster-health,`cluster-health`>> now, we would see this:
+如果我们现在查看 **集群健康(cluster-health)** ，我们将得到如下信息：
 
-[source,js]
---------------------------------------------------
+```Js
 {
    "cluster_name":          "elasticsearch",
    "status":                "yellow", <1>
@@ -75,18 +44,11 @@ been allocated to `Node 1`. If we were to check the
    "initializing_shards":   0,
    "unassigned_shards":     3 <2>
 }
---------------------------------------------------
+```
 
-<1> Cluster `status` is `yellow`.
-<2> Our three replica shards have not been allocated to a node.
+1. 集群的 `status` 为 `yellow`.
+2. 我们的三个从分片还没有被分配到节点上。
 
-A cluster health of `yellow` means that all *primary* shards are up and
-running -- the cluster is capable of serving any request successfully -- but
-not  all *replica* shards are active.  In fact all three of our replica shards
-are currently `unassigned` -- they haven't been allocated to a node. It
-doesn't make sense to store copies of the same data on the same node. If we
-were to lose that node, we would lose all copies of our data.
+集群的健康状况`yellow`意味着所有的 **主分片(primary shards)** 启动并且运行了，这时集群已经可以成功的处理任意请求，但是 **从分片(replica shards)** 没有完全被激活。事实上，当前这三个从分片都处于`unassigned`（未分配）的状态，它们还未被分配到节点上。在同一个节点上保存相同的数据副本是没有必要的，如果这个节点故障了，就等同于所有的数据副本也丢失了。
 
-Currently our cluster is fully functional but at risk of data loss in case of
-hardware failure.
-
+现在我们的集群已经可用了，但是依旧存在因硬件故障而导致数据丢失的风险。

@@ -1,5 +1,6 @@
 # Summary
 
+* [Introduction](README.md)
 * [入门](getting_started/README.md)
    * [初识](getting_started/what_is_it.md)
    * [安装](getting_started/installing_es.md)
@@ -18,7 +19,7 @@
    * [容错移转](distributed_cluster/add_failover.md)
    * [横向扩展](distributed_cluster/scale_horizontally.md)
    * [扩展](distributed_cluster/scale_more.md)
-   * [错误恢复](distributed_cluster/coping_with_failure.md)
+   * [故障恢复](distributed_cluster/coping_with_failure.md)
 * [数据](data/README.md)
    * [文档](data/document.md)
    * [索引](data/index.md)

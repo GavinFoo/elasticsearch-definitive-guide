@@ -1,16 +1,14 @@
 # 集群健康
 
-There are many statistics that can be monitored in an Elasticsearch cluster
-but the single most important one is the _cluster health_, which reports a
-`status` of either `green`, `yellow` or `red`:
+在Elasticsearch集群中可以监控统计很多信息，其中最重要的就是：**集群健康(cluster health)**。它的 `status` 有 `green`、`yellow`、`red` 三种；
 
-```js
+```
 GET /_cluster/health
 ```
 
-which, on an empty cluster with no indices, will return something like:
+在一个没有索引的空集群中，它将返回如下信息：
 
-```js
+```Js
 {
    "cluster_name":          "elasticsearch",
    "status":                "green", <1>
@@ -24,17 +22,14 @@ which, on an empty cluster with no indices, will return something like:
    "unassigned_shards":     0
 }
 ```
-1. The `status` field is the one we're most interested in.
+1.  `status` 是我们最应该关注的字段。
 
-The `status` field provides an overall indication of how the cluster is
-functioning. The meaning of the three colors are provided here for reference:
+`status`可以告诉我们当前集群是否处于一个可用的状态。三种颜色分别代表：
 
+| 状态     | 意义                                     |
+| -------- | ---------------------------------------- |
+| `green`  | 所有主分片和从分片都可用               |
+| `yellow` | 所有主分片可用，但存在不可用的从分片 |
+| `red`    | 存在不可用的主要分片                 |
 
-
-[horizontal]
-`green`::   All primary and replica shards are active.
-`yellow`::  All primary shards are active, but not all replica shards are active.
-`red`::     Not all primary shards are active.
-
-In the rest of this chapter we explain what _primary_ and _replica_ shards are
-and explain the practical implications of each of the above colors.
+在接下来的章节，我们将学习一下什么是**主要分片(primary shard)**和**从分片(replica shard)**，并说明这些状态在实际环境中的意义。
