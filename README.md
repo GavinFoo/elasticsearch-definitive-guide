@@ -2,15 +2,14 @@
 
 ## 项目信息
 
+#### [在线阅读](http://learnes.net)
+国外自动指向 [GITBOOK项目](http://fuxiaopang.gitbooks.io/LearnElasticSearch/) | 国内用户自动指向 [SAE](http://learnes.sinaapp.com/)
+
 #### [GITHUB 仓库](https://github.com/GavinFoo/elasticsearch-definitive-guide)
-
-#### [GITBOOK 在线阅读](http://fuxiaopang.gitbooks.io/LearnElasticSearch/) 国外用户
-
-#### [SAE 在线阅读](http://learnes.net) 国内用户
 
 
 ## 译者前言
-译者现在的工作项目中需要用到elasticsearch，但是在网络中找了很多的相关的内容都很不完善，中文的文档更是寥寥无几，所以我决定边研究边翻译一下官方推出的权威手册。在这里要先感谢原作者们！如果各位在这里发现了错误之处，请大家在Issue中提出或者pr这个项目。
+译者现在的工作项目中需要用到elasticsearch，但是在网络中找了很多的相关的内容都很不完善，中文的文档更是寥寥无几，所以我决定边研究边翻译一下官方推出的权威手册。在这里要先感谢原作者们！如果各位在这里发现了错误之处，请大家在Issue中提出或者pr[这个项目](https://github.com/GavinFoo/elasticsearch-definitive-guide/)。
 ****
 原作名字：elasticsearch - the definitive guide
 
@@ -23,7 +22,7 @@
 
 这本书还在不断地添加内容中，我们会陆陆续续地在这里添加新的章节。这本书中的内容针对的是Elasticsearch的最新版本。
 
-欢迎反馈 – 如果这里出现了错误，或者你有什么建议可以到我们GitHub项目中 [新建一个issue](https://github.com/elasticsearch/elasticsearch-definitive-guide/issues)。
+欢迎反馈 – 如果这里出现了错误，或者你有什么建议可以到我们GitHub项目中 [新建一个issue](https://github.com/GavinFoo/elasticsearch-definitive-guide/issues)。
 ****
 
 这个世界已经被数据淹没。我们创造的系统所产生的数据可以瞬间轻而易举地将我们压垮，现有的科技一直致力于如何存储数据，并能将拥有大量信息的数据仓库结构化。而当你准备开始从大量的数据中得出结论做决策的时候，美好的一天就要被毁灭了……

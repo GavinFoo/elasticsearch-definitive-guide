@@ -4,7 +4,7 @@ Elasticsearch是一个建立在全文搜索引擎[Apache Lucene(TM)](https://luc
 
 但是Lucene只是一个框架，要充分利用它的功能，你需要使用JAVA，并且在你的程序中集成Lucene。更糟的是，你需要做很多的学习了解，才能明白它是如何运行的，Lucene确实非常复杂。
 
-Elasticsearch使用Lucene作为内部引擎，但是在你使用它做全文搜索时，只需要使用统一开发好的API即可，而不需要了解其背后复杂的Lucene的运行原理。
+Elasticsearch使用Lucene作为内部引擎，但是在你使用它做全文搜索时，只需要使用统一开发好的API即可，而并不需要了解其背后复杂的Lucene的运行原理。
 
 当然Elasticsearch并不仅仅是Lucene这么简单，它不但包括了全文搜索功能，还可以进行以下工作:
 
