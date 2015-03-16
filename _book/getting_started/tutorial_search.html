@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.6" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="1.6" data-basepath=".." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1005,14 +1005,14 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_86">
+                    <section class="normal" id="section-gitbook_74">
                     
                         <h1 id="">检索文档</h1>
-<p>现在，我们已经在Elasticsearch中存储了一些数据，我们可以开始根据这个项目的需求进行工作了。第一个需求就是要能搜索每一个员工的数据。</p>
-<p>对于Elasticsearch来说，这是非常简单的。我们只需要执行一次HTTP GET请求，然后指出文档的<strong>地址</strong>，也就是索引、类型以及ID即可。通过这三个部分，我们就可以得到原始的JSON文档：</p>
+<p>现在，我们已经在 Elasticsearch 中存储了一些数据，我们可以开始根据这个项目的需求进行工作了。第一个需求就是要能搜索每一个员工的数据。</p>
+<p>对于 Elasticsearch 来说，这是非常简单的。我们只需要执行一次 HTTP GET 请求，然后指出文档的<strong>地址</strong>，也就是索引、类型以及 ID 即可。通过这三个部分，我们就可以得到原始的 JSON 文档：</p>
 <pre><code class="lang-js">GET /megacorp/employee/<span class="hljs-number">1</span>
 </code></pre>
-<p>返回的内容包含了这个文档的元数据信息，而John Smith的原始JSON文档也在<code>_source</code>字段中出现了：</p>
+<p>返回的内容包含了这个文档的元数据信息，而 John Smith 的原始 JSON 文档也在 <code>_source</code> 字段中出现了：</p>
 <pre><code class="lang-js">{
   <span class="hljs-string">"_index"</span> :   <span class="hljs-string">"megacorp"</span>,
   <span class="hljs-string">"_type"</span> :    <span class="hljs-string">"employee"</span>,
@@ -1029,14 +1029,14 @@
 }
 </code></pre>
 <hr>
-<p>我们通过将HTTP后的请求方式由<code>PUT</code>改变为<code>GET</code>来获取文档，同理，我们也可以将其更换为<code>DELETE</code>来删除这个文档，<code>HEAD</code>是用来查询这个文档是否存在的。如果你想替换一个已经存在的文档，你只需要使用<code>PUT</code>再次发出请求即可。</p>
+<p>我们通过将HTTP后的请求方式由 <code>PUT</code> 改变为 <code>GET</code> 来获取文档，同理，我们也可以将其更换为 <code>DELETE</code> 来删除这个文档，<code>HEAD</code> 是用来查询这个文档是否存在的。如果你想替换一个已经存在的文档，你只需要使用 <code>PUT</code> 再次发出请求即可。</p>
 <hr>
 <h1 id="">简易搜索</h1>
-<p><code>GET</code>命令真的相当简单，你只需要告诉它你要什么即可。接下来，我们来试一下稍微复杂一点的搜索。</p>
+<p><code>GET</code> 命令真的相当简单，你只需要告诉它你要什么即可。接下来，我们来试一下稍微复杂一点的搜索。</p>
 <p>我们首先要完成一个最简单的搜索命令来搜索全部员工：</p>
 <pre><code class="lang-js">GET /megacorp/employee/_search
 </code></pre>
-<p>你可以发现我们正在使用<code>megacorp</code>索引，<code>employee</code>类型，但是我们我们并没有指定文档的ID，我们现在使用的是<code>_search</code>端口。你可以再返回的<code>hits</code>中发现我们录入的三个文档。搜索会默认返回最前的10个数值。</p>
+<p>你可以发现我们正在使用 <code>megacorp</code> 索引，<code>employee</code> 类型，但是我们我们并没有指定文档的ID，我们现在使用的是 <code>_search</code> 端口。你可以再返回的 <code>hits</code> 中发现我们录入的三个文档。搜索会默认返回最前的10个数值。</p>
 <pre><code class="lang-js">{
    <span class="hljs-string">"took"</span>:      <span class="hljs-number">6</span>,
    <span class="hljs-string">"timed_out"</span>: <span class="hljs-literal">false</span>,
@@ -1089,10 +1089,10 @@
 }
 </code></pre>
 <p>注意：反馈值中不仅会告诉你匹配到哪些文档，同时也会把这个文档都会包含到其中：我们需要搜索的用户的所有信息。</p>
-<p>接下来，我们将要尝试着实现搜索一下哪些员工的姓氏中包含<code>Smith</code>。为了实现这个，我们需要使用一种<strong>轻量</strong>的搜索方法。这种方法经常被称做<em>查询字符串(query string)</em>搜索，因为我们通过URL来传递查询的关键字：</p>
+<p>接下来，我们将要尝试着实现搜索一下哪些员工的姓氏中包含 <code>Smith</code>。为了实现这个，我们需要使用一种<strong>轻量</strong>的搜索方法。这种方法经常被称做 <em>查询字符串(query string)</em> 搜索，因为我们通过URL来传递查询的关键字：</p>
 <pre><code class="lang-js">GET /megacorp/employee/_search?q=last_name:Smith
 </code></pre>
-<p>我们依旧使用<code>_search</code>端口，然后可以将参数传入给<code>q=</code>。这样我们就可以得到姓Smith的结果：</p>
+<p>我们依旧使用 <code>_search</code> 端口，然后可以将参数传入给 <code>q=</code>。这样我们就可以得到姓Smith的结果：</p>
 <pre><code class="lang-js">{
    ...
    <span class="hljs-string">"hits"</span>: {
@@ -1124,8 +1124,8 @@
 }
 </code></pre>
 <h1 id="query-dsl">使用Query DSL搜索</h1>
-<p>查询字符串是通过命令语句完成<em>点对点(ad hoc)</em>的搜索，但是这也有它的局限性（可参阅《搜索局限性》章节）。Elasticsearch提供了更加丰富灵活的查询语言，它被称作<em>Query DSL</em>，通过它你可以完成更加复杂、强大的搜索任务。</p>
-<p>DSL (<em>Domain Specific Language</em> 领域特定语言)需要使用JSON作为主体，我们还可以这样查询姓Smith的员工：</p>
+<p>查询字符串是通过命令语句完成 <em>点对点(ad hoc)</em> 的搜索，但是这也有它的局限性（可参阅《搜索局限性》章节）。Elasticsearch 提供了更加丰富灵活的查询语言，它被称作 <em>Query DSL</em>，通过它你可以完成更加复杂、强大的搜索任务。</p>
+<p>DSL (<em>Domain Specific Language</em> 领域特定语言) 需要使用 JSON 作为主体，我们还可以这样查询姓 Smith 的员工：</p>
 <pre><code class="lang-js">GET /megacorp/employee/_search
 {
     <span class="hljs-string">"query"</span> : {
@@ -1135,9 +1135,9 @@
     }
 }
 </code></pre>
-<p>这个请求会返回同样的结果。你会发现我们在这里没有使用<em>查询字符串</em>，而是使用了一个由JSON构成的请求体，其中使用了<code>match</code>查询法，随后我们还将会学习到其他的查询类型。</p>
+<p>这个请求会返回同样的结果。你会发现我们在这里没有使用 <em>查询字符串</em>，而是使用了一个由 JSON 构成的请求体，其中使用了 <code>match</code> 查询法，随后我们还将会学习到其他的查询类型。</p>
 <h1 id="">更加复杂的搜索</h1>
-<p>接下来，我们再提高一点儿搜索的难度。我们依旧要寻找出姓Smith的员工，但是我们还将添加一个年龄大于30岁的限定条件。我们的查询语句将会有一些细微的调整来以识别结构化搜索的限定条件 <em>filter（过滤器）</em>:</p>
+<p>接下来，我们再提高一点儿搜索的难度。我们依旧要寻找出姓 Smith 的员工，但是我们还将添加一个年龄大于30岁的限定条件。我们的查询语句将会有一些细微的调整来以识别结构化搜索的限定条件 <em>filter（过滤器）</em>:</p>
 <pre><code class="lang-js">GET /megacorp/employee/_search
 {
     <span class="hljs-string">"query"</span> : {
@@ -1157,12 +1157,12 @@
 }
 </code></pre>
 <ol>
-<li><p>这一部分的语句是<code>range</code><em>filter</em> ，它可以查询所有超过30岁的数据 -- <code>gt</code>代表 <strong>greater than （大于）</strong>。</p>
+<li><p>这一部分的语句是 <code>range</code> <em>filter</em> ，它可以查询所有超过30岁的数据 -- <code>gt</code> 代表 <strong>greater than （大于）</strong>。</p>
 </li>
-<li><p>这一部分我们前一个操作的<code>match</code><em>query</em> 是一样的</p>
+<li><p>这一部分我们前一个操作的 <code>match</code> <em>query</em> 是一样的</p>
 </li>
 </ol>
-<p>先不要被这么多的语句吓到，我们将会在之后带你逐渐了解他们的用法。你现在只需要知道我们添加了一个<em>filter</em>，可以在<code>match</code>的搜索基础上再来实现区间搜索。现在，我们的只会显示32岁的名为<strong>Jane Smith</strong>的员工了：</p>
+<p>先不要被这么多的语句吓到，我们将会在之后带你逐渐了解他们的用法。你现在只需要知道我们添加了一个 <em>filter</em>，可以在 <code>match</code> 的搜索基础上再来实现区间搜索。现在，我们的只会显示32岁的名为<strong>Jane Smith</strong>的员工了：</p>
 <pre><code class="lang-js">{
    ...
    <span class="hljs-string">"hits"</span>: {
@@ -1185,7 +1185,7 @@
 </code></pre>
 <h1 id="">全文搜索</h1>
 <p>上面的搜索都很简单：名字搜索、通过年龄过滤。接下来我们来学习一下更加复杂的搜索，全文搜索——一项在传统数据库很难实现的功能。
-我们将会搜索所有喜欢<strong>rock climbing</strong>的员工:</p>
+我们将会搜索所有喜欢 <strong>rock climbing</strong> 的员工:</p>
 <pre><code class="lang-js">GET /megacorp/employee/_search
 {
     <span class="hljs-string">"query"</span> : {
@@ -1195,7 +1195,7 @@
     }
 }
 </code></pre>
-<p>你会发现我们同样使用了<code>match</code>查询来搜索<code>about</code>字段中的<strong>rock climbing</strong>。我们会得到两个匹配的文档：</p>
+<p>你会发现我们同样使用了 <code>match</code> 查询来搜索 <code>about</code> 字段中的 <strong>rock climbing</strong>。我们会得到两个匹配的文档：</p>
 <pre><code class="lang-js">{
    ...
    <span class="hljs-string">"hits"</span>: {
@@ -1231,11 +1231,11 @@
 <ol>
 <li>相关评分</li>
 </ol>
-<p>通常情况下，Elasticsearch会通过相关性来排列顺序，第一个结果中，John Smith的<code>about</code>字段中明确地写到<strong>rock climbing</strong>。而在Jane Smith的<code>about</code>字段中，提及到了<strong>rock</strong>，但是并没有提及到<strong>climbing</strong>，所以后者的<code>_score</code>就要比前者的低。</p>
-<p>这个例子很好地解释了Elasticsearch是如何执行全文搜索的。对于Elasticsearch来说，相关性的概念是很重要的，而这也是它与传统数据库在返回匹配数据时最大的不同之处。</p>
+<p>通常情况下，Elasticsearch 会通过相关性来排列顺序，第一个结果中，John Smith 的 <code>about</code> 字段中明确地写到 <strong>rock climbing</strong>。而在 Jane Smith 的 <code>about</code> 字段中，提及到了 <strong>rock</strong>，但是并没有提及到 <strong>climbing</strong>，所以后者的 <code>_score</code> 就要比前者的低。</p>
+<p>这个例子很好地解释了 Elasticsearch 是如何执行全文搜索的。对于 Elasticsearch 来说，相关性的概念是很重要的，而这也是它与传统数据库在返回匹配数据时最大的不同之处。</p>
 <h1 id="">段落搜索</h1>
-<p>能够找出每个字段中的独立单词固然很好，但是有的时候你可能还需要去匹配精确的短语或者<em>段落</em>。例如，我们只需要查询到<code>about</code>字段只包含<strong>rock climbing</strong>的短语的员工。</p>
-<p>为了实现这个效果，我们将对<code>match</code>查询变为<code>match_phrase</code>查询：</p>
+<p>能够找出每个字段中的独立单词固然很好，但是有的时候你可能还需要去匹配精确的短语或者 <em>段落</em>。例如，我们只需要查询到 <code>about</code> 字段只包含 <strong>rock climbing</strong> 的短语的员工。</p>
+<p>为了实现这个效果，我们将对 <code>match</code> 查询变为 <code>match_phrase</code> 查询：</p>
 <pre><code class="lang-js">GET /megacorp/employee/_search
 {
     <span class="hljs-string">"query"</span> : {
@@ -1245,7 +1245,7 @@
     }
 }
 </code></pre>
-<p>这样，系统会没有异议地返回John Smith的文档：</p>
+<p>这样，系统会没有异议地返回 John Smith 的文档：</p>
 <pre><code class="lang-js">{
    ...
    <span class="hljs-string">"hits"</span>: {
@@ -1268,8 +1268,8 @@
 }
 </code></pre>
 <h1 id="">高亮我们的搜索</h1>
-<p>很多程序希望能在搜索结果中<em>高亮</em>匹配到的关键字来告诉用户这个文档是<em>如何</em>匹配他们的搜索的。在Elasticsearch中找到高亮片段是非常容易的。</p>
-<p>让我们回到之前的查询，但是添加一个<code>highlight</code>参数：</p>
+<p>很多程序希望能在搜索结果中 <em>高亮</em> 匹配到的关键字来告诉用户这个文档是 <em>如何</em> 匹配他们的搜索的。在 Elasticsearch 中找到高亮片段是非常容易的。</p>
+<p>让我们回到之前的查询，但是添加一个 <code>highlight</code> 参数：</p>
 <pre><code class="lang-js">GET /megacorp/employee/_search
 {
     <span class="hljs-string">"query"</span> : {
@@ -1284,7 +1284,7 @@
     }
 }
 </code></pre>
-<p>当我们运行这个查询后，相同的命中结果会被返回，但是我们会得到一个新的名叫<code>highlight</code>的部分。在这里包含了<code>about</code>字段中的匹配单词，并且会被<code>&lt;em&gt;&lt;/em&gt;</code>HTML字符包裹住：</p>
+<p>当我们运行这个查询后，相同的命中结果会被返回，但是我们会得到一个新的名叫 <code>highlight</code> 的部分。在这里包含了 <code>about</code> 字段中的匹配单词，并且会被 <code>&lt;em&gt;&lt;/em&gt;</code> HTML字符包裹住：</p>
 <pre><code class="lang-js">{
    ...
    <span class="hljs-string">"hits"</span>: {

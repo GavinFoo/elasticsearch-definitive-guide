@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.4" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="1.4" data-basepath=".." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1005,16 +1005,16 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_73">
+                    <section class="normal" id="section-gitbook_61">
                     
                         <h1 id="">面向文档</h1>
 <p>程序中的对象很少是单纯的键值与数值的列表。更多的时候它拥有一个复杂的结构，比如包含了日期、地理位置、对象、数组等。</p>
 <p>迟早你会把这些对象存储在数据库中。你会试图将这些丰富而又庞大的数据都放到一个由行与列组成的关系数据库中，然后你不得不根据每个字段的格式来调整数据，然后每次重建它你都要检索一遍数据。</p>
-<p>Elasticsearch是<em>面向文档型数据库</em>，这意味着它存储的是整个对象或者<em>文档</em>，它不但会存储它们，还会为他们建立<strong>索引</strong>，这样你就可以搜索他们了。你可以在Elasticsearch中索引、搜索、排序和过滤这些文档。不需要成行成列的数据。这将会是完全不同的一种面对数据的思考方式，这也是为什么Elasticsearch可以执行复杂的全文搜索的原因。</p>
+<p>Elasticsearch 是 <em>面向文档型数据库</em>，这意味着它存储的是整个对象或者 <em>文档</em>，它不但会存储它们，还会为他们建立<strong>索引</strong>，这样你就可以搜索他们了。你可以在 Elasticsearch 中索引、搜索、排序和过滤这些文档。不需要成行成列的数据。这将会是完全不同的一种面对数据的思考方式，这也是为什么 Elasticsearch 可以执行复杂的全文搜索的原因。</p>
 <h1 id="json">JSON</h1>
-<p>Elasticsearch使用<a href="http://baike.baidu.com/view/136475.htm?fr=aladdin" target="_blank"><em>JSON</em></a> (或称作JavaScript
-Object Notation )作为文档序列化的格式。JSON已经被大多数语言支持，也成为NoSQL领域的一个标准格式。它简单、简洁、易于阅读。</p>
-<p>把这个JSON想象成一个用户对象:</p>
+<p>Elasticsearch使用 <a href="http://baike.baidu.com/view/136475.htm?fr=aladdin" target="_blank"><em>JSON</em></a> (或称作JavaScript
+Object Notation ) 作为文档序列化的格式。JSON 已经被大多数语言支持，也成为 NoSQL 领域的一个标准格式。它简单、简洁、易于阅读。</p>
+<p>把这个 JSON 想象成一个用户对象:</p>
 <pre><code class="lang-js">{
     <span class="hljs-string">"email"</span>:      <span class="hljs-string">"john@smith.com"</span>,
     <span class="hljs-string">"first_name"</span>: <span class="hljs-string">"John"</span>,
@@ -1027,12 +1027,12 @@ Object Notation )作为文档序列化的格式。JSON已经被大多数语言�
     <span class="hljs-string">"join_date"</span>: <span class="hljs-string">"2014/05/01"</span>,
 }
 </code></pre>
-<p>虽然<code>user</code>这个对象非常复杂，但是它的结构和含义都被保留到JSON中了。在Elasticsearch中，将对象转换为JSON并作为索引要比在表结构中做相同的事情简单多了。</p>
+<p>虽然 <code>user</code> 这个对象非常复杂，但是它的结构和含义都被保留到 JSON 中了。在 Elasticsearch 中，将对象转换为 JSON 并作为索引要比在表结构中做相同的事情简单多了。</p>
 <hr>
 <blockquote>
-<h3 id="json">将你的数据转换为JSON</h3>
+<h3 id="-json">将你的数据转换为 JSON</h3>
 </blockquote>
-<p>几乎所有的语言都有将任意数据转换、机构化成JSON，或者将对象转换为JSON的模块。查看<code>serialization</code>以及<code>marshalling</code>两个JSON模块。<a href="http://www.elasticsearch.org/guide" target="_blank">The official Elasticsearch clients</a> 也可以帮你自动结构化JSON。</p>
+<p>几乎所有的语言都有将任意数据转换、机构化成 JSON，或者将对象转换为JSON的模块。查看 <code>serialization</code> 以及 <code>marshalling</code> 两个 JSON 模块。<a href="http://www.elasticsearch.org/guide" target="_blank">The official Elasticsearch clients</a> 也可以帮你自动结构化 JSON。</p>
 
                     
                     </section>

@@ -1,6 +1,6 @@
 # 集群健康
 
-在Elasticsearch集群中可以监控统计很多信息，其中最重要的就是：**集群健康(cluster health)**。它的 `status` 有 `green`、`yellow`、`red` 三种；
+在 Elasticsearch 集群中可以监控统计很多信息，其中最重要的就是：**集群健康(cluster health)**。它的 `status` 有 `green`、`yellow`、`red` 三种；
 
 ```
 GET /_cluster/health
@@ -24,7 +24,7 @@ GET /_cluster/health
 ```
 1.  `status` 是我们最应该关注的字段。
 
-`status`可以告诉我们当前集群是否处于一个可用的状态。三种颜色分别代表：
+`status` 可以告诉我们当前集群是否处于一个可用的状态。三种颜色分别代表：
 
 | 状态     | 意义                                     |
 | -------- | ---------------------------------------- |
@@ -32,4 +32,4 @@ GET /_cluster/health
 | `yellow` | 所有主分片可用，但存在不可用的从分片 |
 | `red`    | 存在不可用的主要分片                 |
 
-在接下来的章节，我们将学习一下什么是**主要分片(primary shard)**和**从分片(replica shard)**，并说明这些状态在实际环境中的意义。
+在接下来的章节，我们将学习一下什么是**主要分片(primary shard)** 和 **从分片(replica shard)**，并说明这些状态在实际环境中的意义。

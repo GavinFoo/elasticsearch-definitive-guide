@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="2.7" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="2.7" data-basepath=".." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1005,17 +1005,17 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_49">
+                    <section class="normal" id="section-gitbook_37">
                     
                         <h1 id="">故障恢复</h1>
-<p>前文我们已经提到过Elasticsearch可以应对节点故障。让我们来尝试一下。如果我们吧第一个节点杀掉，我们的集群就会如下图所示：</p>
+<p>前文我们已经提到过 Elasticsearch 可以应对节点故障。让我们来尝试一下。如果我们吧第一个节点杀掉，我们的集群就会如下图所示：</p>
 <p><img src="../images/02-06_node_failure.png" alt="杀掉一个节点后的集群"></p>
 <p>被杀掉的节点是主节点。而为了集群的正常工作必须需要一个主节点，所以首先进行的进程就是从各节点中选择了一个新的主节点：<code>Node 2</code>。</p>
-<p>主分片<code>1</code>和<code>2</code>在我们杀掉<code>Node 1</code>后就丢失了，我们的索引在丢失主节点的时候是不能正常工作的。如果我们在这个时候检查集群健康状态，将会显示<code>red</code>：存在不可用的主节点！</p>
-<p>幸运的是，丢失的两个主分片的完整拷贝在存在于其他的节点上，所以新的主节点所完成的第一件事情就是将这些在<code>Node 2</code>和<code>Node 3</code>上的从分片提升为主分片，然后集群的健康状态就变回至<code>yellow</code>。这个提升的进程是瞬间完成了，就好像按了一下开关。</p>
-<p>那么为什么集群健康状态依然是是<code>yellow</code>而不是<code>green</code>呢？是因为现在我们有3个主分片，但是我们之前设定了1个主分片有2个从分片，但是现在却只有1份从分片，所以状态无法变为<code>green</code>，不过我们可以不用太担心这里：当我们再次杀掉<code>Node 2</code>的时候，我们的程序<strong>依旧</strong>可以在没有丢失任何数据的情况下运行，因为<code>Node 3</code>中依旧拥有每个分片的备份。</p>
-<p>如果我们重启<code>Node 1</code>，集群就能够重新分配丢失的从分片，这样结果就会与<strong>三节点两从集群</strong>一致。如果<code>Node 1</code>依旧还有旧节点的内容，系统会尝试重新利用他们，并只会复制在故障期间的变更数据。</p>
-<p>到目前为止，我们已经清晰地了解了Elasticsearch的横向扩展以及数据安全的相关内容。接下来，我们将要继续讨论分片的生命周期等更多细节。</p>
+<p>主分片 <code>1</code> 和 <code>2</code> 在我们杀掉 <code>Node 1</code> 后就丢失了，我们的索引在丢失主节点的时候是不能正常工作的。如果我们在这个时候检查集群健康状态，将会显示 <code>red</code>：存在不可用的主节点！</p>
+<p>幸运的是，丢失的两个主分片的完整拷贝在存在于其他的节点上，所以新的主节点所完成的第一件事情就是将这些在 <code>Node 2</code> 和 <code>Node 3</code> 上的从分片提升为主分片，然后集群的健康状态就变回至 <code>yellow</code>。这个提升的进程是瞬间完成了，就好像按了一下开关。</p>
+<p>那么为什么集群健康状态依然是是 <code>yellow</code> 而不是 <code>green</code> 呢？是因为现在我们有3个主分片，但是我们之前设定了1个主分片有2个从分片，但是现在却只有1份从分片，所以状态无法变为 <code>green</code>，不过我们可以不用太担心这里：当我们再次杀掉 <code>Node 2</code> 的时候，我们的程序<strong>依旧</strong>可以在没有丢失任何数据的情况下运行，因为 <code>Node 3</code> 中依旧拥有每个分片的备份。</p>
+<p>如果我们重启 <code>Node 1</code>，集群就能够重新分配丢失的从分片，这样结果就会与<strong>三节点两从集群</strong>一致。如果 <code>Node 1</code> 依旧还有旧节点的内容，系统会尝试重新利用他们，并只会复制在故障期间的变更数据。</p>
+<p>到目前为止，我们已经清晰地了解了 Elasticsearch 的横向扩展以及数据安全的相关内容。接下来，我们将要继续讨论分片的生命周期等更多细节。</p>
 
                     
                     </section>

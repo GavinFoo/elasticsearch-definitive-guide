@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="2.2" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="2.2" data-basepath=".." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1005,10 +1005,10 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_48">
+                    <section class="normal" id="section-gitbook_36">
                     
                         <h1 id="">集群健康</h1>
-<p>在Elasticsearch集群中可以监控统计很多信息，其中最重要的就是：<strong>集群健康(cluster health)</strong>。它的 <code>status</code> 有 <code>green</code>、<code>yellow</code>、<code>red</code> 三种；</p>
+<p>在 Elasticsearch 集群中可以监控统计很多信息，其中最重要的就是：<strong>集群健康(cluster health)</strong>。它的 <code>status</code> 有 <code>green</code>、<code>yellow</code>、<code>red</code> 三种；</p>
 <pre><code>GET /_cluster/health
 </code></pre><p>在一个没有索引的空集群中，它将返回如下信息：</p>
 <pre><code class="lang-Js">{
@@ -1027,7 +1027,7 @@
 <ol>
 <li><code>status</code> 是我们最应该关注的字段。</li>
 </ol>
-<p><code>status</code>可以告诉我们当前集群是否处于一个可用的状态。三种颜色分别代表：</p>
+<p><code>status</code> 可以告诉我们当前集群是否处于一个可用的状态。三种颜色分别代表：</p>
 <table>
 <thead>
 <tr>
@@ -1050,7 +1050,7 @@
 </tr>
 </tbody>
 </table>
-<p>在接下来的章节，我们将学习一下什么是<strong>主要分片(primary shard)</strong>和<strong>从分片(replica shard)</strong>，并说明这些状态在实际环境中的意义。</p>
+<p>在接下来的章节，我们将学习一下什么是<strong>主要分片(primary shard)</strong> 和 <strong>从分片(replica shard)</strong>，并说明这些状态在实际环境中的意义。</p>
 
                     
                     </section>

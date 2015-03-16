@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="2.4" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="2.4" data-basepath=".." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1005,7 +1005,7 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_45">
+                    <section class="normal" id="section-gitbook_33">
                     
                         <h1 id="">增加故障转移</h1>
 <p>在单一节点上运行意味着有单点故障的风险，没有数据冗余备份。幸运的是，我们可以启用另一个节点来保护我们的数据。</p>
@@ -1013,15 +1013,15 @@
 <blockquote>
 <h3 id="">启动第二个节点</h3>
 </blockquote>
-<p>为了测试在增加第二个节点后发生了什么，你可以使用与第一个节点相同的方式启动第二个节点（你可以参考 入门-》安装-》运行Elasticsearch 一章），而且在同一个目录——多个节点可以分享同一个目录。</p>
-<p>只要第二个节点与第一个节点的<code>cluster.name</code>相同（参见<code>./config/elasticsearch.yml</code>文件中的配置），它就能自动发现并加入到第一个节点的集群中。如果没有，请结合日志找出问题所在。这可能是多播（multicast）被禁用，或者防火墙阻止了节点间的通信。</p>
+<p>为了测试在增加第二个节点后发生了什么，你可以使用与第一个节点相同的方式启动第二个节点（你可以参考 入门-》安装-》运行 Elasticsearch 一章），而且在同一个目录——多个节点可以分享同一个目录。</p>
+<p>只要第二个节点与第一个节点的 <code>cluster.name</code> 相同（参见<code>./config/elasticsearch.yml</code>文件中的配置），它就能自动发现并加入到第一个节点的集群中。如果没有，请结合日志找出问题所在。这可能是多播（multicast）被禁用，或者防火墙阻止了节点间的通信。</p>
 <hr>
-<p>如果我们启动了第二个节点，这个集群应该叫做<strong>双节点集群(cluster-two-nodes)</strong></p>
+<p>如果我们启动了第二个节点，这个集群应该叫做 <strong>双节点集群(cluster-two-nodes)</strong></p>
 <p>双节点集群——所有的主分片和从分片都被分配:
 <img src="../images/02-03_two_nodes.png" alt="双节点集群"></p>
 <p>当第二个节点加入后，就产生了三个 <strong>从分片(replica shards)</strong> ，它们分别于三个主分片一一对应。也就意味着即使有一个节点发生了损坏，我们可以保证数据的完整性。</p>
 <p>所有被索引的新文档都会先被存储在主分片中，之后才会被平行复制到关联的从分片上。这样可以确保我们的文档在主节点和从节点上都能被检索。</p>
-<p>当前，<code>cluster-health</code>的状态为<code>green</code>，这意味着所有的6个分片（三个主分片和三个从分片）都已激活：</p>
+<p>当前，<code>cluster-health</code> 的状态为 <code>green</code>，这意味着所有的6个分片（三个主分片和三个从分片）都已激活：</p>
 <pre><code class="lang-Js">{
    <span class="hljs-string">"cluster_name"</span>:          <span class="hljs-string">"elasticsearch"</span>,
    <span class="hljs-string">"status"</span>:                <span class="hljs-string">"green"</span>, <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">1</span>&gt;</span>
@@ -1036,7 +1036,7 @@
 }</span>
 </code></pre>
 <ol>
-<li>集群的<code>status</code>是<code>green</code>.</li>
+<li>集群的 <code>status</code> 是 <code>green</code>.</li>
 </ol>
 <p>我们的集群不仅功能齐全的，并且具有<strong>高可用性</strong>。</p>
 

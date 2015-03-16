@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.5" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="1.5" data-basepath=".." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1005,14 +1005,14 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_83">
+                    <section class="normal" id="section-gitbook_71">
                     
                         <h1 id="">启程</h1>
-<p>为了能让你感受一下Elasticsearch能做什么以及它是有多么的易用，我们会先为你简单展示一下，其中包括了基本的<em>创建索引</em>，<em>搜索</em>以及<em>聚合</em>。</p>
+<p>为了能让你感受一下 Elasticsearch 能做什么以及它是有多么的易用，我们会先为你简单展示一下，其中包括了基本的 <em>创建索引</em>，<em>搜索</em> 以及 <em>聚合</em>。</p>
 <p>我们会在这里向你介绍一些新的术语以及简单的概念，即使你没有马上接受这些概念也没有关系。我们会在之后的章节中逐渐帮你理解它们。</p>
-<p>所以，准备开始享受Elasticsearch的学习之旅把！</p>
+<p>所以，准备开始享受 Elasticsearch 的学习之旅把！</p>
 <h1 id="">建立一个员工名单</h1>
-<p>想象我们正在为一个名叫megacorp的公司的HR部门制作一个新的员工名单系统，这些名单应该可以满足实时协同工作，所以它应该可以满足以下要求：</p>
+<p>想象我们正在为一个名叫 megacorp 的公司的 HR 部门制作一个新的员工名单系统，这些名单应该可以满足实时协同工作，所以它应该可以满足以下要求：</p>
 <ul>
 <li>数据可以包含多个值的标签、数字以及纯文本内容，</li>
 <li>可以检索任何职员的所有数据。</li>
@@ -1022,38 +1022,38 @@
 <li>拥有数据统计与管理的后台。</li>
 </ul>
 <h1 id="">为员工档案创建索引</h1>
-<p>这个项目的第一步就是存储员工的数据。这样你就需要一个“员工档案”的表单，这样每个文档都代表着一个员工。在Elasticsearch中，存储数据的行为就叫做<em>索引(indexing)</em>，但是在我们索引数据前，我们需要决定将数据存储在哪里。</p>
-<p>在Elasticsearch中，文档术语一种<em>类型(type)</em>，各种各样的类型存在于一个<em>索引</em>中。你也可以通过类比传统的关系数据库得到一些大致的相似之处：</p>
+<p>这个项目的第一步就是存储员工的数据。这样你就需要一个“员工档案”的表单，这样每个文档都代表着一个员工。在 Elasticsearch 中，存储数据的行为就叫做 <em>索引(indexing)</em> ，但是在我们索引数据前，我们需要决定将数据存储在哪里。</p>
+<p>在 Elasticsearch 中，文档术语一种 <em>类型(type)</em>，各种各样的类型存在于一个 <em>索引</em> 中。你也可以通过类比传统的关系数据库得到一些大致的相似之处：</p>
 <pre><code>关系数据库     ⇒ 数据库 ⇒ 表    ⇒ 行    ⇒ 列(Columns)
 Elasticsearch  ⇒ 索引   ⇒ 类型  ⇒ 文档  ⇒ 字段(Fields)
-</code></pre><p>一个Elasticsearch集群可以包含多个<em>索引</em>（数据库），也就是说其中包含了很多<em>类型</em>（表）。这些类型中包含了很多的<em>文档</em>（行），然后每个文档中又包含了很多的<em>字段</em>（列）。</p>
+</code></pre><p>一个 Elasticsearch 集群可以包含多个 <em>索引</em>（数据库），也就是说其中包含了很多 <em>类型</em>（表）。这些类型中包含了很多的 <em>文档</em>（行），然后每个文档中又包含了很多的 <em>字段</em>（列）。</p>
 <hr>
 <blockquote>
 <h3 id="--">索引 索引 索引</h3>
 </blockquote>
-<p>你可能发现在Elasticsearch中，索引这个词汇已经被赋予了太多意义，所以在这里我们有必要澄清一下：</p>
+<p>你可能发现在 Elasticsearch 中，索引这个词汇已经被赋予了太多意义，所以在这里我们有必要澄清一下：</p>
 <blockquote>
 <p>索引 (名词)</p>
 </blockquote>
-<p>如上文所说，一个<em>索引</em>就类似于传统关系型数据库中的<em>数据库</em>。这里就是存储相关文档的的地方。</p>
+<p>如上文所说，一个 <em>索引</em> 就类似于传统关系型数据库中的 <em>数据库</em>。这里就是存储相关文档的的地方。</p>
 <blockquote>
 <p>索引 (动词)</p>
 </blockquote>
-<p><em>为一个文档创建索引</em>是把一个文档存储到一个<em>索引(名词)</em>中的过程，这样它才能被检索。这个过程非常类似于SQL中的<code>INSERT</code>命令，如果已经存在文档，新的文档将会覆盖旧的文档。</p>
+<p><em>为一个文档创建索引</em> 是把一个文档存储到一个<em>索引(名词)</em>中的过程，这样它才能被检索。这个过程非常类似于 SQL 中的 <code>INSERT</code> 命令，如果已经存在文档，新的文档将会覆盖旧的文档。</p>
 <blockquote>
 <p>反向索引</p>
 </blockquote>
-<p>在关系数据库中的某列添加一个<em>索引</em>，比如多路搜索树(B-Tree)索引，就可以加速数据的取回速度， Elasticsearch以及Lucene使用的是一个叫做<em>反向索引(inverted index)</em>的结构来实现相同的功能。</p>
+<p>在关系数据库中的某列添加一个 <em>索引</em>，比如多路搜索树(B-Tree)索引，就可以加速数据的取回速度， Elasticsearch 以及 Lucene 使用的是一个叫做 <em>反向索引(inverted index)</em> 的结构来实现相同的功能。</p>
 <blockquote>
 <p>通常，每个文档中的字段都被创建了索引（拥有一个反向索引），因此他们可以被搜索。如果一个字段缺失了反向索引的话，它将不能被搜索。我们将会在之后的《反向索引》章节中详细介绍它。</p>
 </blockquote>
 <hr>
 <p>所以为了创建员工名单，我们需要进行如下操作：</p>
 <ul>
-<li>为每一个员工的<em>文档</em>创建索引，每个<em>文档</em>都包含了一个员工的所有信息。</li>
-<li>每个文档都会被标记为<code>employee</code><em>类型</em>。</li>
-<li>这种类型将存活在<code>megacorp</code>这个<em>索引</em>中。</li>
-<li>这个索引将会存储在Elasticsearch的集群中</li>
+<li>为每一个员工的 <em>文档</em> 创建索引，每个 <em>文档</em> 都包含了一个员工的所有信息。</li>
+<li>每个文档都会被标记为 <code>employee</code> <em>类型</em>。</li>
+<li>这种类型将存活在 <code>megacorp</code> 这个 <em>索引</em> 中。</li>
+<li>这个索引将会存储在 Elasticsearch 的集群中</li>
 </ul>
 <p>在实际的操作中，这些操作是非常简单的（即使看起来有这么多步骤）。我们可以把如此之多的操作通过一个命令来完成：</p>
 <pre><code class="lang-js">PUT /megacorp/employee/<span class="hljs-number">1</span>
@@ -1065,7 +1065,7 @@ Elasticsearch  ⇒ 索引   ⇒ 类型  ⇒ 文档  ⇒ 字段(Fields)
     <span class="hljs-string">"interests"</span>: [ <span class="hljs-string">"sports"</span>, <span class="hljs-string">"music"</span> ]
 }
 </code></pre>
-<p>注意在<code>/megacorp/employee/1</code>路径下，包含了三个部分：</p>
+<p>注意在 <code>/megacorp/employee/1</code> 路径下，包含了三个部分：</p>
 <table>
 <thead>
 <tr>
@@ -1088,8 +1088,8 @@ Elasticsearch  ⇒ 索引   ⇒ 类型  ⇒ 文档  ⇒ 字段(Fields)
 </tr>
 </tbody>
 </table>
-<p>请求部分，也就是JSON文档，在这里包含了关于这名员工的所有信息。他的名字是``John Smith&#39;&#39;，他已经25岁了，他很喜欢攀岩。</p>
-<p>怎么样？很简单吧！我们在操作前不需要进行任何管理操作，比如创建索引，或者为字段指定数据的类型。我们就这么直接地为一个文档创建了索引。Elasticsearch会在创建的时候为它们设定默认值，所以所有管理操作已经在后台被默默地完成了。</p>
+<p>请求部分，也就是 JSON 文档，在这里包含了关于这名员工的所有信息。他的名字是 “John Smith”，他已经25岁了，他很喜欢攀岩。</p>
+<p>怎么样？很简单吧！我们在操作前不需要进行任何管理操作，比如创建索引，或者为字段指定数据的类型。我们就这么直接地为一个文档创建了索引。Elasticsearch 会在创建的时候为它们设定默认值，所以所有管理操作已经在后台被默默地完成了。</p>
 <p>在进行下一步之前，我们再为这个目录添加更多的员工信息吧：</p>
 <pre><code class="lang-js">PUT /megacorp/employee/<span class="hljs-number">2</span>
 {

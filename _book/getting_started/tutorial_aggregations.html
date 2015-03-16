@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.7" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="1.7" data-basepath=".." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1005,10 +1005,10 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_81">
+                    <section class="normal" id="section-gitbook_69">
                     
                         <h1 id="">统计</h1>
-<p>最后，我们还有一个需求需要完成：可以让老板在职工目录中进行统计。Elasticsearch把这项功能称作<em>汇总 (aggregations)</em>，通过这个功能，我们可以针对你的数据进行复杂的统计。这个功能有些类似于SQL中的<code>GROUP BY</code>，但是要比它更加强大。</p>
+<p>最后，我们还有一个需求需要完成：可以让老板在职工目录中进行统计。Elasticsearch 把这项功能称作 <em>汇总 (aggregations)</em>，通过这个功能，我们可以针对你的数据进行复杂的统计。这个功能有些类似于 SQL 中的 <code>GROUP BY</code>，但是要比它更加强大。</p>
 <p>例如，让我们找一下员工中最受欢迎的兴趣是什么：</p>
 <pre><code class="lang-js">GET /megacorp/employee/_search
 {
@@ -1043,7 +1043,7 @@
    }
 }
 </code></pre>
-<p>我们可以发现有两个员工喜欢音乐，还有一个喜欢森林，还有一个喜欢运动。这些数据并没有被预先计算好，它们是在文档被查询的同时实时计算得出的。如果你想要查询姓Smith的员工的兴趣汇总情况，你就可以执行如下查询：</p>
+<p>我们可以发现有两个员工喜欢音乐，还有一个喜欢森林，还有一个喜欢运动。这些数据并没有被预先计算好，它们是在文档被查询的同时实时计算得出的。如果你想要查询姓 Smith 的员工的兴趣汇总情况，你就可以执行如下查询：</p>
 <pre><code class="lang-js">GET /megacorp/employee/_search
 {
   <span class="hljs-string">"query"</span>: {
@@ -1060,7 +1060,7 @@
   }
 }
 </code></pre>
-<p>这样，<code>all_interests</code>的统计结果就只会包含满足查询的文档了：</p>
+<p>这样，<code>all_interests</code> 的统计结果就只会包含满足查询的文档了：</p>
 <pre><code class="lang-js">  ...
   <span class="hljs-string">"all_interests"</span>: {
      <span class="hljs-string">"buckets"</span>: [

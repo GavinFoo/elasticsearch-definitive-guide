@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.3" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="1.3" data-basepath=".." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1005,30 +1005,30 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_76">
+                    <section class="normal" id="section-gitbook_64">
                     
-                        <h1 id="elasticsearch">与Elasticsearch通信</h1>
-<p>如何与Elasticsearch通信要取决于你是否使用JAVA。</p>
+                        <h1 id="-elasticsearch-">与 Elasticsearch 通信</h1>
+<p>如何与 Elasticsearch 通信要取决于你是否使用 JAVA。</p>
 <h2 id="java-api">Java API</h2>
-<p>如果你使用的是JAVA，Elasticsearch内置了两个客户端，你可以在你的代码中使用：</p>
-<p>节点客户端::
-    节点客户端以一个<em>无数据节点</em>的身份加入了一个集群。换句话说，它自身是没有任何数据的，但是他知道什么数据在集群中的哪一个节点上，然后就可以请求转发到正确的节点上并进行连接。</p>
-<p>传输客户端::
+<p>如果你使用的是 JAVA，Elasticsearch 内置了两个客户端，你可以在你的代码中使用：</p>
+<p>节点客户端:
+    节点客户端以一个 <em>无数据节点</em> 的身份加入了一个集群。换句话说，它自身是没有任何数据的，但是他知道什么数据在集群中的哪一个节点上，然后就可以请求转发到正确的节点上并进行连接。</p>
+<p>传输客户端:
     更加轻量的传输客户端可以被用来向远程集群发送请求。他并不加入集群本身，而是把请求转发到集群中的节点。</p>
-<p>这两个客户端都使用Elasticsearch的<em>传输</em>协议，通过<strong>9300端口</strong>与java客户端进行通信。集群中的各个节点也是通过9300端口进行通信。如果这个端口被禁止了，那么你的节点们将不能组成一个集群。</p>
+<p>这两个客户端都使用 Elasticsearch 的 <em>传输</em> 协议，通过<strong>9300端口</strong>与 java 客户端进行通信。集群中的各个节点也是通过9300端口进行通信。如果这个端口被禁止了，那么你的节点们将不能组成一个集群。</p>
 <hr>
 <blockquote>
 <h3 id="tip">TIP</h3>
 </blockquote>
-<p>Java的客户端的版本号必须要与Elasticsearch节点所用的版本号一样，不然他们之间可能无法识别。</p>
+<p>Java 的客户端的版本号必须要与 Elasticsearch 节点所用的版本号一样，不然他们之间可能无法识别。</p>
 <hr>
-<p>更多关于Java API的说明可以在这里找到 <a href="http://www.elasticsearch.org/guide/" target="_blank">Guide</a>.</p>
-<h2 id="httprestful-apijson">通过HTTP向RESTful API传送json</h2>
-<p>其他的语言可以通过<em>9200端口</em>与Elasticsearch的RESTful API进行通信。事实上，如你所见，你甚至可以使用行命令<code>curl</code>来与Elasticsearch通信。</p>
+<p>更多关于 Java API 的说明可以在这里找到 <a href="http://www.elasticsearch.org/guide/" target="_blank">Guide</a>.</p>
+<h2 id="-http--restful-api--json">通过 HTTP 向 RESTful API 传送 json</h2>
+<p>其他的语言可以通过<em>9200端口</em>与 Elasticsearch 的 RESTful API 进行通信。事实上，如你所见，你甚至可以使用行命令 <code>curl</code> 来与 Elasticsearch 通信。</p>
 <hr>
-<p>Elasticsearch官方提供了很多种编程语言的客户端，也有和许多社区化软件的集成插件，这些都可以在<a href="http://www.elasticsearch.org/guide/" target="_blank">Guide</a>里面找到。</p>
+<p>Elasticsearch 官方提供了很多种编程语言的客户端，也有和许多社区化软件的集成插件，这些都可以在 <a href="http://www.elasticsearch.org/guide/" target="_blank">Guide</a> 里面找到。</p>
 <hr>
-<p>向Elasticsearch发出的请求和其他所有的HTTP请求的组成部分是一致的。例如，计算集群中文件的数量，我们就可以使用：</p>
+<p>向 Elasticsearch 发出的请求和其他所有的 HTTP 请求的组成部分是一致的。例如，计算集群中文件的数量，我们就可以使用：</p>
 <pre><code class="lang-js">      &lt;<span class="hljs-number">1</span>&gt;     <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">2</span>&gt;</span>                   <span class="hljs-tag">&lt;<span class="hljs-title">3</span>&gt;</span>    <span class="hljs-tag">&lt;<span class="hljs-title">4</span>&gt;</span>
 curl -XGET 'http://localhost:9200/_count?pretty' -d '
 {  <span class="hljs-tag">&lt;<span class="hljs-title">5</span>&gt;</span>
@@ -1039,13 +1039,13 @@ curl -XGET 'http://localhost:9200/_count?pretty' -d '
 '</span>
 </code></pre>
 <ol>
-<li>相应的HTTP<em>请求方法</em>或者<em>变量</em>: <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>HEAD</code> 或者 <code>DELETE</code>。</li>
+<li>相应的 HTTP <em>请求方法</em> 或者 <em>变量</em> : <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>HEAD</code> 或者 <code>DELETE</code>。</li>
 <li>集群中任意一个节点的访问协议、主机名以及端口。</li>
 <li>请求的路径。</li>
-<li>任意一个查询后再加上<code>?pretty</code> 就可以生成<em>更加美观</em>的JSON反馈，以增强可读性。</li>
-<li>一个JSON编码的请求主体（如果需要的话）。</li>
+<li>任意一个查询后再加上 <code>?pretty</code> 就可以生成 <em>更加美观</em> 的JSON反馈，以增强可读性。</li>
+<li>一个 JSON 编码的请求主体（如果需要的话）。</li>
 </ol>
-<p>Elasticsearch将会返回一个HTTP状态码类似于&#39;200 OK&#39;，以及一个JSON格式的主体（除了单纯的&#39;HEAD&#39;请求），上面的请求会得到下方的JSON主体：</p>
+<p>Elasticsearch 将会返回一个 HTTP 状态码类似于 &#39;200 OK&#39;，以及一个 JSON 格式的主体（除了单纯的 &#39;HEAD&#39; 请求），上面的请求会得到下方的 JSON 主体：</p>
 <pre><code class="lang-js">{
     <span class="hljs-string">"count"</span> : <span class="hljs-number">0</span>,
     <span class="hljs-string">"_shards"</span> : {
@@ -1055,10 +1055,10 @@ curl -XGET 'http://localhost:9200/_count?pretty' -d '
     }
 }
 </code></pre>
-<p>在反馈中，我们并没有看见HTTP的头部信息，因为我们没有告知<code>curl</code>显示这些内容。如果你想看到头部信息，可以在使用<code>curl</code>命令的时候再加上<code>-i</code>这个参数：</p>
+<p>在反馈中，我们并没有看见 HTTP 的头部信息，因为我们没有告知 <code>curl</code> 显示这些内容。如果你想看到头部信息，可以在使用 <code>curl</code> 命令的时候再加上 <code>-i</code> 这个参数：</p>
 <pre><code class="lang-js">curl -i -XGET <span class="hljs-string">'localhost:9200/'</span>
 </code></pre>
-<p>从现在开始，本书里所有涉及<code>curl</code>命令的部分我们都会进行简写，因为主机、端口等信息都是相同的，缩减前的样子:</p>
+<p>从现在开始，本书里所有涉及 <code>curl</code>  命令的部分我们都会进行简写，因为主机、端口等信息都是相同的，缩减前的样子:</p>
 <pre><code class="lang-js">curl -XGET &#39;localhost:9200/_count?pretty&#39; -d &#39;
 {
     &quot;query&quot;: {

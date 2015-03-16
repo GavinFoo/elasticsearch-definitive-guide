@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.2" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="1.2" data-basepath=".." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1005,22 +1005,22 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_67">
+                    <section class="normal" id="section-gitbook_55">
                     
-                        <h1 id="java">安装JAVA</h1>
+                        <h1 id="-java">安装 JAVA</h1>
 <pre><code class="lang-js">yum install java-<span class="hljs-number">1.7</span><span class="hljs-number">.0</span>-openjdk -y
 </code></pre>
-<h1 id="elasticsearch">安装Elasticsearch</h1>
-<p>最简单的了解Elasticsearch的方法就是去尽情的玩儿它（汗），准备好了我们就开始吧。</p>
-<p>安装Elasticsearch只有一个要求，就是要安装最新版本的JAVA。你可以到官方网站下载它：<a href="http://www.java.com" target="_blank">www.java.com</a>.</p>
-<p>你可以在这里下载到最新版本的Elasticsearch：
+<h1 id="-elasticsearch">安装 Elasticsearch</h1>
+<p>了解 Elasticsearch 最简单的方法就是去尽情的玩儿它（汗），准备好了我们就开始吧。</p>
+<p>安装 Elasticsearch 只有一个要求，就是要安装最新版本的JAVA。你可以到官方网站下载它：<a href="http://www.java.com" target="_blank">www.java.com</a>.</p>
+<p>你可以在这里下载到最新版本的 Elasticsearch：
 <a href="http://www.elasticsearch.org/download/" target="_blank">elasticsearch.org/download</a>.</p>
 <pre><code class="lang-js">curl -L -O http:<span class="hljs-comment">//download.elasticsearch.org/PATH/TO/LATEST/$VERSION.zip</span>
 unzip elasticsearch-$VERSION.zip
 cd  elasticsearch-$VERSION
 </code></pre>
-<p>提示: 当你安装Elasticsearch时，你可以到<a href="http://www.elasticsearch.org/downloads" target="_blank">下载页面</a>选择Debian或者RP安装包。或者你也可以使用官方提供的 <a href="https://github.com/elasticsearch/puppet-elasticsearch" target="_blank">Puppet module</a> 或者 <a href="https://github.com/elasticsearch/cookbook-elasticsearch" target="_blank">Chef cookbook</a>.</p>
-<h1 id="marvel">安装Marvel</h1>
+<p>提示: 当你安装 Elasticsearch 时，你可以到 <a href="http://www.elasticsearch.org/downloads" target="_blank">下载页面</a> 选择Debian或者RP安装包。或者你也可以使用官方提供的 <a href="https://github.com/elasticsearch/puppet-elasticsearch" target="_blank">Puppet module</a> 或者 <a href="https://github.com/elasticsearch/cookbook-elasticsearch" target="_blank">Chef cookbook</a>.</p>
+<h1 id="-marvel">安装 Marvel</h1>
 <h6 id="-">这是个付费的监控插件 暂时先不翻译</h6>
 <p><a href="http://www.elasticsearch.com/marvel" target="_blank">Marvel</a> is a management and monitoring
 tool for Elasticsearch which is free for development use. It comes with an
@@ -1039,8 +1039,8 @@ in the Elasticsearch directory:</p>
 disable data collection with this command:</p>
 <pre><code class="lang-js">echo <span class="hljs-string">'marvel.agent.enabled: false'</span> &gt;&gt; ./config/elasticsearch.yml
 </code></pre>
-<h1 id="elasticsearch">运行Elasticsearch</h1>
-<p>Elasticsearch已经蓄势待发，现在你便可以运行它了：</p>
+<h1 id="-elasticsearch">运行 Elasticsearch</h1>
+<p>Elasticsearch 已经蓄势待发，现在你便可以运行它了：</p>
 <pre><code class="lang-js">./bin/elasticsearch
 </code></pre>
 <p>如果你想让它在后台保持运行的话可以在命令后面再加一个 <code>-d</code></p>
@@ -1058,12 +1058,12 @@ disable data collection with this command:</p>
    <span class="hljs-string">"tagline"</span>: <span class="hljs-string">"You Know, for Search"</span>
 }
 </code></pre>
-<p>这就说明你的Elasticsearch <em>集群</em> 已经上线运行了，这时我们就可以进行各种实验了。</p>
+<p>这就说明你的 Elasticsearch <em>集群</em> 已经上线运行了，这时我们就可以进行各种实验了。</p>
 <hr>
 <blockquote>
 <h3 id="">集群和节点</h3>
 </blockquote>
-<p><em>节点</em>是Elasticsearch运行的实例。<em>集群</em>是一组有着同样<code>cluster.name</code>的节点，它们协同工作，互相分享数据，提供了故障转移和扩展的功能。当然一个节点也可以是一个集群。</p>
+<p><em>节点</em> 是 Elasticsearch 运行的实例。<em>集群</em> 是一组有着同样<code>cluster.name</code>的节点，它们协同工作，互相分享数据，提供了故障转移和扩展的功能。当然一个节点也可以是一个集群。</p>
 
                     
                     </section>

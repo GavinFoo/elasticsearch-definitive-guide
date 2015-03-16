@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="2.5" data-basepath=".." data-revision="1423704233753">
+    <div class="book"  data-level="2.5" data-basepath=".." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1005,13 +1005,13 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_51">
+                    <section class="normal" id="section-gitbook_39">
                     
                         <h1 id="">横向扩展</h1>
 <p>随着应用需求的增长，我们该如何扩展？如果我们启动第三个节点，集群内会自动重组，这时便成为了<strong>三节点集群(cluster-three-nodes)</strong></p>
 <p>分片已经被重新分配以平衡负载：
 <img src="../images/02-04_three_nodes.png" alt="三节点集群"></p>
-<p>在<code>Node 1</code>和<code>Node 2</code>中分别会有一个分片被移动到<code>Node 3</code>上，这样一来，每个节点上就都只有两个分片了。这意味着每个节点的硬件资源（CPU、RAM、I/O）被更少的分片共享，所以每个分片就会有更好的性能表现。</p>
+<p>在 <code>Node 1</code> 和 <code>Node 2</code> 中分别会有一个分片被移动到 <code>Node 3</code> 上，这样一来，每个节点上就都只有两个分片了。这意味着每个节点的硬件资源（CPU、RAM、I/O）被更少的分片共享，所以每个分片就会有更好的性能表现。</p>
 <p>分片本身就是一个非常成熟的搜索引擎，它可以使用单个节点的所有资源。我们一共有6个节点（3个主分片和3个从分片），因此最多可以扩展到6个节点，每个节点上有一个分片，这样每个分片都可以使用到所在节点100%的资源了。</p>
 
                     

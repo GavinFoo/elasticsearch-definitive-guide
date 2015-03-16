@@ -6,7 +6,7 @@
         <meta charset="UTF-8">
         <title>Introduction | Elasticsearch 权威指南</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta name="description" content="译者现在的工作项目中需要用到elasticsearch，但是在网络中找了很多的相关的内容都很不完善，中文的文档更是寥寥无几，所以我决定边研究边翻译一下官方推出的权威手册。在这里要先感谢原作者们！如果各位在这里发现了错误之处，请大家在Issue中提出或者pr这个项目。">
+        <meta name="description" content="国外自动指向 GITBOOK 项目 | 国内用户自动指向 SAE">
         <meta name="generator" content="GitBook 1.0.3">
         <meta name="HandheldFriendly" content="true"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -31,7 +31,7 @@
 
 
         
-    <div class="book"  data-level="0" data-basepath="." data-revision="1423704233753">
+    <div class="book"  data-level="0" data-basepath="." data-revision="1426527794025">
     
 
 <div class="book-summary">
@@ -1003,27 +1003,30 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_39">
+                    <section class="normal" id="section-gitbook_27">
                     
                         <h1 id="elasticsearch-">Elasticsearch 权威指南</h1>
 <h2 id="">项目信息</h2>
+<h4 id="httplearnesnet"><a href="http://learnes.net" target="_blank">在线阅读</a></h4>
+<p>国外自动指向 <a href="http://fuxiaopang.gitbooks.io/LearnElasticSearch" target="_blank">GITBOOK 项目</a> | 国内用户自动指向 <a href="http://learnes.sinaapp.com/" target="_blank">SAE</a></p>
 <h4 id="github-httpsgithubcomgavinfooelasticsearch-definitive-guide"><a href="https://github.com/GavinFoo/elasticsearch-definitive-guide" target="_blank">GITHUB 仓库</a></h4>
-<h4 id="gitbook-httpfuxiaopanggitbooksiolearnelasticsearch-"><a href="http://fuxiaopang.gitbooks.io/LearnElasticSearch/" target="_blank">GITBOOK 在线阅读</a> 国外用户</h4>
-<h4 id="sae-httplearnesnet-"><a href="http://learnes.net" target="_blank">SAE 在线阅读</a> 国内用户</h4>
 <h2 id="">译者前言</h2>
-<p>译者现在的工作项目中需要用到elasticsearch，但是在网络中找了很多的相关的内容都很不完善，中文的文档更是寥寥无几，所以我决定边研究边翻译一下官方推出的权威手册。在这里要先感谢原作者们！如果各位在这里发现了错误之处，请大家在Issue中提出或者pr这个项目。</p>
+<p>译者现在的工作项目中需要用到 Elasticsearch，但是在网络中找了很多的相关的内容都很不完善，中文的文档更是寥寥无几，所以我决定边研究边翻译一下官方推出的权威手册。在这里要先感谢原作者们！如果各位在这里发现了错误之处，请大家在 Issue 中提出或者 PR <a href="https://github.com/GavinFoo/elasticsearch-definitive-guide/" target="_blank">这个项目</a>。</p>
+<blockquote>
+<h5 id="starhttpsgithubcomgavinfooelasticsearch-definitive-guide">如果你喜欢这个翻译项目可以<a href="https://github.com/GavinFoo/elasticsearch-definitive-guide/" target="_blank">点击Star一下</a>，您的支持是我们最大的动力。</h5>
+</blockquote>
 <hr>
 <p>原作名字：elasticsearch - the definitive guide</p>
 <p>原作作者：clinton gormley，zachary tong</p>
-<p>译者：Gavin Foo <a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#x66;&#117;&#120;&#105;&#x61;&#x6f;&#x70;&#x61;&#x6e;&#103;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;">&#x66;&#117;&#120;&#105;&#x61;&#x6f;&#x70;&#x61;&#x6e;&#103;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;</a></p>
+<p>译者：Gavin Foo <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x66;&#117;&#x78;&#x69;&#97;&#111;&#112;&#x61;&#x6e;&#103;&#64;&#103;&#109;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;">&#x66;&#117;&#x78;&#x69;&#97;&#111;&#112;&#x61;&#x6e;&#103;&#64;&#103;&#109;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;</a></p>
 <h2 id="">前言</h2>
-<p>这本书还在不断地添加内容中，我们会陆陆续续地在这里添加新的章节。这本书中的内容针对的是Elasticsearch的最新版本。</p>
-<p>欢迎反馈 – 如果这里出现了错误，或者你有什么建议可以到我们GitHub项目中 <a href="https://github.com/elasticsearch/elasticsearch-definitive-guide/issues" target="_blank">新建一个issue</a>。</p>
+<p>这本书还在不断地添加内容中，我们会陆陆续续地在这里添加新的章节。这本书中的内容针对的是 Elasticsearch 的最新版本。</p>
+<p>欢迎反馈 – 如果这里出现了错误，或者你有什么建议可以到我们 GitHub 项目中 <a href="https://github.com/GavinFoo/elasticsearch-definitive-guide/issues" target="_blank">新建一个issue</a>。</p>
 <hr>
 <p>这个世界已经被数据淹没。我们创造的系统所产生的数据可以瞬间轻而易举地将我们压垮，现有的科技一直致力于如何存储数据，并能将拥有大量信息的数据仓库结构化。而当你准备开始从大量的数据中得出结论做决策的时候，美好的一天就要被毁灭了……</p>
-<p>Elasticsearch是一个分布式可扩展的实时搜索和分析引擎。它能帮助你搜索、分析和浏览数据，而往往大家并没有在某个项目一开始就预料到需要这些功能。Elasticsearch之所以出现就是为了重新赋予硬盘中看似无用的原始数据新的活力。</p>
-<p>无论你是需要全文搜索、结构化数据的实时统计，还是两者的结合，这本指南都会帮助你了解其中最基本的概念，从最基本的操作开始学习Elasticsearch。之后，我们还会逐渐开始探索更加复杂的搜索技术，你可以根据自身的学习的步伐。</p>
-<p>Elasticsearch并不是单纯的全文搜索这么简单。我们将向你介绍讲解结构化搜索、统计、查询过滤、地理定位、自动完成以及<em>你是不是要查找</em>的提示。我们还将探讨如何给数据建模能提升Elasticsearch的性能，以及在生产环境中如何配置、监视你的集群。</p>
+<p>Elasticsearch 是一个分布式可扩展的实时搜索和分析引擎。它能帮助你搜索、分析和浏览数据，而往往大家并没有在某个项目一开始就预料到需要这些功能。Elasticsearch 之所以出现就是为了重新赋予硬盘中看似无用的原始数据新的活力。</p>
+<p>无论你是需要全文搜索、结构化数据的实时统计，还是两者的结合，这本指南都会帮助你了解其中最基本的概念，从最基本的操作开始学习 Elasticsearch。之后，我们还会逐渐开始探索更加复杂的搜索技术，你可以根据自身的学习的步伐。</p>
+<p>Elasticsearch 并不是单纯的全文搜索这么简单。我们将向你介绍讲解结构化搜索、统计、查询过滤、地理定位、自动完成以及<em>你是不是要查找</em>的提示。我们还将探讨如何给数据建模能提升 Elasticsearch 的性能，以及在生产环境中如何配置、监视你的集群。</p>
 
                     
                     </section>
