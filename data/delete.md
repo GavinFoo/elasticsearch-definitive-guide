@@ -5,7 +5,7 @@
 ```js
 DELETE /website/blog/123
 ```
-如果文档存在，那么Elasticsearch就会返回一个`200 OK`的HTTP相应码，返回的结果就会像下面展示的一样。请注意`_version`的数字已经增加了。
+如果文档存在，那么Elasticsearch就会返回一个`200 OK`的HTTP响应码，返回的结果就会像下面展示的一样。请注意`_version`的数字已经增加了。
 
 ```js
 {
