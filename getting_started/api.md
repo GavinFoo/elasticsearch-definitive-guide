@@ -35,9 +35,8 @@ Elasticsearch 官方提供了很多种编程语言的客户端，也有和许多
 向 Elasticsearch 发出的请求和其他所有的 HTTP 请求的组成部分是一致的。例如，计算集群中文件的数量，我们就可以使用：
 
 ```js
-      <1>     <2>                   <3>    <4>
 curl -XGET 'http://localhost:9200/_count?pretty' -d '
-{  <5>
+{ 
     "query": {
         "match_all": {}
     }
