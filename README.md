@@ -3,7 +3,7 @@
 ## 项目信息
 
 #### [在线阅读](http://learnes.net)
-国外自动指向 [GITBOOK 项目](http://fuxiaopang.gitbooks.io/LearnElasticSearch) | 国内用户自动指向 [SAE](http://learnes.sinaapp.com/)
+国外自动指向 [GITBOOK 项目](http://fuxiaopang.gitbooks.io/LearnElasticSearch) | 国内用户自动指向 [阿里云](http://learnes.net)
 
 #### [GITHUB 仓库](https://github.com/GavinFoo/elasticsearch-definitive-guide)
 
