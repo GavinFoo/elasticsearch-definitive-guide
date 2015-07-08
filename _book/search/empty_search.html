@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="5.1" data-basepath=".." data-revision="1426527794025">
+    <div class="book"  data-level="5.1" data-basepath=".." data-revision="1436390985808">
     
 
 <div class="book-summary">
@@ -1005,7 +1005,7 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_93">
+                    <section class="normal" id="section-gitbook_916">
                     
                         <h1 id="">空白搜索</h1>
 <p>搜索API最常用的一种形式就是<em>空白搜索</em>，也就是不加任何查询条件的，只是返回集群中所有文档的搜索。</p>
@@ -1050,7 +1050,7 @@
 <h3 id="shards"><code>shards</code></h3>
 <p><code>_shards</code>告诉了我们参与查询分片的总数，以及有多少<code>successful</code>和<code>failed</code>。通常情况下我们是不会得到失败的反馈，但是有的时候它会发生。如果我们的服务器突然出现了重大事故，然后我们丢失了同一个分片中主从两个版本的数据。在查询请求中，无法提供可用的备份。这种情况下，Elasticsearch就会返回`failed提示，但是它还会继续返回剩下的内容。</p>
 <h3 id="timeout"><code>timeout</code></h3>
-<p><code>timed_out</code>数值告诉了我们查询是否超时。通常，搜索请求不会超时。如果相比完整的结果你更需要的是快速的响应时间，这是你可以指定<code>timeout</code>值，例如<code>10</code>、<code>&quot;10ms&quot;</code>（10毫秒）或者<code>&quot;1s&quot;</code>（1分钟）：</p>
+<p><code>timed_out</code>数值告诉了我们查询是否超时。通常，搜索请求不会超时。如果相比完整的结果你更需要的是快速的响应时间，这是你可以指定<code>timeout</code>值，例如<code>10</code>、<code>&quot;10ms&quot;</code>（10毫秒）或者<code>&quot;1s&quot;</code>（1秒钟）：</p>
 <pre><code>GET /_search?timeout=10ms
 </code></pre><p>Elasticsearch会尽可能地返回你指定时间内它所查到的内容。</p>
 <hr>

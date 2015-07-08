@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.5" data-basepath=".." data-revision="1426527794025">
+    <div class="book"  data-level="1.5" data-basepath=".." data-revision="1436390985808">
     
 
 <div class="book-summary">
@@ -1005,7 +1005,7 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_71">
+                    <section class="normal" id="section-gitbook_894">
                     
                         <h1 id="">启程</h1>
 <p>为了能让你感受一下 Elasticsearch 能做什么以及它是有多么的易用，我们会先为你简单展示一下，其中包括了基本的 <em>创建索引</em>，<em>搜索</em> 以及 <em>聚合</em>。</p>
@@ -1023,7 +1023,7 @@
 </ul>
 <h1 id="">为员工档案创建索引</h1>
 <p>这个项目的第一步就是存储员工的数据。这样你就需要一个“员工档案”的表单，这样每个文档都代表着一个员工。在 Elasticsearch 中，存储数据的行为就叫做 <em>索引(indexing)</em> ，但是在我们索引数据前，我们需要决定将数据存储在哪里。</p>
-<p>在 Elasticsearch 中，文档术语一种 <em>类型(type)</em>，各种各样的类型存在于一个 <em>索引</em> 中。你也可以通过类比传统的关系数据库得到一些大致的相似之处：</p>
+<p>在 Elasticsearch 中，文档属于一种 <em>类型(type)</em>，各种各样的类型存在于一个 <em>索引</em> 中。你也可以通过类比传统的关系数据库得到一些大致的相似之处：</p>
 <pre><code>关系数据库     ⇒ 数据库 ⇒ 表    ⇒ 行    ⇒ 列(Columns)
 Elasticsearch  ⇒ 索引   ⇒ 类型  ⇒ 文档  ⇒ 字段(Fields)
 </code></pre><p>一个 Elasticsearch 集群可以包含多个 <em>索引</em>（数据库），也就是说其中包含了很多 <em>类型</em>（表）。这些类型中包含了很多的 <em>文档</em>（行），然后每个文档中又包含了很多的 <em>字段</em>（列）。</p>

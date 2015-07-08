@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="3.6" data-basepath=".." data-revision="1426527794025">
+    <div class="book"  data-level="3.6" data-basepath=".." data-revision="1436390985808">
     
 
 <div class="book-summary">
@@ -1005,7 +1005,7 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_7">
+                    <section class="normal" id="section-gitbook_833">
                     
                         <h1 id="">创建一个文档</h1>
 <p>当我们索引一个文档时，如何确定我们是创建了一个新的文档还是覆盖了一个已经存在的文档呢？</p>
@@ -1013,7 +1013,7 @@
 <pre><code class="lang-js">POST /website/blog/
 { ... }
 </code></pre>
-<p>然而，我们可能已经决定好了<code>_id</code>，所以需要告诉Elasticsearch只有当同<code>_index</code>，<code>_type</code>以及<code>_id</code>的文档不存在时才接受我们的请求。实现这个目的有两种方法，他们实质上是一样的，你可以选择你认为方便的那种：</p>
+<p>然而，我们可能已经决定好了<code>_id</code>，所以需要告诉Elasticsearch只有当<code>_index</code>，<code>_type</code>以及<code>_id</code>这3个属性全部相同的文档不存在时才接受我们的请求。实现这个目的有两种方法，他们实质上是一样的，你可以选择你认为方便的那种：</p>
 <p>第一种是在查询中添加<code>op_type</code>参数：</p>
 <pre><code class="lang-js">PUT /website/blog/<span class="hljs-number">123</span>?op_type=create
 { ... }

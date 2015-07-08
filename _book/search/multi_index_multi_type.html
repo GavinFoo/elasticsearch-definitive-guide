@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="5.2" data-basepath=".." data-revision="1426527794025">
+    <div class="book"  data-level="5.2" data-basepath=".." data-revision="1436390985808">
     
 
 <div class="book-summary">
@@ -1005,11 +1005,11 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_96">
+                    <section class="normal" id="section-gitbook_919">
                     
                         <h1 id="">多索引，多类型</h1>
 <p>你是否注意到了《空白搜索》一章节的文档中包含了很多不同的类型 —— <code>user</code>与<code>tweet</code>，它们也分别来自<code>us</code>、<code>gb</code>这两个不同的索引？</p>
-<p>当我们没有特别指定一个所以或者类型的时候，我们将会搜索整个集群中的<strong>所有</strong>文档。Elasticsearch会把搜索请求转发给集群中的每一个主从分片，然后按照结果的相关性得到前十名，并将它们返回给我们。</p>
+<p>当我们没有特别指定一个索引或者类型的时候，我们将会搜索整个集群中的<strong>所有</strong>文档。Elasticsearch会把搜索请求转发给集群中的每一个主从分片，然后按照结果的相关性得到前十名，并将它们返回给我们。</p>
 <p>然而，往往我们只需要在某一个特定的索引的几个类型中进行搜索。我们可以通过在URL中定义它来实现这个功能：</p>
 <table>
 <thead>
@@ -1041,7 +1041,7 @@
 </tr>
 <tr>
 <td><code>/gb,us/user,tweet/_search</code></td>
-<td>搜索索引<code>user</code>以及<code>tweet</code>中类型<code>gb</code> and <code>us</code>内的所有文档</td>
+<td>搜索索引<code>gb</code>和 索引<code>us</code>中类型<code>user</code>以及类型<code>tweet</code>内的所有文档</td>
 </tr>
 <tr>
 <td><code>/_all/user,tweet/_search</code></td>
@@ -1049,7 +1049,7 @@
 </tr>
 </tbody>
 </table>
-<p>当你在一个索引中搜索的时候，Elasticsearch或将你的搜索请求转发给相应索引中的所有主从分片，然后收集每一个分片的结果。在多个索引中搜索也是想通的流程，只不过是增加了一些参与分片。</p>
+<p>当你在一个索引中搜索的时候，Elasticsearch或将你的搜索请求转发给相应索引中的所有主从分片，然后收集每一个分片的结果。在多个索引中搜索也是相同的流程，只不过是增加了一些参与分片。</p>
 <hr>
 <blockquote>
 <h3 id="">重要提示</h3>

@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="3.7" data-basepath=".." data-revision="1426527794025">
+    <div class="book"  data-level="3.7" data-basepath=".." data-revision="1436390985808">
     
 
 <div class="book-summary">
@@ -1005,13 +1005,13 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_8">
+                    <section class="normal" id="section-gitbook_830">
                     
                         <h1 id="">删除一个文档</h1>
 <p>删除文档的基本模式和之前的基本一样，只不过是需要更换成<code>DELETE</code>方法：</p>
 <pre><code class="lang-js">DELETE /website/blog/<span class="hljs-number">123</span>
 </code></pre>
-<p>如果文档存在，那么Elasticsearch就会返回一个<code>200 OK</code>的HTTP相应码，返回的结果就会像下面展示的一样。请注意<code>_version</code>的数字已经增加了。</p>
+<p>如果文档存在，那么Elasticsearch就会返回一个<code>200 OK</code>的HTTP响应码，返回的结果就会像下面展示的一样。请注意<code>_version</code>的数字已经增加了。</p>
 <pre><code class="lang-js">{
   <span class="hljs-string">"found"</span> :    <span class="hljs-literal">true</span>,
   <span class="hljs-string">"_index"</span> :   <span class="hljs-string">"website"</span>,

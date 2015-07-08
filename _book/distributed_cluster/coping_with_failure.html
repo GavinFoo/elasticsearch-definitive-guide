@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="2.7" data-basepath=".." data-revision="1426527794025">
+    <div class="book"  data-level="2.7" data-basepath=".." data-revision="1436390985808">
     
 
 <div class="book-summary">
@@ -1005,10 +1005,10 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_37">
+                    <section class="normal" id="section-gitbook_860">
                     
                         <h1 id="">故障恢复</h1>
-<p>前文我们已经提到过 Elasticsearch 可以应对节点故障。让我们来尝试一下。如果我们吧第一个节点杀掉，我们的集群就会如下图所示：</p>
+<p>前文我们已经提到过 Elasticsearch 可以应对节点故障。让我们来尝试一下。如果我们把第一个节点杀掉，我们的集群就会如下图所示：</p>
 <p><img src="../images/02-06_node_failure.png" alt="杀掉一个节点后的集群"></p>
 <p>被杀掉的节点是主节点。而为了集群的正常工作必须需要一个主节点，所以首先进行的进程就是从各节点中选择了一个新的主节点：<code>Node 2</code>。</p>
 <p>主分片 <code>1</code> 和 <code>2</code> 在我们杀掉 <code>Node 1</code> 后就丢失了，我们的索引在丢失主节点的时候是不能正常工作的。如果我们在这个时候检查集群健康状态，将会显示 <code>red</code>：存在不可用的主节点！</p>
