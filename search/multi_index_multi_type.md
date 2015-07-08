@@ -14,7 +14,7 @@
 | `/gb,us/_search` | 搜索索引`gb`以及`us`中的所有类型 |
 | `/g*,u*/_search` | 搜索所有以`g`或`u`开头的索引中的所有类型 |
 | `/gb/user/_search` | 搜索索引`gb`中类型`user`内的所有文档 |
-| `/gb,us/user,tweet/_search` | 搜索索引`user`以及`tweet`中类型`gb` and `us`内的所有文档 |
+| `/gb,us/user,tweet/_search` | 搜索索引`gb`和 索引`us`中类型`user`以及类型`tweet`内的所有文档 |
 | `/_all/user,tweet/_search` | 搜索所有索引中类型为`user`以及`tweet`内的所有文档 |
 
 当你在一个索引中搜索的时候，Elasticsearch或将你的搜索请求转发给相应索引中的所有主从分片，然后收集每一个分片的结果。在多个索引中搜索也是相同的流程，只不过是增加了一些参与分片。
