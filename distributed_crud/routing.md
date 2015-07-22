@@ -28,3 +28,11 @@ shard mapping. A custom routing value could be used to ensure that all related
 documents -- for instance all the documents belonging to the same user -- are
 stored on the same shard. We discuss in detail why you may want to do this in
 <<scale>>.
+
+
+    当你索引一个文档，它是被存储在一个单独的主分片中，es怎么知道一个文档属于哪个分片呢？当我们创建一个文档，es怎么知道应该把文档存在分片1还是分片2呢？这小子咋这么聪明呢？
+    这个过程其实不是随机的，当我们需要检索一个文档的时候，实际上这个过程是由一个非常简单的公式决定的
+ shard = hash(routing) % number_of_primary_shards
+    这个"routing" 是一个“比较随机”的数，默认是这个文档的id，但也可以是个自定义的数，这个"routing" 通过一个哈希函数生成一串数字，然后这串数字对索引中主分片的总数进行取余操作获得了最后的存放文档的分片位置。文档存放的分片位置一定位于0-主分片总数之间（念过书的都知道），当我们需要使用一个文档的时候根据这个公式可以获取所在主分片的位置。
+    这说明了为啥主分片只能在索引创建的时候进行设置并且不能改变。如果将来主分片的数量改变了，先前所有的路由将不可用文档也将不能找到。
+    所有的API操作加上"routing"参数可以定制文档到分片的映射，定制“routing”设置主要用于相关的文档中，例如所有文档属于同一个用户，并被存储在同一主分片中，我们将详细讨论我们为什么要这样做。。。
