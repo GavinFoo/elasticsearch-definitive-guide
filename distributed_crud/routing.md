@@ -1,30 +1,22 @@
 ### 将文档路由到从库中
 
-When you index a document, it is stored on a single primary shard. How does
-Elasticsearch know which shard a document belongs to?  When we create a new
-document, how does it know whether it should store that document on shard 1 or
-shard 2?
+当你索引一个文档，它被保存在单个的主分片上，Elasticsearch如何知道文档属于哪个分片呢？
+当我们创建一个新文档，它如何知道应该存储在分片1还是分片2上呢？
 
-The process can't be random, since we may need to retrieve the document in the
-future. In fact, it is determined by a very simple formula:
+这个过程不能是随机的，因为我们将来需要取回该文档。
+事实上，它是由一个非常简单的公式来决定的:
 
-    shard = hash(routing) % number_of_primary_shards
+    分片 = hash(routing) % 主分片数量
 
-The `routing` value is an arbitrary string, which defaults to the document's
-`_id` but can also be set to a custom value. This `routing` string is passed
-through a hashing function to generate a number, which is divided by the
-number of primary shards in the index to return the _remainder_. The remainder
-will always be in the range `0` to `number_of_primary_shards - 1`, and gives
-us the number of the shard where a particular document lives.
+`routing` 值可以是任何的字符串， 默认是文档的 `_id` ，但也可以设置成一个自定义的值。
+`routing` 字符串被传递到一个哈希函数以生成一个数字，然后除以索引的主分片的数量
+得到余数 _remainder_. 余数将总是在 `0` 到 `主分片数量 - 1` 之间, 它告诉了我们用以存放
+一个特定文档的分片编号。
 
-This explains why the number of primary shards can only be set when an index
-is created and never changed:  if the number of primary shards ever changed in
-the future, all previous routing values would be invalid and documents would
-never be found.
+这解释了为什么主分片的数量只能在索引创建时设置、而且不能修改。
+如果主分片的数量一旦在日后进行了修改，所有之前的路由值都会无效，文档再也无法被找到。
 
-All document APIs (`get`, `index`, `delete`, `bulk`, `update` and `mget`)
-accept a `routing` parameter that can be used to customize the document-to-
-shard mapping. A custom routing value could be used to ensure that all related
-documents -- for instance all the documents belonging to the same user -- are
-stored on the same shard. We discuss in detail why you may want to do this in
-<<scale>>.
+所有文档 APIs (`get`, `index`, `delete`, `bulk`, `update` 和 `mget`)
+都可以接受 `routing` 参数，用以自定义 文档-到-分片 的映射。
+自定义的路由将用于确保所有的文档 -- 例如属于同一用户的所有文档 -- 保存在相同的分片上。
+我们将在 `<<扩展>>` 中详细讨论你为什么希望这么做。
