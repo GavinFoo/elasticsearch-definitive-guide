@@ -5,7 +5,7 @@ yum install java-1.7.0-openjdk -y
 
 # 安装并运行 Elasticsearch
 
-了解 Elasticsearch 最简单的方法就是去使用它，让我们一起开始探索之旅吧！((("Elasticsearch", "installing")))
+了解 Elasticsearch 最简单的方法就是去使用它，让我们一起开始探索之旅吧！
 
 安装 Elasticsearch 只有一个要求，那就是需要安装最新版本的 Java。而且最好从 Java 官网 [www.java.com](http://www.java.com) 下载最新版本的 Java 来安装。
 
